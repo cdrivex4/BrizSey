@@ -28,7 +28,7 @@ fun SatelliteMapScreen(
     var isLoading by remember { mutableStateOf(true) }
     var webViewRef by remember { mutableStateOf<WebView?>(null) }
 
-    // Standalone Leaflet HTML with OpenStreetMap + live EUMETSAT Indian Ocean Satellite & Wind WMS overlays
+    // Standalone Leaflet HTML with transparency, opacity slider, OpenStreetMap + live EUMETSAT
     val leafletHtml = """
         <!DOCTYPE html>
         <html>
@@ -39,10 +39,34 @@ fun SatelliteMapScreen(
             <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
             <style>
                 html, body, #map { height: 100%; width: 100%; margin: 0; padding: 0; background: #0b1f3a; }
-                .leaflet-control-layers { background: rgba(15, 43, 72, 0.9) !important; color: white !important; border-radius: 12px !important; border: 1px solid rgba(255,255,255,0.2) !important; padding: 8px 12px !important; }
+                .leaflet-control-layers { 
+                    background: rgba(15, 43, 72, 0.92) !important; 
+                    color: white !important; 
+                    border-radius: 12px !important; 
+                    border: 1px solid rgba(255,255,255,0.2) !important; 
+                    padding: 8px 12px !important; 
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.4) !important;
+                }
                 .leaflet-control-layers label { color: white !important; font-family: sans-serif; font-size: 13px; margin: 4px 0; }
-                .custom-popup { font-family: sans-serif; }
+                .custom-popup { font-family: sans-serif; font-size: 12px; }
                 .island-badge { background: #0284C7; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+                
+                /* Opacity Slider Control Box */
+                .opacity-control {
+                    background: rgba(15, 43, 72, 0.92);
+                    color: white;
+                    padding: 8px 14px;
+                    border-radius: 12px;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    font-family: sans-serif;
+                    font-size: 12px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+                }
+                .opacity-control input[type=range] {
+                    width: 140px;
+                    margin-top: 4px;
+                    accent-color: #38BDF8;
+                }
             </style>
         </head>
         <body>
@@ -57,29 +81,30 @@ fun SatelliteMapScreen(
                     zoomControl: true
                 });
 
-                // 1. High-detail OpenStreetMap Base
+                // 1. High-detail OpenStreetMap Base (Default)
                 var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,
-                    attribution: '&copy; OpenStreetMap contributors'
+                    attribution: '&copy; OpenStreetMap'
                 }).addTo(map);
 
-                // 2. Esri World Imagery (Satellite Background)
+                // 2. Esri World Imagery (Satellite Topography)
                 var esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                     attribution: 'Tiles &copy; Esri'
                 });
 
-                // 3. EUMETSAT Live Natural Color Cloud Layer (Direct Geoserver WMS used by SMA)
+                // 3. EUMETSAT Live Natural Color Cloud Layer with 0.55 default opacity for clear land visibility below
                 var eumetsatCloud = L.tileLayer.wms('https://view.eumetsat.int/geoserver/wms', {
                     layers: 'msg_fes:rgb_naturalenhncd',
                     format: 'image/png',
                     transparent: true,
                     version: '1.3.0',
-                    attribution: 'EUMETSAT Live'
+                    opacity: 0.55,
+                    attribution: 'EUMETSAT'
                 }).addTo(map);
 
                 // 4. Open-Meteo Precipitation / Radar WMS Layer
                 var rainRadar = L.tileLayer('https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=9de243494c0b295cca9337e1e96b00e2', {
-                    opacity: 0.6,
+                    opacity: 0.55,
                     attribution: 'Rain Radar'
                 });
 
@@ -90,29 +115,55 @@ fun SatelliteMapScreen(
                 };
 
                 var overlayMaps = {
-                    "Live EUMETSAT Clouds": eumetsatCloud,
+                    "Live Clouds (EUMETSAT)": eumetsatCloud,
                     "Precipitation Radar": rainRadar
                 };
 
                 L.control.layers(baseMaps, overlayMaps, { collapsed: false, position: 'topright' }).addTo(map);
 
-                // Island Microclimate Markers
+                // Add interactive Cloud Opacity Slider at bottom-left
+                var opacitySlider = L.control({ position: 'bottomleft' });
+                opacitySlider.onAdd = function(map) {
+                    var div = L.DomUtil.create('div', 'opacity-control');
+                    div.innerHTML = '<strong>Cloud Transparency</strong><br/>' +
+                                    '<input id="slider" type="range" min="0" max="100" value="55" /> <span id="op-val">55%</span>';
+                    L.DomEvent.disableClickPropagation(div);
+                    return div;
+                };
+                opacitySlider.addTo(map);
+
+                // Wire slider change event
+                setTimeout(function() {
+                    var slider = document.getElementById('slider');
+                    var valDisplay = document.getElementById('op-val');
+                    if (slider) {
+                        slider.addEventListener('input', function(e) {
+                            var val = e.target.value / 100;
+                            eumetsatCloud.setOpacity(val);
+                            if (valDisplay) valDisplay.innerText = e.target.value + '%';
+                        });
+                    }
+                }, 500);
+
+                // Island Microclimate Markers with detailed topography notes
                 var islands = [
-                    { name: "Mahé (Victoria & Airport)", lat: -4.6743, lon: 55.5212, desc: "East Coast Trade Winds & Port" },
-                    { name: "Morne Seychellois (Highlands 905m)", lat: -4.6433, lon: 55.4383, desc: "High Rainfall Orographic Ridge (3000mm/yr)" },
-                    { name: "Beau Vallon (North Mahé)", lat: -4.6136, lon: 55.4297, desc: "Sheltered Bay / Convective Showers" },
-                    { name: "Praslin (Vallée de Mai)", lat: -4.3251, lon: 55.7356, desc: "Central Granitic Island" },
-                    { name: "La Digue", lat: -4.3601, lon: 55.8385, desc: "Anse Source d'Argent & Outer Reefs" }
+                    { name: "Victoria & Port (Mahé)", lat: -4.6191, lon: 55.4513, desc: "Urban / Coastal Port" },
+                    { name: "Pointe Larue / Airport", lat: -4.6743, lon: 55.5212, desc: "Official SMA Met Station" },
+                    { name: "Morne Seychellois (905m)", lat: -4.6433, lon: 55.4383, desc: "Highlands: 3000mm/yr Orographic Rain" },
+                    { name: "Beau Vallon (North)", lat: -4.6136, lon: 55.4297, desc: "NW Bay: Convective Cloud Zone" },
+                    { name: "Anse Royale (South)", lat: -4.7431, lon: 55.5186, desc: "South Mahé Marine Exposure" },
+                    { name: "Praslin (Vallée de Mai)", lat: -4.3251, lon: 55.7356, desc: "Praslin Central Island" },
+                    { name: "La Digue", lat: -4.3601, lon: 55.8385, desc: "La Passe & Outer Reefs" }
                 ];
 
                 islands.forEach(function(isl) {
                     var marker = L.circleMarker([isl.lat, isl.lon], {
-                        radius: 7,
+                        radius: 8,
                         fillColor: "#0284C7",
                         color: "#ffffff",
                         weight: 2,
                         opacity: 1,
-                        fillOpacity: 0.9
+                        fillOpacity: 0.95
                     }).addTo(map);
 
                     marker.bindPopup(
@@ -133,7 +184,7 @@ fun SatelliteMapScreen(
                 title = {
                     Column {
                         Text("Live Satellite & Cloud Radar", style = MaterialTheme.typography.titleMedium)
-                        Text("EUMETSAT Geoserver & OpenStreetMap", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.8f))
+                        Text("EUMETSAT Clouds + Transparent Topo", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.8f))
                     }
                 },
                 navigationIcon = {
