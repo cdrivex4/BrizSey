@@ -28,7 +28,7 @@ fun SatelliteMapScreen(
     var isLoading by remember { mutableStateOf(true) }
     var webViewRef by remember { mutableStateOf<WebView?>(null) }
 
-    // Standalone Leaflet HTML with transparency, opacity slider, OpenStreetMap + live EUMETSAT
+    // Standalone Leaflet HTML with maxNativeZoom auto-scaling, EUMETSAT clouds, and RainViewer
     val leafletHtml = """
         <!DOCTYPE html>
         <html>
@@ -40,7 +40,7 @@ fun SatelliteMapScreen(
             <style>
                 html, body, #map { height: 100%; width: 100%; margin: 0; padding: 0; background: #0b1f3a; }
                 .leaflet-control-layers { 
-                    background: rgba(15, 43, 72, 0.92) !important; 
+                    background: rgba(15, 43, 72, 0.94) !important; 
                     color: white !important; 
                     border-radius: 12px !important; 
                     border: 1px solid rgba(255,255,255,0.2) !important; 
@@ -53,7 +53,7 @@ fun SatelliteMapScreen(
                 
                 /* Opacity Slider Control Box */
                 .opacity-control {
-                    background: rgba(15, 43, 72, 0.92);
+                    background: rgba(15, 43, 72, 0.94);
                     color: white;
                     padding: 8px 14px;
                     border-radius: 12px;
@@ -66,6 +66,14 @@ fun SatelliteMapScreen(
                     width: 140px;
                     margin-top: 4px;
                     accent-color: #38BDF8;
+                }
+                .radar-status {
+                    display: inline-block;
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background: #22c55e;
+                    margin-right: 4px;
                 }
             </style>
         </head>
@@ -89,24 +97,56 @@ fun SatelliteMapScreen(
 
                 // 2. Esri World Imagery (Satellite Topography)
                 var esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    maxZoom: 19,
                     attribution: 'Tiles &copy; Esri'
                 });
 
-                // 3. EUMETSAT Live Natural Color Cloud Layer with 0.55 default opacity for clear land visibility below
+                // 3. EUMETSAT Live Natural Color Cloud Layer (WMS handles all zoom levels cleanly)
                 var eumetsatCloud = L.tileLayer.wms('https://view.eumetsat.int/geoserver/wms', {
                     layers: 'msg_fes:rgb_naturalenhncd',
                     format: 'image/png',
                     transparent: true,
                     version: '1.3.0',
                     opacity: 0.55,
+                    maxZoom: 18,
                     attribution: 'EUMETSAT'
                 }).addTo(map);
 
-                // 4. Open-Meteo Precipitation / Radar WMS Layer
-                var rainRadar = L.tileLayer('https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=9de243494c0b295cca9337e1e96b00e2', {
-                    opacity: 0.55,
-                    attribution: 'Rain Radar'
+                // 4. EUMETSAT Thermal Infrared Storm Monitor (Highlights intense convective storm tops)
+                var eumetsatInfrared = L.tileLayer.wms('https://view.eumetsat.int/geoserver/wms', {
+                    layers: 'msg_fes:ir108',
+                    format: 'image/png',
+                    transparent: true,
+                    version: '1.3.0',
+                    opacity: 0.6,
+                    maxZoom: 18,
+                    attribution: 'EUMETSAT IR'
                 });
+
+                // 5. Dynamic RainViewer Global Radar Layer with maxNativeZoom=6 and tileSize=512 for smooth scaling
+                var rainViewerLayer = L.layerGroup().addTo(map);
+                var activeRadarTile = null;
+
+                fetch('https://api.rainviewer.com/public/weather-maps.json')
+                    .then(function(res) { return res.json(); })
+                    .then(function(data) {
+                        if (data && data.radar && data.radar.past && data.radar.past.length > 0) {
+                            var latest = data.radar.past[data.radar.past.length - 1];
+                            // Using 512px tiles and maxNativeZoom=6 allows Leaflet to stretch tiles without 'Not Supported' errors
+                            var radarTileUrl = 'https://tilecache.rainviewer.com' + latest.path + '/512/{z}/{x}/{y}/2/1_1.png';
+                            activeRadarTile = L.tileLayer(radarTileUrl, {
+                                opacity: 0.75,
+                                maxZoom: 18,
+                                maxNativeZoom: 6,
+                                tileSize: 512,
+                                attribution: 'RainViewer'
+                            });
+                            rainViewerLayer.addLayer(activeRadarTile);
+                        }
+                    })
+                    .catch(function(err) {
+                        console.error('Failed to load RainViewer radar frames', err);
+                    });
 
                 // Layer Switcher Controls
                 var baseMaps = {
@@ -116,7 +156,8 @@ fun SatelliteMapScreen(
 
                 var overlayMaps = {
                     "Live Clouds (EUMETSAT)": eumetsatCloud,
-                    "Precipitation Radar": rainRadar
+                    "Live Rain Radar (RainViewer)": rainViewerLayer,
+                    "Infrared Storm Monitor": eumetsatInfrared
                 };
 
                 L.control.layers(baseMaps, overlayMaps, { collapsed: false, position: 'topright' }).addTo(map);
@@ -125,14 +166,14 @@ fun SatelliteMapScreen(
                 var opacitySlider = L.control({ position: 'bottomleft' });
                 opacitySlider.onAdd = function(map) {
                     var div = L.DomUtil.create('div', 'opacity-control');
-                    div.innerHTML = '<strong>Cloud Transparency</strong><br/>' +
-                                    '<input id="slider" type="range" min="0" max="100" value="55" /> <span id="op-val">55%</span>';
+                    div.innerHTML = '<strong><span class="radar-status"></span>Cloud & Radar Opacity</strong><br/>' +
+                                    '<input id="slider" type="range" min="0" max="100" value="60" /> <span id="op-val">60%</span>';
                     L.DomEvent.disableClickPropagation(div);
                     return div;
                 };
                 opacitySlider.addTo(map);
 
-                // Wire slider change event
+                // Wire slider change event to adjust both Cloud and Radar opacities
                 setTimeout(function() {
                     var slider = document.getElementById('slider');
                     var valDisplay = document.getElementById('op-val');
@@ -140,6 +181,10 @@ fun SatelliteMapScreen(
                         slider.addEventListener('input', function(e) {
                             var val = e.target.value / 100;
                             eumetsatCloud.setOpacity(val);
+                            eumetsatInfrared.setOpacity(val);
+                            if (activeRadarTile) {
+                                activeRadarTile.setOpacity(val);
+                            }
                             if (valDisplay) valDisplay.innerText = e.target.value + '%';
                         });
                     }
@@ -184,7 +229,7 @@ fun SatelliteMapScreen(
                 title = {
                     Column {
                         Text("Live Satellite & Cloud Radar", style = MaterialTheme.typography.titleMedium)
-                        Text("EUMETSAT Clouds + Transparent Topo", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.8f))
+                        Text("EUMETSAT Clouds + RainViewer Live Radar", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.8f))
                     }
                 },
                 navigationIcon = {
