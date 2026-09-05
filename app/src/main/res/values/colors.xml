@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sey_navy_primary">#0C447C</color>
+    <color name="sey_ocean_blue">#0284C7</color>
+    <color name="sey_teal_accent">#0EA5E9</color>
+    <color name="sey_surface_light">#F8FAFC</color>
+    <color name="sey_card_bg">#FFFFFF</color>
+    <color name="sey_alert_coral">#E24B4A</color>
+    <color name="sey_gold_sun">#F59E0B</color>
+</resources>

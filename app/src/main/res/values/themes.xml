@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SeyMeteo" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/sey_navy_primary</item>
+        <item name="android:navigationBarColor">@color/sey_surface_light</item>
+    </style>
+</resources>

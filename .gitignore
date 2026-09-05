@@ -1,0 +1,58 @@
+# Android generated files
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Build outputs
+build/
+app/build/
+
+# Gradle
+.gradle/
+local.properties
+gradle.properties.local
+
+# IDE
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Android Studio NavEditor
+.navigation/
+
+# Keystore files (NEVER commit these)
+*.jks
+*.keystore
+google-services.json
+.env
+*.env
+
+# APKs pulled from device
+pulled_apk/
+
+# Decompiled legacy app (for reference only - large)
+decompiled_meteo_sez/
+
+# API discovery samples (optional - can keep for docs)
+# api_discovery/
+
+# Graphify output
+graphify-out/.graphify_python
+graphify-out/.graphify_root
+graphify-out/.graphify_chunk_*.json
+graphify-out/.graphify_*.json
+graphify-out/*.json
+!graphify-out/GRAPH_REPORT.md
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Profiling
+*.hprof
+
+# Room schema exports (commit these for migration tracking)
+# app/schemas/

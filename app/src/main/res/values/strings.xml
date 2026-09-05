@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">SeyMeteo</string>
+    <string name="tagline">Weather &amp; Marine Services for Seychelles</string>
+    <string name="forecast_7day">7-Day Forecast</string>
+    <string name="marine_tides">Marine &amp; Tides</string>
+    <string name="sun_moon">Sun &amp; Moon</string>
+    <string name="radar_satellite">Live Satellite</string>
+    <string name="alerts_warnings">Early Warnings</string>
+    <string name="island_mahe">Mahé</string>
+    <string name="island_praslin">Praslin</string>
+    <string name="island_ladigue">La Digue</string>
+    <string name="island_other">Outer Islands</string>
+    <string name="refresh">Refresh</string>
+    <string name="high_tide">High Tide</string>
+    <string name="low_tide">Low Tide</string>
+    <string name="sea_state">Sea State</string>
+    <string name="wind">Wind</string>
+    <string name="humidity">Humidity</string>
+    <string name="rain_prob">Rain Chance</string>
+</resources>
