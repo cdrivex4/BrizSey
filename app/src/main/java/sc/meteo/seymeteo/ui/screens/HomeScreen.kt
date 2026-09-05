@@ -1,27 +1,15 @@
 package sc.meteo.seymeteo.ui.screens
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,24 +17,33 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import sc.meteo.seymeteo.ui.components.AlertCard
-import sc.meteo.seymeteo.ui.components.CurrentWeatherCard
-import sc.meteo.seymeteo.ui.components.IslandSelector
-import sc.meteo.seymeteo.ui.components.MarineTideCard
-import sc.meteo.seymeteo.ui.components.SatelliteRadarCard
-import sc.meteo.seymeteo.ui.components.SevenDayForecastCard
-import sc.meteo.seymeteo.ui.components.SunMoonCard
+import sc.meteo.seymeteo.ui.components.*
+import sc.meteo.seymeteo.ui.theme.SeyNavyDark
 import sc.meteo.seymeteo.ui.theme.SeyNavyPrimary
+import sc.meteo.seymeteo.ui.theme.SeyOceanCyan
 import sc.meteo.seymeteo.ui.theme.SeySurfaceLight
 import sc.meteo.seymeteo.ui.viewmodel.WeatherViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: WeatherViewModel = viewModel(),
+    onOpenSettings: () -> Unit = {},
+    onOpenSatelliteRadar: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    val timeFormatter = remember { SimpleDateFormat("HH:mm", Locale.ENGLISH) }
+    val lastUpdatedText = remember(uiState.lastUpdatedMs) {
+        if (uiState.lastUpdatedMs > 0) {
+            "Live Sync: ${timeFormatter.format(Date(uiState.lastUpdatedMs))} (Auto-sync 30m)"
+        } else {
+            "Connecting to live feed..."
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -75,6 +72,13 @@ fun HomeScreen(
                             tint = Color.White
                         )
                     }
+                    IconButton(onClick = onOpenSettings) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = "Settings",
+                            tint = Color.White
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = SeyNavyPrimary
@@ -94,7 +98,7 @@ fun HomeScreen(
                     CircularProgressIndicator(color = SeyNavyPrimary)
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "Loading Seychelles weather data...",
+                        text = "Loading live Seychelles weather...",
                         style = MaterialTheme.typography.bodyMedium,
                         color = SeyNavyPrimary
                     )
@@ -106,6 +110,50 @@ fun HomeScreen(
                     .fillMaxSize()
                     .padding(innerPadding)
             ) {
+                // Live Sync Status Banner
+                item {
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 6.dp),
+                        color = SeyNavyDark,
+                        shape = RoundedCornerShape(10.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = Icons.Default.Sync,
+                                    contentDescription = null,
+                                    tint = SeyOceanCyan,
+                                    modifier = Modifier.size(14.dp)
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = lastUpdatedText,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = Color.White.copy(alpha = 0.9f),
+                                    fontSize = 11.sp
+                                )
+                            }
+                            if (uiState.isRefreshing) {
+                                Text(
+                                    text = "Updating...",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = SeyOceanCyan,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 10.sp
+                                )
+                            }
+                        }
+                    }
+                }
+
                 // Active CAP Emergency Alerts
                 if (uiState.activeAlerts.isNotEmpty()) {
                     items(uiState.activeAlerts.size) { index ->
@@ -147,9 +195,11 @@ fun HomeScreen(
                     SunMoonCard(sunMoonInfo = uiState.sunMoonInfo)
                 }
 
-                // Satellite Radar Feed Preview
+                // Satellite Radar Feed Card (Clickable)
                 item {
-                    SatelliteRadarCard()
+                    SatelliteRadarCard(
+                        onOpenRadar = onOpenSatelliteRadar
+                    )
                 }
 
                 item {
