@@ -11,17 +11,17 @@ object IslandResolver {
     /** Known SMA forecast islands with their approximate geographic centres. */
     private val knownIslands = listOf(
         ResolvedIsland(
-            location = IslandLocation.MAHE,
+            location = IslandLocation.DEFAULT_MAHE,
             latitude = -4.6796,
             longitude = 55.4917
         ),
         ResolvedIsland(
-            location = IslandLocation.PRASLIN,
+            location = IslandLocation.DEFAULT_PRASLIN,
             latitude = -4.3191,
             longitude = 55.7400
         ),
         ResolvedIsland(
-            location = IslandLocation.LA_DIGUE,
+            location = IslandLocation.DEFAULT_LA_DIGUE,
             latitude = -4.3631,
             longitude = 55.8395
         ),
@@ -35,7 +35,7 @@ object IslandResolver {
         return knownIslands
             .minByOrNull { island ->
                 haversineDistanceKm(gps.latitude, gps.longitude, island.latitude, island.longitude)
-            }?.location ?: IslandLocation.MAHE
+            }?.location ?: IslandLocation.DEFAULT_MAHE
     }
 
     data class ResolvedIsland(

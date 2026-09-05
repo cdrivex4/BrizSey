@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import sc.meteo.seymeteo.data.model.CapAlertProperties
+import sc.meteo.seymeteo.data.model.CapAlertInfo
 import sc.meteo.seymeteo.ui.theme.SeyAlertRed
 import sc.meteo.seymeteo.ui.theme.SeySurfaceCard
 import sc.meteo.seymeteo.ui.theme.SeyTextPrimary
@@ -32,7 +32,7 @@ import sc.meteo.seymeteo.ui.theme.SeyTextSecondary
 
 @Composable
 fun AlertCard(
-    alert: CapAlertProperties,
+    alert: CapAlertInfo,
     modifier: Modifier = Modifier
 ) {
     Card(

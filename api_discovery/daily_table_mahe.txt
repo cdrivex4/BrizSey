@@ -1,0 +1,4013 @@
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" 
+      dir="ltr">
+    <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    
+        <meta name="google-site-verification"
+              content="jwoRq1fsb3Y_stYPdDLwSxT1coBVjOzXPAaolul0jgc"/>
+    
+    
+        
+            
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Weather">
+<meta name="twitter:description" content="">
+
+
+
+
+<meta property="og:url" content="https://www.meteo.sc/weather/">
+<meta property="og:title" content="Weather">
+<meta property="og:description" content="">
+<meta property="og:site_name" content="SMA">
+
+
+
+
+<meta itemprop="url" content="https://www.meteo.sc/weather/">
+<meta itemprop="name" content="Weather">
+<meta itemprop="description" content="">
+
+
+<title>Weather</title>
+<meta name="description" content="">
+
+
+
+        
+    
+
+    
+        
+            
+            
+
+
+
+
+
+
+<link rel="icon" type="image/png" href="/media/images/SMA_new.2e16d0ba.fill-180x180.format-png.png"/>
+<link rel="apple-touch-icon" href="/media/images/SMA_new.2e16d0ba.fill-180x180.format-png.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/media/images/SMA_new.2e16d0ba.fill-120x120.format-png.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/media/images/SMA_new.2e16d0ba.fill-180x180.format-png.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/media/images/SMA_new.2e16d0ba.fill-152x152.format-png.png">
+<link rel="apple-touch-icon" sizes="167x167" href="/media/images/SMA_new.2e16d0ba.fill-167x167.format-png.png">
+        
+    
+
+    <!--Force all links in the live preview panel to be opened in a new tab -->
+    
+
+    
+    <link rel="stylesheet" type="text/css" href="/static/css/bulma.min.604205736eda.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/rtl-bulma-overrides.f406b0fa0a23.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bulma-divider.min.bff7faac4e3c.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Noto+Sans+Arabic:wght@400;600;700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/css/animate.min.c0be8e53226a.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/google-translate.02c18376fe5e.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/navigation.26a881b71907.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/cms_style.2877f907f6a6.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/base.9280b664fc54.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/components.0177ea1bcd15.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/footer.a87d04d8fb1e.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/sections.6545fad7d67e.css">
+    <link rel="stylesheet" href="/static/css/services_common.0780d5ce694a.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/nmhs_cms.21234e4471d8.css">
+
+    
+    <style>
+        :root {
+            --text-color: #363636;
+            --text-color-background: #36363625;
+            --background-color: #E6F1FB ;
+            --primary-color-lightest: #0C447C0d; 
+            --primary-color-light: #0C447C1A; 
+            --primary-color-medium: #0C447C4f; 
+            --border-radius: 12px;
+            --primary-color: #0C447C;
+        }
+
+        
+
+    </style>
+    <script type="text/javascript" src="/static/js/jquery-3.6.3.min.cf2fbbf84281.js"></script>
+    
+        
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async
+                    src="https://www.googletagmanager.com/gtag/js?id=G-BP4SFJ824B"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+
+                function gtag() {
+                    dataLayer.push(arguments);
+                }
+
+                gtag('js', new Date());
+
+                gtag('config', 'G-BP4SFJ824B');
+            </script>
+        
+    
+
+    
+  <link rel="stylesheet" href="/static/weather/css/weather_detail_page.9e768372e716.css">
+  <link rel="stylesheet" href="/static/css/maplibre-gl.bf5a38917e01.css">
+
+</head>
+
+<body class="weather">
+
+
+
+    
+
+
+
+<header class="site-header">
+
+  <!-- active alert strip — sits above all other header chrome -->
+  <div class="nav-top-scroll-active-alert"></div>
+
+  <!-- ── TOP UTILITY BAR ── -->
+  <div class="site-header-top">
+    <div class="container site-header-top-inner">
+
+      <!-- LOGO -->
+      <a class="site-logo" href="https://www.meteo.sc">
+        
+          
+          <img src="/media/images/sma_logo_lg.original.png" alt="Logo" class="site-logo-img">
+        
+        
+        
+      </a>
+
+      <!-- UTILITY LINKS -->
+        <div class="site-header-utils">
+        <div id="google_language_translator"></div>
+
+        
+            <a href="/alerts/"
+            class="util-link util-link--alert">
+            <span>Alerts</span>
+            <img src="/static/img/CAPLogo.1ef909ce25d9.jpeg" alt="CAP Alerts"
+                style="height:16px;width:16px;border-radius:3px;">
+            </a>
+        
+
+        
+
+        
+            <a href="/subscribe/"
+            class="util-link">
+            <span>Subscribe</span>
+            <span class="util-icon"><svg id="icon-mail" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><!--! envelope (solid): Font Awesome Pro 6.4.0 --><path d="M14.5 2c.813 0 1.5.688 1.5 1.5 0 .5-.25.938-.625 1.219L8.594 9.812a.986.986 0 0 1-1.219 0L.594 4.72A1.496 1.496 0 0 1 0 3.5 1.5 1.5 0 0 1 1.5 2h13Zm-7.719 8.625a2.016 2.016 0 0 0 2.407 0L16 5.5V12c0 1.125-.906 2-2 2H2c-1.125 0-2-.875-2-2V5.5l6.781 5.125Z"/></svg>
+</span>
+            </a>
+        
+
+        
+            <div class="util-dropdown">
+            <div class="util-link util-dropdown-trigger">
+                <span>Language</span>
+                <span class="util-icon"><svg id="icon-site" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><!--! earth-americas (solid): Font Awesome Pro 6.4.0 --><path d="M16 8c0 4.438-3.594 8-8 8-4.438 0-8-3.563-8-8 0-4.406 3.563-8 8-8 4.406 0 8 3.594 8 8ZM1.781 6.031l.313.532c.25.437.656.78 1.187.937l1.781.5c.563.156.938.656.938 1.219v1.25c0 .344.188.656.5.781.281.156.5.469.5.813v1.218c0 .5.438.844.906.719a1.476 1.476 0 0 0 1.032-1.063l.093-.343c.125-.531.469-.969.938-1.25l.25-.156c.469-.25.781-.75.781-1.282v-.281c0-.375-.188-.781-.469-1.063l-.094-.093C10.158 8.188 9.75 8 9.376 8H8c-.344 0-.688-.063-.969-.25l-1.093-.625c-.125-.063-.22-.188-.282-.344-.093-.281.032-.625.313-.75l.187-.093a.81.81 0 0 1 .657-.063l.75.25c.25.094.53-.031.687-.25a.615.615 0 0 0-.063-.719l-.406-.5a.993.993 0 0 1 0-1.281l.5-.563a.99.99 0 0 0 .094-1.156l-.063-.125c-.124 0-.218-.031-.312-.031a6.54 6.54 0 0 0-6.219 4.531Zm11.875-1.187-.781.312c-.5.219-.75.75-.594 1.25L12.812 8c.094.313.376.563.72.656l.905.219A7.67 7.67 0 0 0 14.5 8a6.439 6.439 0 0 0-.844-3.156Z"/></svg>
+</span>
+            </div>
+            <div class="util-dropdown-menu" translate="no">
+                
+                <a class="util-dropdown-item"
+                    data-lang="English"
+                    data-lang-prefix="en">
+                    English
+                </a>
+                
+                <a class="util-dropdown-item"
+                    data-lang="Seychellois Creole"
+                    data-lang-prefix="crs">
+                    Seychellois Creole
+                </a>
+                
+                <a class="util-dropdown-item"
+                    data-lang="French"
+                    data-lang-prefix="fr">
+                    French
+                </a>
+                
+            </div>
+            </div>
+        
+
+        <div class="util-search">
+            <div class="util-search-input" id="search-input" style="display:none;">
+            <form action="/search/">
+                <input id="input-el"
+                    class="util-search-field"
+                    type="text"
+                    name="query"
+                    value=""
+                    placeholder="Search">
+            </form>
+            </div>
+            <div class="util-link" id="search-trigger">
+            <span>Search</span>
+            <span class="util-icon"><?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" id="icon-search" viewBox="0 0 48 48"><path  d="M46.829 41.172L38.4 32.744a21.018 21.018 0 1 0-5.657 5.657l8.427 8.427a4 4 0 0 0 5.658-5.656zM8 21a13 13 0 1 1 22.325 9.046c-.05.045-.106.078-.154.126s-.08.104-.125.154A12.992 12.992 0 0 1 8 21z" data-name="Layer 2" /></svg>
+</span>
+            </div>
+        </div>
+
+        
+            <a href="/contact-us/"
+            class="header-cta">
+            Contact us
+            </a>
+        
+
+        
+            <a href="/give-us-feedback/"
+            class="header-cta">
+            Feedback
+            </a>
+        
+
+        
+
+        <!-- ACTIVE ALERT — injected here as last item -->
+        <div class="nav-left-circle-active-alert nav-alert-inline"></div>
+
+        </div>
+    </div>
+  </div>
+
+  <!-- ── MAIN NAV ── -->
+  <nav class="site-nav" role="navigation" aria-label="main navigation">
+    <div class="container site-nav-inner">
+
+      <!-- MOBILE BRAND -->
+      <div class="site-nav-brand">
+        <a class="mobile-logo" href="https://www.meteo.sc">
+          
+          
+            
+            <img src="/media/images/sma_logo_lg.original.png" alt="Logo" style="height:32px;">
+          
+          
+        </a>
+        <button id="navBurger"
+                class="nav-burger navbar-burger"
+                data-target="mainNav"
+                aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+        </button>
+      </div>
+
+      <!-- NAV LINKS -->
+      <div id="mainNav" class="site-nav-menu navbar-menu">
+        <!-- MOBILE CLOSE BUTTON -->
+        <div class="mobile-nav-close-row">
+            <button class="mobile-nav-close" id="navClose" aria-label="Close menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+            </button>
+        </div>
+        <div class="navbar-start">
+          
+            
+
+
+  <div class="navbar-item nav-item has-dropdown is-hoverable ">
+
+    <a class="navbar-item nav-item-link"
+       href="/organisation/">
+      About
+      <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </a>
+
+    
+
+      <!-- ── SIMPLE DROPDOWN ── -->
+      <div class="navbar-dropdown nav-dropdown">
+        
+          
+            
+              <a class="navbar-item nav-dropdown-item" href="/organisation/about-us/">
+                <span class="nav-dropdown-label">About Us</span>
+                <span class="nav-dropdown-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+              </a>
+            
+          
+            
+              <a class="navbar-item nav-dropdown-item" href="/organisation/projects/">
+                <span class="nav-dropdown-label">Projects</span>
+                <span class="nav-dropdown-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+              </a>
+            
+          
+            
+              <a class="navbar-item nav-dropdown-item" href="/organisation/partners/">
+                <span class="nav-dropdown-label">Partners</span>
+                <span class="nav-dropdown-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+              </a>
+            
+          
+            
+              <a class="navbar-item nav-dropdown-item" href="/organisation/tenders-and-consultations/">
+                <span class="nav-dropdown-label">Tenders and Consultancies</span>
+                <span class="nav-dropdown-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+              </a>
+            
+          
+            
+              <a class="navbar-item nav-dropdown-item" href="/organisation/vacancies/">
+                <span class="nav-dropdown-label">Vacancies</span>
+                <span class="nav-dropdown-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+              </a>
+            
+          
+            
+              <a class="navbar-item nav-dropdown-item" href="/organisation/staff/">
+                <span class="nav-dropdown-label">Staff</span>
+                <span class="nav-dropdown-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+              </a>
+            
+          
+        
+        
+      </div>
+
+    
+
+  </div>
+
+
+          
+            
+
+
+  <div class="navbar-item nav-item has-dropdown is-hoverable is-mega">
+
+    <a class="navbar-item nav-item-link"
+       href="/services/">
+      Services
+      <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </a>
+
+    
+
+      <!-- ── MEGAMENU ── -->
+      <div class="navbar-dropdown megamenu">
+        <div class="container megamenu-inner">
+          <div class="megamenu-2col">
+
+            <!-- DARK LEFT PANEL -->
+            <div class="megamenu-left">
+              <div>
+                <p class="megamenu-eyebrow">Services</p>
+                
+                  <h3 class="megamenu-left-title">Services</h3>
+                  
+                    <p class="megamenu-left-desc">
+                      Explore our Services
+                    </p>
+                  
+                
+              </div>
+              
+                <a href="/services/" class="megamenu-view-all">
+                  
+                    View all Services
+                  
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </a>
+              
+            </div>
+
+            <!-- RIGHT CONTENT -->
+            <div class="megamenu-right">
+
+              
+
+                
+                  <!-- SERVICES: icon grid -->
+                  
+
+<div class="svc-menu">
+  
+    
+      
+      <div class="svc-menu-col">
+
+        <!-- SERVICE HEADER -->
+        <a class="svc-menu-hdr" href="/services/tsunami-warning-services/">
+          <div class="svc-menu-icon">
+            
+              <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" id="icon-tsunami" viewBox="0 0 48 48"><g  data-name="Layer 2"><path d="M47.9 19.48l-7.76-5.37a.28.28 0 0 0-.28 0l-7.76 5.37a.204.204 0 0 0-.1.16v6.45c-.21-.01-.44-.02-.67-.02a8.674 8.674 0 0 0-4.63 1.24 4.637 4.637 0 0 1-2.703.76 6.237 6.237 0 0 1-5.997-6 5.714 5.714 0 0 1 5.5-5.895 5.142 5.142 0 0 1 2.527.658 2 2 0 1 0 1.946-3.495 9.223 9.223 0 0 0-4.473-1.163A9.714 9.714 0 0 0 14 22.07a10.262 10.262 0 0 0 9.979 9.999H24.006a8.674 8.674 0 0 0 4.614-1.24 4.638 4.638 0 0 1 2.71-.76 4.702 4.702 0 0 1 2.7.75A8.391 8.391 0 0 0 38 32.05c.21.01.43.02.66.02a8.673 8.673 0 0 0 4.63-1.24 4.907 4.907 0 0 1 1.71-.68 2.905 2.905 0 0 1 .328-.049c.154-.009.307-.018.472-.02a1.272 1.272 0 0 1 .2-.01 9.43 9.43 0 0 1 2 .2V19.64a.204.204 0 0 0-.1-.16zM46 42a8.59 8.59 0 0 0-4.625 1.244 5.241 5.241 0 0 1-5.423 0A8.59 8.59 0 0 0 31.326 42a8.581 8.581 0 0 0-4.623 1.244 4.692 4.692 0 0 1-2.708.756 4.696 4.696 0 0 1-2.709-.756A8.59 8.59 0 0 0 16.661 42a8.588 8.588 0 0 0-4.624 1.244A4.692 4.692 0 0 1 9.33 44a4.69 4.69 0 0 1-2.706-.755A8.577 8.577 0 0 0 2 42a2 2 0 0 0 0 4 4.691 4.691 0 0 1 2.707.756A8.58 8.58 0 0 0 9.329 48a8.588 8.588 0 0 0 4.624-1.244A4.692 4.692 0 0 1 16.661 46a4.696 4.696 0 0 1 2.71.756A8.59 8.59 0 0 0 23.994 48a8.583 8.583 0 0 0 4.624-1.245 5.236 5.236 0 0 1 5.42 0 9.22 9.22 0 0 0 9.25 0A4.702 4.702 0 0 1 46 46a2 2 0 0 0 0-4zM46 34a8.59 8.59 0 0 0-4.625 1.244 5.241 5.241 0 0 1-5.423 0A8.59 8.59 0 0 0 31.326 34a8.581 8.581 0 0 0-4.623 1.244 4.692 4.692 0 0 1-2.708.756 4.696 4.696 0 0 1-2.709-.756A8.59 8.59 0 0 0 16.661 34a8.588 8.588 0 0 0-4.624 1.244A4.692 4.692 0 0 1 9.33 36a4.69 4.69 0 0 1-2.706-.755A8.577 8.577 0 0 0 2 34a2 2 0 0 0 0 4 4.691 4.691 0 0 1 2.707.756A8.58 8.58 0 0 0 9.329 40a8.588 8.588 0 0 0 4.624-1.244A4.692 4.692 0 0 1 16.661 38a4.696 4.696 0 0 1 2.71.756A8.59 8.59 0 0 0 23.994 40a8.583 8.583 0 0 0 4.624-1.245 5.236 5.236 0 0 1 5.42 0 9.22 9.22 0 0 0 9.25 0A4.702 4.702 0 0 1 46 38a2 2 0 0 0 0-4z" /><path d="M4.102 31.07a2 2 0 0 0 1.77-2.927A16.507 16.507 0 0 1 20.5 4a16.585 16.585 0 0 1 11.148 4.544 2 2 0 1 0 2.704-2.948A20.57 20.57 0 0 0 20.5 0 20.508 20.508 0 0 0 2.327 29.997a2.001 2.001 0 0 0 1.775 1.073z" /></g></svg>
+
+            
+          </div>
+          <span class="svc-menu-title">Tsunami</span>
+        </a>
+
+        <!-- CORE PRODUCTS -->
+        
+
+        <!-- FLEX PAGES -->
+        
+
+      </div>
+      
+    
+  
+    
+      
+      <div class="svc-menu-col">
+
+        <!-- SERVICE HEADER -->
+        <a class="svc-menu-hdr" href="/services/cyclone-warning/">
+          <div class="svc-menu-icon">
+            
+              <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" id="icon-cyclone" viewBox="0 0 48.019 47.996"><path  d="M47.628 24.278l-.04-.07a2.972 2.972 0 0 0-4.04-1.09l-4.64 2.68a14.824 14.824 0 0 0-1.78-9.08 1.518 1.518 0 0 0-.09-.18l-.03-.04-8.67-15.02a2.957 2.957 0 0 0-4.04-1.08l-.08.04a2.975 2.975 0 0 0-1.08 4.04l2.67 4.63a14.89 14.89 0 0 0-9.25 1.88l-.11.06-14.97 8.65a2.957 2.957 0 0 0-1.08 4.04l.04.07a2.957 2.957 0 0 0 4.04 1.08l4.65-2.68a14.919 14.919 0 0 0 1.85 9.19.212.212 0 0 0 .03.07l.02.03 8.67 15.02a2.96 2.96 0 0 0 4.04 1.08l.08-.04a2.966 2.966 0 0 0 1.08-4.04l-2.67-4.63a14.742 14.742 0 0 0 8.91-1.7 2.904 2.904 0 0 0 .35-.18l.03-.02 15.03-8.67a2.975 2.975 0 0 0 1.08-4.04zm-31.4 4.22c-.01-.01-.01-.02-.02-.03a8.996 8.996 0 0 1 3.24-12.22c.02-.01.05-.03.07-.04s.03-.02.05-.03a9.003 9.003 0 0 1 12.21 3.25c.01.02.03.05.04.07s.02.03.03.05a9.012 9.012 0 0 1-3.33 12.25c-.01.01-.02.01-.03.02a9 9 0 0 1-12.26-3.32z" data-name="Layer 2" /></svg>
+
+            
+          </div>
+          <span class="svc-menu-title">Cyclone</span>
+        </a>
+
+        <!-- CORE PRODUCTS -->
+        
+
+        <!-- FLEX PAGES -->
+        
+
+      </div>
+      
+    
+  
+    
+      
+      <div class="svc-menu-col">
+
+        <!-- SERVICE HEADER -->
+        <a class="svc-menu-hdr" href="/services/marine-services/">
+          <div class="svc-menu-icon">
+            
+              <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" id="icon-boat" viewBox="0 0 48 48"><g  data-name="Layer 2"><path d="M3.981 36h12.04a.98.98 0 0 0 .979-.98V17a.98.98 0 0 0-1.795-.543l-12.04 18.02A.98.98 0 0 0 3.982 36zM20 36h23.993A1.004 1.004 0 0 0 45 34.98C44.58 16.6 32.843.764 20.033.001a.992.992 0 0 0-1.033 1v34A1 1 0 0 0 20 36zM46 39H2a2 2 0 0 0-2 2 7 7 0 0 0 7 7h34a7 7 0 0 0 7-7 2 2 0 0 0-2-2z" /></g></svg>
+
+            
+          </div>
+          <span class="svc-menu-title">Marine</span>
+        </a>
+
+        <!-- CORE PRODUCTS -->
+        
+          <div class="svc-menu-products">
+            
+              
+                <a class="svc-menu-product" href="/our-products/tide-movement/">
+                  Tide Movement
+                </a>
+              
+            
+              
+                <a class="svc-menu-product" href="/our-products/marine-forecast/">
+                  Marine Forecast 7th October 2025
+                </a>
+              
+            
+          </div>
+        
+
+        <!-- FLEX PAGES -->
+        
+
+      </div>
+      
+    
+  
+    
+      
+      <div class="svc-menu-col">
+
+        <!-- SERVICE HEADER -->
+        <a class="svc-menu-hdr" href="/services/weather-services/">
+          <div class="svc-menu-icon">
+            
+              <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" id="icon-heavy-rain" viewBox="0 0 47.98 40"><g  data-name="Layer 2"><path d="M11.229 31a1.767 1.767 0 0 0-1.25.518l-5.465 5.464a1.768 1.768 0 0 0 2.5 2.5l5.465-5.464A1.768 1.768 0 0 0 11.229 31zM24.236 31a1.767 1.767 0 0 0-1.25.518l-5.465 5.464a1.768 1.768 0 0 0 2.5 2.5l5.465-5.464A1.768 1.768 0 0 0 24.236 31zM37.236 31a1.767 1.767 0 0 0-1.25.518l-5.465 5.464a1.768 1.768 0 0 0 2.5 2.5l5.465-5.464A1.768 1.768 0 0 0 37.236 31zM38.98 9.01a8.734 8.734 0 0 0-3.16.58l-.01.005a11.49 11.49 0 0 0-22.823 1.756 5.977 5.977 0 0 0-7.91 6.69l-.007-.001a3.818 3.818 0 0 0-.59-.04 4.5 4.5 0 0 0 0 9h34.5a9.003 9.003 0 0 0 8.83-7.24 9.296 9.296 0 0 0 .17-1.76 8.992 8.992 0 0 0-9-8.99z" /></g></svg>
+
+            
+          </div>
+          <span class="svc-menu-title">Weather</span>
+        </a>
+
+        <!-- CORE PRODUCTS -->
+        
+          <div class="svc-menu-products">
+            
+              
+                <a class="svc-menu-product" href="/our-products/tsunami-warning-bulletin/">
+                  Tsunami Warning Bulletin
+                </a>
+              
+            
+              
+                <a class="svc-menu-product" href="/our-products/seven-day-forecast/">
+                  Seven day forecast
+                </a>
+              
+            
+              
+                <a class="svc-menu-product" href="/our-products/sun-rise-and-sun-set/">
+                  Sun Rise and Sun Set
+                </a>
+              
+            
+              
+                <a class="svc-menu-product" href="/our-products/moon-rise-and-moon-set/">
+                  Moon Rise &amp; Set
+                </a>
+              
+            
+              
+                <a class="svc-menu-product" href="/our-products/daily-forecast/">
+                  Daily Forecast
+                </a>
+              
+            
+          </div>
+        
+
+        <!-- FLEX PAGES -->
+        
+
+      </div>
+      
+    
+  
+    
+      
+      <div class="svc-menu-col">
+
+        <!-- SERVICE HEADER -->
+        <a class="svc-menu-hdr" href="/services/climate/">
+          <div class="svc-menu-icon">
+            
+              <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" id="icon-analysis" viewBox="0 0 48 48"><g  data-name="Layer 2"><path d="M8.38 33.8L1.2 40.98a4.115 4.115 0 0 0 5.82 5.82l7.18-7.18a24.01 24.01 0 0 1-5.82-5.82zM22 20h-4a1.003 1.003 0 0 0-1 1v4.94a12.574 12.574 0 0 0 6 5.52V21a1.003 1.003 0 0 0-1-1zM38 14h-4a1.003 1.003 0 0 0-1 1v16.46a12.574 12.574 0 0 0 6-5.52V15a1.003 1.003 0 0 0-1-1zM30 17h-4a1.003 1.003 0 0 0-1 1v14.14a12.68 12.68 0 0 0 6 0V18a1.003 1.003 0 0 0-1-1z" /><path d="M28 0a20 20 0 1 0 20 20A19.994 19.994 0 0 0 28 0zm11 30.18A15 15 0 0 1 13 20a15 15 0 1 1 26 10.18z" /></g></svg>
+
+            
+          </div>
+          <span class="svc-menu-title">Climate</span>
+        </a>
+
+        <!-- CORE PRODUCTS -->
+        
+          <div class="svc-menu-products">
+            
+              
+                <a class="svc-menu-product" href="/our-products/seasonal-forecast/">
+                  Seasonal Forecast
+                </a>
+              
+            
+              
+                <a class="svc-menu-product" href="/our-products/monthly-review/">
+                  Monthly Climate Bulletin
+                </a>
+              
+            
+              
+                <a class="svc-menu-product" href="/our-products/climate-extreme-bulletin/">
+                  Climate Extreme Bulletin
+                </a>
+              
+            
+          </div>
+        
+
+        <!-- FLEX PAGES -->
+        
+          <div class="svc-menu-products svc-menu-flex">
+            
+              
+                <a class="svc-menu-product svc-menu-product--flex"
+                   href="/services/climate/seychelles-climate-guide/">
+                  Seychelles Climate Guide
+                </a>
+              
+            
+          </div>
+        
+
+      </div>
+      
+    
+  
+    
+      
+      <div class="svc-menu-col">
+
+        <!-- SERVICE HEADER -->
+        <a class="svc-menu-hdr" href="/services/aeronautical/">
+          <div class="svc-menu-icon">
+            
+              <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" id="icon-airport" viewBox="0 0 48 48"><path  d="M46.4 24.35C46.39 24.34 28 14 28 14V4a4 4 0 0 0-8 0v10L1.28 24.57A2.948 2.948 0 0 0 0 27a2.996 2.996 0 0 0 3 3 2.813 2.813 0 0 0 .92-.15L20 25v15l-6.06 4.31a1.857 1.857 0 0 0-.45.39A1.938 1.938 0 0 0 13 46a2.006 2.006 0 0 0 2 2 1.49 1.49 0 0 0 .3-.03l8.7-2.86 8.28 2.75A1.917 1.917 0 0 0 33 48a2.006 2.006 0 0 0 2-2 1.957 1.957 0 0 0-.41-1.2 1.778 1.778 0 0 0-.53-.49L28 40V25l15.97 4.81A2.94 2.94 0 0 0 45 30a2.998 2.998 0 0 0 1.4-5.65z" data-name="Layer 2" /></svg>
+
+            
+          </div>
+          <span class="svc-menu-title">Aeronautical</span>
+        </a>
+
+        <!-- CORE PRODUCTS -->
+        
+
+        <!-- FLEX PAGES -->
+        
+
+      </div>
+      
+    
+  
+</div>
+
+                
+
+              
+
+              <!-- SUB ITEMS as pills -->
+              
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    
+
+  </div>
+
+
+          
+            
+
+
+  <div class="navbar-item nav-item has-dropdown is-hoverable ">
+
+    <a class="navbar-item nav-item-link"
+       href="/services/weather-services/">
+      Weather
+      <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </a>
+
+    
+
+      <!-- ── SIMPLE DROPDOWN ── -->
+      <div class="navbar-dropdown nav-dropdown">
+        
+          
+        
+        
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/our-products/daily-forecast/"
+               >
+              <span class="nav-dropdown-label">Daily Forecast</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/our-products/seven-day-forecast/"
+               >
+              <span class="nav-dropdown-label">Seven Day Forecast</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+        
+      </div>
+
+    
+
+  </div>
+
+
+          
+            
+
+
+  <div class="navbar-item nav-item has-dropdown is-hoverable ">
+
+    <a class="navbar-item nav-item-link"
+       href="/services/marine-services/">
+      Marine
+      <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </a>
+
+    
+
+      <!-- ── SIMPLE DROPDOWN ── -->
+      <div class="navbar-dropdown nav-dropdown">
+        
+          
+        
+        
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/our-products/marine-forecast/"
+               >
+              <span class="nav-dropdown-label">Marine Forecast</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+        
+      </div>
+
+    
+
+  </div>
+
+
+          
+            
+
+
+  <div class="navbar-item nav-item has-dropdown is-hoverable ">
+
+    <a class="navbar-item nav-item-link"
+       >
+      Sun, Moon &amp; Tide
+      <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </a>
+
+    
+
+      <!-- ── SIMPLE DROPDOWN ── -->
+      <div class="navbar-dropdown nav-dropdown">
+        
+        
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/our-products/sun-rise-and-sun-set/"
+               >
+              <span class="nav-dropdown-label">Sunrise Sunset</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/our-products/moon-rise-and-moon-set/"
+               >
+              <span class="nav-dropdown-label">Moonrise Moonset</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/our-products/tide-movement/"
+               >
+              <span class="nav-dropdown-label">Tide Movement</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+        
+      </div>
+
+    
+
+  </div>
+
+
+          
+            
+
+
+  <div class="navbar-item nav-item has-dropdown is-hoverable ">
+
+    <a class="navbar-item nav-item-link"
+       href="/services/climate/">
+      Climate
+      <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </a>
+
+    
+
+      <!-- ── SIMPLE DROPDOWN ── -->
+      <div class="navbar-dropdown nav-dropdown">
+        
+          
+            
+              <a class="navbar-item nav-dropdown-item" href="/services/climate/seychelles-climate-guide/">
+                <span class="nav-dropdown-label">Seychelles Climate Guide</span>
+                <span class="nav-dropdown-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+              </a>
+            
+          
+        
+        
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/our-products/seasonal-forecast/"
+               >
+              <span class="nav-dropdown-label">Seasonal Forecast</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/our-products/monthly-review/"
+               >
+              <span class="nav-dropdown-label">Monthly Climate Bulletin</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/climate-of-districts/"
+               >
+              <span class="nav-dropdown-label">Climate of Districts</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/our-products/climate-extreme-bulletin/"
+               >
+              <span class="nav-dropdown-label">Climate Extreme Bulletin</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+        
+      </div>
+
+    
+
+  </div>
+
+
+          
+            
+
+
+  <div class="navbar-item nav-item has-dropdown is-hoverable ">
+
+    <a class="navbar-item nav-item-link"
+       >
+      Resources
+      <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </a>
+
+    
+
+      <!-- ── SIMPLE DROPDOWN ── -->
+      <div class="navbar-dropdown nav-dropdown">
+        
+        
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/news/"
+               >
+              <span class="nav-dropdown-label">News</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/media-center/"
+               >
+              <span class="nav-dropdown-label">Media</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/publications/"
+               >
+              <span class="nav-dropdown-label">Publications</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/events/"
+               >
+              <span class="nav-dropdown-label">Events</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+        
+      </div>
+
+    
+
+  </div>
+
+
+          
+            
+
+
+  <div class="navbar-item nav-item has-dropdown is-hoverable ">
+
+    <a class="navbar-item nav-item-link"
+       >
+      Tools
+      <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </a>
+
+    
+
+      <!-- ── SIMPLE DROPDOWN ── -->
+      <div class="navbar-dropdown nav-dropdown">
+        
+        
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="https://www.meteo.sc/mapviewer/" target="_blank" rel="noopener noreferrer"
+               >
+              <span class="nav-dropdown-label">MapViewer</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/stations/"
+               >
+              <span class="nav-dropdown-label">Stations</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="/satellite-imagery/"
+               >
+              <span class="nav-dropdown-label">Satellite Imagery</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="https://www.meteo.sc/wdqms-reports/" target="_blank" rel="noopener noreferrer"
+               >
+              <span class="nav-dropdown-label">Data Transmission (wdqms)</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="https://wis2.meteo.sc" target="_blank" rel="noopener noreferrer"
+               >
+              <span class="nav-dropdown-label">Wis2 - Data Exchange</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+            <a class="navbar-item nav-dropdown-item"
+               href="https://scmeteo.sharepoint.com/sites/sma-intranet" target="_blank" rel="noopener noreferrer"
+               >
+              <span class="nav-dropdown-label">Employee portal</span>
+              <span class="nav-dropdown-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          
+        
+      </div>
+
+    
+
+  </div>
+
+
+          
+            
+
+
+  
+    <a class="navbar-item nav-item-link"
+       href="/data-request/"
+       >
+      Data Request
+    </a>
+  
+
+          
+
+          <!-- MOBILE UTILITY BUTTONS -->
+          <div class="mobile-utils buttons">
+            
+              <a href="/alerts/"
+                 class="button is-fullwidth mobile-util-link">
+                Alerts
+              </a>
+            
+            
+            
+              <a href="/subscribe/"
+                 class="button is-fullwidth mobile-util-link">
+                Subscribe
+              </a>
+            
+            
+              <a href="/contact-us/"
+                 class="button is-fullwidth mobile-util-link mobile-util-link--cta">
+                Contact us
+              </a>
+            
+            
+              <a href="/give-us-feedback/"
+                 class=" button is-fullwidth mobile-util-link mobile-util-link--cta">
+                Feedback
+              </a>
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+</header>
+
+
+
+
+<script>
+  
+  const latestActiveAlertUrl = "/latest-active-alert/";
+
+  document.addEventListener('DOMContentLoaded', () => {
+
+    /* ── BURGER TOGGLE ── */
+    const burger  = document.getElementById('navBurger');
+    const menu    = document.getElementById('mainNav');
+    const navClose = document.getElementById('navClose');
+
+    const openMenu = () => {
+    burger.classList.add('is-active');
+    menu.classList.add('is-active');
+    document.body.classList.add('mobile-nav-open');
+    };
+
+    const closeMenu = () => {
+    burger.classList.remove('is-active');
+    menu.classList.remove('is-active');
+    document.body.classList.remove('mobile-nav-open');
+    };
+
+    if (burger && menu) {
+    burger.addEventListener('click', (e) => {
+        e.stopImmediatePropagation();
+        menu.classList.contains('is-active') ? closeMenu() : openMenu();
+    });
+    }
+
+    if (navClose) {
+    navClose.addEventListener('click', closeMenu);
+    }
+
+    // close on click outside
+    document.addEventListener('click', (e) => {
+    if (menu &&
+        menu.classList.contains('is-active') &&
+        !menu.contains(e.target) &&
+        !burger.contains(e.target)) {
+        closeMenu();
+    }
+    });
+
+    // close on Escape
+    document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu && menu.classList.contains('is-active')) {
+        closeMenu();
+    }
+    });
+
+    /* ── ACTIVE ALERT FETCH ── */
+    if (latestActiveAlertUrl) {
+      fetch(latestActiveAlertUrl)
+        .then(response => {
+          if (!response.ok) throw new Error('Error fetching navbar latest active alert');
+          return response.text();
+        })
+        .then(data => {
+          if (data) {
+            const $alert = $(data);
+            const $alertContainer = $alert.filter("div").first();
+            if ($alertContainer.length > 0) {
+              const alertStyle = $alertContainer.data('alertStyle');
+              if (alertStyle === 'nav_left') {
+                $('.nav-left-circle-active-alert').html(data);
+              } else if (alertStyle === 'nav_top') {
+                $('.nav-top-scroll-active-alert').html(data);
+              }
+            }
+          }
+        })
+        .catch(error => {
+          console.error("NAVBAR_LATEST_ACTIVE_ALERT_ERROR:", error);
+        });
+    }
+
+  });
+</script>
+
+
+
+<div class="page-container is-medium">
+    
+<main id="wd-page">
+  
+<nav class="bc-nav" aria-label="breadcrumbs">
+  <div class="container">
+    <ol class="bc-list">
+
+      
+        
+      
+        
+          <li class="bc-item">
+            <a href="/" class="bc-link">Home</a>
+            <span class="bc-sep" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </span>
+          </li>
+        
+      
+
+      <li class="bc-item bc-item--active" aria-current="page">
+        Weather
+      </li>
+
+    </ol>
+  </div>
+</nav>
+
+
+  <section class="wd-section">
+    <div class="container">
+
+      <div class="wd-card">
+
+        <!-- ── HEADER: city + search ── -->
+        <div class="wd-header">
+          <div class="wd-header-left">
+            
+              <p class="wd-eyebrow">Weather detail</p>
+              <h1 class="wd-city">
+                <span class="wd-city-icon"><svg id="icon-map-pin" viewbox="0 0 320 512" xmlns="http://www.w3.org/2000/svg"><!-- map-pin (solid): Font Awesome Free 6.4.0 CC BY 4.0--><path d="M16 144a144 144 0 1 1 288 0A144 144 0 1 1 16 144zM160 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM128 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"></path></svg></span>
+                International Airport Pointe Larue
+              </h1>
+            
+          </div>
+          <div class="wd-header-right">
+            <div class="wd-search-wrap dropdown">
+              <div class="dropdown-trigger">
+                <div class="control has-icons-left wd-search-control">
+                  <input id="city-search"
+                         class="input wd-search-input"
+                         type="text"
+                         placeholder="Search location"
+                         aria-haspopup="true"
+                         aria-controls="city-search-menu"
+                         autocomplete="off">
+                  <span class="icon is-small is-left wd-search-icon">
+                    <?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" id="icon-search" viewBox="0 0 48 48"><path  d="M46.829 41.172L38.4 32.744a21.018 21.018 0 1 0-5.657 5.657l8.427 8.427a4 4 0 0 0 5.658-5.656zM8 21a13 13 0 1 1 22.325 9.046c-.05.045-.106.078-.154.126s-.08.104-.125.154A12.992 12.992 0 0 1 8 21z" data-name="Layer 2" /></svg>
+
+                  </span>
+                </div>
+              </div>
+              <div class="dropdown-menu" id="city-search-menu" role="menu"></div>
+            </div>
+            <button id="export-pdf">Download PDF</button>
+          </div>
+        </div>
+
+        
+
+          <!-- ── DAY TABS ── -->
+          <div class="wd-day-tabs" id="wd-day-tabs">
+            
+              <button class="wd-day-tab active"
+                      data-target="wd-day-2026-09-05">
+                <span class="wd-tab-day">
+                  
+                    SAT
+                  
+                </span>
+                <span class="wd-tab-date">05 Sep</span>
+              </button>
+            
+              <button class="wd-day-tab "
+                      data-target="wd-day-2026-09-06">
+                <span class="wd-tab-day">
+                  
+                    SUN
+                  
+                </span>
+                <span class="wd-tab-date">06 Sep</span>
+              </button>
+            
+              <button class="wd-day-tab "
+                      data-target="wd-day-2026-09-07">
+                <span class="wd-tab-day">
+                  
+                    MON
+                  
+                </span>
+                <span class="wd-tab-date">07 Sep</span>
+              </button>
+            
+              <button class="wd-day-tab "
+                      data-target="wd-day-2026-09-08">
+                <span class="wd-tab-day">
+                  
+                    TUE
+                  
+                </span>
+                <span class="wd-tab-date">08 Sep</span>
+              </button>
+            
+              <button class="wd-day-tab "
+                      data-target="wd-day-2026-09-09">
+                <span class="wd-tab-day">
+                  
+                    WED
+                  
+                </span>
+                <span class="wd-tab-date">09 Sep</span>
+              </button>
+            
+              <button class="wd-day-tab "
+                      data-target="wd-day-2026-09-10">
+                <span class="wd-tab-day">
+                  
+                    THU
+                  
+                </span>
+                <span class="wd-tab-date">10 Sep</span>
+              </button>
+            
+              <button class="wd-day-tab "
+                      data-target="wd-day-2026-09-11">
+                <span class="wd-tab-day">
+                  
+                    FRI
+                  
+                </span>
+                <span class="wd-tab-date">11 Sep</span>
+              </button>
+            
+          </div>
+
+          <!-- ── DAY PANELS ── -->
+          <div class="wd-panels">
+            
+              <div class="wd-panel "
+                   id="wd-day-2026-09-05">
+
+                <div class="wd-table-wrap">
+                  <table class="wd-table">
+                    <thead>
+                      <tr>
+                        <th>Time</th>
+                        <th>Weather</th>
+                        
+                          <th>Maximum Temperature</th>
+                        
+                          <th>Minimum Temperature</th>
+                        
+                          <th>Wind Speed</th>
+                        
+                          <th>Wind Direction</th>
+                        
+                          <th>Probability</th>
+                        
+                          <th>State Of the Sea</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      
+                        <tr>
+                          <td>
+                            <span class="wd-time-badge">
+                              Whole Day
+                            </span>
+                          </td>
+                          <td class="wd-condition-cell">
+                            <img class="wd-condition-img"
+                                 src="/static/forecastmanager/weathericons/lightrain.e424c4017c1b.svg"
+                                 alt="Passing Showers"
+                                 title="Passing Showers">
+                            
+                              <span class="wd-condition-label">
+                                Passing Showers
+                              </span>
+                            
+                          </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                                  <span class="wd-param-val">29.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">23.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">20-35, Max 55 km/hr</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">South-east</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">High</span>
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">Moderate/Rough</span>
+                                
+                              
+                            </td>
+                          
+                        </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+
+                
+
+              </div>
+            
+              <div class="wd-panel wd-hidden"
+                   id="wd-day-2026-09-06">
+
+                <div class="wd-table-wrap">
+                  <table class="wd-table">
+                    <thead>
+                      <tr>
+                        <th>Time</th>
+                        <th>Weather</th>
+                        
+                          <th>Maximum Temperature</th>
+                        
+                          <th>Minimum Temperature</th>
+                        
+                          <th>Wind Speed</th>
+                        
+                          <th>Wind Direction</th>
+                        
+                          <th>Probability</th>
+                        
+                          <th>State Of the Sea</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      
+                        <tr>
+                          <td>
+                            <span class="wd-time-badge">
+                              Whole Day
+                            </span>
+                          </td>
+                          <td class="wd-condition-cell">
+                            <img class="wd-condition-img"
+                                 src="/static/forecastmanager/weathericons/rain.28df119af76e.svg"
+                                 alt="Cloudy with showers"
+                                 title="Cloudy with showers">
+                            
+                              <span class="wd-condition-label">
+                                Cloudy with showers
+                              </span>
+                            
+                          </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                                  <span class="wd-param-val">30.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">24.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">20-40 km/hr</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">South-east</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">High</span>
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">Moderate/Rough</span>
+                                
+                              
+                            </td>
+                          
+                        </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+
+                
+
+              </div>
+            
+              <div class="wd-panel wd-hidden"
+                   id="wd-day-2026-09-07">
+
+                <div class="wd-table-wrap">
+                  <table class="wd-table">
+                    <thead>
+                      <tr>
+                        <th>Time</th>
+                        <th>Weather</th>
+                        
+                          <th>Maximum Temperature</th>
+                        
+                          <th>Minimum Temperature</th>
+                        
+                          <th>Wind Speed</th>
+                        
+                          <th>Wind Direction</th>
+                        
+                          <th>Probability</th>
+                        
+                          <th>State Of the Sea</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      
+                        <tr>
+                          <td>
+                            <span class="wd-time-badge">
+                              Whole Day
+                            </span>
+                          </td>
+                          <td class="wd-condition-cell">
+                            <img class="wd-condition-img"
+                                 src="/static/forecastmanager/weathericons/rain.28df119af76e.svg"
+                                 alt="Cloudy with showers"
+                                 title="Cloudy with showers">
+                            
+                              <span class="wd-condition-label">
+                                Cloudy with showers
+                              </span>
+                            
+                          </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                                  <span class="wd-param-val">29.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">23.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">20-35 km/hr</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">South-east</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">Medium</span>
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">Moderate</span>
+                                
+                              
+                            </td>
+                          
+                        </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+
+                
+
+              </div>
+            
+              <div class="wd-panel wd-hidden"
+                   id="wd-day-2026-09-08">
+
+                <div class="wd-table-wrap">
+                  <table class="wd-table">
+                    <thead>
+                      <tr>
+                        <th>Time</th>
+                        <th>Weather</th>
+                        
+                          <th>Maximum Temperature</th>
+                        
+                          <th>Minimum Temperature</th>
+                        
+                          <th>Wind Speed</th>
+                        
+                          <th>Wind Direction</th>
+                        
+                          <th>Probability</th>
+                        
+                          <th>State Of the Sea</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      
+                        <tr>
+                          <td>
+                            <span class="wd-time-badge">
+                              Whole Day
+                            </span>
+                          </td>
+                          <td class="wd-condition-cell">
+                            <img class="wd-condition-img"
+                                 src="/static/forecastmanager/weathericons/rain.28df119af76e.svg"
+                                 alt="Cloudy with showers"
+                                 title="Cloudy with showers">
+                            
+                              <span class="wd-condition-label">
+                                Cloudy with showers
+                              </span>
+                            
+                          </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                                  <span class="wd-param-val">29.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">23.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">20-40 km/hr</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">South-east</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">Medium</span>
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">Moderate</span>
+                                
+                              
+                            </td>
+                          
+                        </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+
+                
+
+              </div>
+            
+              <div class="wd-panel wd-hidden"
+                   id="wd-day-2026-09-09">
+
+                <div class="wd-table-wrap">
+                  <table class="wd-table">
+                    <thead>
+                      <tr>
+                        <th>Time</th>
+                        <th>Weather</th>
+                        
+                          <th>Maximum Temperature</th>
+                        
+                          <th>Minimum Temperature</th>
+                        
+                          <th>Wind Speed</th>
+                        
+                          <th>Wind Direction</th>
+                        
+                          <th>Probability</th>
+                        
+                          <th>State Of the Sea</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      
+                        <tr>
+                          <td>
+                            <span class="wd-time-badge">
+                              Whole Day
+                            </span>
+                          </td>
+                          <td class="wd-condition-cell">
+                            <img class="wd-condition-img"
+                                 src="/static/forecastmanager/weathericons/lightrain.e424c4017c1b.svg"
+                                 alt="Passing Showers"
+                                 title="Passing Showers">
+                            
+                              <span class="wd-condition-label">
+                                Passing Showers
+                              </span>
+                            
+                          </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                                  <span class="wd-param-val">30.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">24.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">20-35, Max 55 km/hr</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">South-east</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">Medium</span>
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">Moderate/Rough</span>
+                                
+                              
+                            </td>
+                          
+                        </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+
+                
+
+              </div>
+            
+              <div class="wd-panel wd-hidden"
+                   id="wd-day-2026-09-10">
+
+                <div class="wd-table-wrap">
+                  <table class="wd-table">
+                    <thead>
+                      <tr>
+                        <th>Time</th>
+                        <th>Weather</th>
+                        
+                          <th>Maximum Temperature</th>
+                        
+                          <th>Minimum Temperature</th>
+                        
+                          <th>Wind Speed</th>
+                        
+                          <th>Wind Direction</th>
+                        
+                          <th>Probability</th>
+                        
+                          <th>State Of the Sea</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      
+                        <tr>
+                          <td>
+                            <span class="wd-time-badge">
+                              Whole Day
+                            </span>
+                          </td>
+                          <td class="wd-condition-cell">
+                            <img class="wd-condition-img"
+                                 src="/static/forecastmanager/weathericons/partlycloudy_day.86925ad767d0.svg"
+                                 alt="Sunny Intervals"
+                                 title="Sunny Intervals">
+                            
+                              <span class="wd-condition-label">
+                                Sunny Intervals
+                              </span>
+                            
+                          </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                                  <span class="wd-param-val">30.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">24.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">20-40, Max 60 km/hr</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">South-east</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">Medium</span>
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">Moderate/Rough</span>
+                                
+                              
+                            </td>
+                          
+                        </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+
+                
+
+              </div>
+            
+              <div class="wd-panel wd-hidden"
+                   id="wd-day-2026-09-11">
+
+                <div class="wd-table-wrap">
+                  <table class="wd-table">
+                    <thead>
+                      <tr>
+                        <th>Time</th>
+                        <th>Weather</th>
+                        
+                          <th>Maximum Temperature</th>
+                        
+                          <th>Minimum Temperature</th>
+                        
+                          <th>Wind Speed</th>
+                        
+                          <th>Wind Direction</th>
+                        
+                          <th>Probability</th>
+                        
+                          <th>State Of the Sea</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      
+                        <tr>
+                          <td>
+                            <span class="wd-time-badge">
+                              Whole Day
+                            </span>
+                          </td>
+                          <td class="wd-condition-cell">
+                            <img class="wd-condition-img"
+                                 src="/static/forecastmanager/weathericons/heavyrainshowers_day.2865c04b78ea.svg"
+                                 alt="Scattered Showers"
+                                 title="Scattered Showers">
+                            
+                              <span class="wd-condition-label">
+                                Scattered Showers
+                              </span>
+                            
+                          </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                                  <span class="wd-param-val">28.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">24.0 °C</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">20-35 km/hr</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">South-east</span>
+                                
+                              
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">Medium</span>
+                                
+                              
+                                
+                              
+                            </td>
+                          
+                            <td class="wd-param-cell">
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                              
+                                
+                                  <span class="wd-param-val">Moderate</span>
+                                
+                              
+                            </td>
+                          
+                        </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+
+                
+
+              </div>
+            
+          </div>
+          
+          
+
+        
+
+      </div>
+
+    </div>
+  </section>
+  <section class="wd-section">
+    <div class="container">
+      <div class="wd-card">
+
+        <!-- ── HEADER: graphs ── -->
+        <div class="wd-header">
+          <div >
+              <p class="wd-section-header">Weather Graphs</p>
+              <p class="wd-section-subheader">Shows forecast values for the currently selected day tab.</p>
+          </div>
+        </div>
+        <!-- GRAPHS -->
+         <div class="wd-day-graphs">
+            <script id="graph-forecast-data" type="application/json">{"2026-09-05": {"time_data": ["Whole Day"], "has_temperature_data": true, "has_wind_data": false, "has_precipitation_data": false, "has_air_pressure_data": false, "has_humidity_data": false, "air_temperature_max": [29.0], "air_temperature_min": [23.0], "wind_speed": [null], "wind_from_direction": [null], "precipitation_amount": [null], "air_pressure_at_sea_level": [null], "relative_humidity": [null]}, "2026-09-06": {"time_data": ["Whole Day"], "has_temperature_data": true, "has_wind_data": false, "has_precipitation_data": false, "has_air_pressure_data": false, "has_humidity_data": false, "air_temperature_max": [30.0], "air_temperature_min": [24.0], "wind_speed": [null], "wind_from_direction": [null], "precipitation_amount": [null], "air_pressure_at_sea_level": [null], "relative_humidity": [null]}, "2026-09-07": {"time_data": ["Whole Day"], "has_temperature_data": true, "has_wind_data": false, "has_precipitation_data": false, "has_air_pressure_data": false, "has_humidity_data": false, "air_temperature_max": [29.0], "air_temperature_min": [23.0], "wind_speed": [null], "wind_from_direction": [null], "precipitation_amount": [null], "air_pressure_at_sea_level": [null], "relative_humidity": [null]}, "2026-09-08": {"time_data": ["Whole Day"], "has_temperature_data": true, "has_wind_data": false, "has_precipitation_data": false, "has_air_pressure_data": false, "has_humidity_data": false, "air_temperature_max": [29.0], "air_temperature_min": [23.0], "wind_speed": [null], "wind_from_direction": [null], "precipitation_amount": [null], "air_pressure_at_sea_level": [null], "relative_humidity": [null]}, "2026-09-09": {"time_data": ["Whole Day"], "has_temperature_data": true, "has_wind_data": false, "has_precipitation_data": false, "has_air_pressure_data": false, "has_humidity_data": false, "air_temperature_max": [30.0], "air_temperature_min": [24.0], "wind_speed": [null], "wind_from_direction": [null], "precipitation_amount": [null], "air_pressure_at_sea_level": [null], "relative_humidity": [null]}, "2026-09-10": {"time_data": ["Whole Day"], "has_temperature_data": true, "has_wind_data": false, "has_precipitation_data": false, "has_air_pressure_data": false, "has_humidity_data": false, "air_temperature_max": [30.0], "air_temperature_min": [24.0], "wind_speed": [null], "wind_from_direction": [null], "precipitation_amount": [null], "air_pressure_at_sea_level": [null], "relative_humidity": [null]}, "2026-09-11": {"time_data": ["Whole Day"], "has_temperature_data": true, "has_wind_data": false, "has_precipitation_data": false, "has_air_pressure_data": false, "has_humidity_data": false, "air_temperature_max": [28.0], "air_temperature_min": [24.0], "wind_speed": [null], "wind_from_direction": [null], "precipitation_amount": [null], "air_pressure_at_sea_level": [null], "relative_humidity": [null]}}</script>
+            
+              <div class="wd-graph" id="temperature-graph"></div>
+              <div class="wd-graph" id="precipitation-graph"></div>
+              <div class="wd-graph" id="wind-graph"></div>
+              <div class="wd-graph" id="air-pressure-graph"></div>
+              <div class="wd-graph" id="humidity-graph"></div>
+              
+              <p class="wd-graph-text wd-hidden" id="wd-no-graph-data">No weather data to showcase at the moment.</p>
+            
+          </div>
+  </section>
+  <section class="wd-section">
+    <div class="container">
+      <div class="wd-card">
+
+        <!-- ── HEADER: map ── -->
+        <div class="wd-header">
+          <div>
+              <p class="wd-section-header">City Map</p>
+              <p class="wd-section-subheader">Shows the city location and live condition, independent of the selected day tab.</p>
+          </div>
+        </div>
+
+        <!-- MAP -->
+        <div id="city-map" class="wd-map">
+          <script id="city-map-data" type="application/json">{"city_y": -4.674262499999999, "city_x": 55.52120037637752, "city_name": "International Airport Pointe Larue", "city_condition": "Passing Showers"}</script>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  
+</main>
+
+    
+         
+ 
+
+
+<footer class="site-footer">
+    <div class="site-footer-top container">
+        <div class="">
+            <div class="columns is-multiline is-mobile">
+                <div class="column is-full-mobile is-one-quarter-desktop">
+                    <div class="footer-brand">
+                        <a
+                            class="footer-logo-link"
+                            href="https://www.meteo.sc"
+                        >
+                             
+                            <img
+                                src="/media/images/SMA_new.original.png"
+                                alt="Logo"
+                                class="footer-logo-img"
+                            />
+                            
+                        </a>
+
+                        
+                        <p class="footer-brand-name">
+                            Seychelles Meteorological Authority
+                        </p>
+                        
+
+                        <div class="footer-bottom-left">
+                            
+                            <p class="footer-copy">
+                                &copy; Seychelles Meteorological Authority 2026
+                            </p>
+                            
+                            <a
+                                href="https://digitalpublicgoods.net/r/climweb"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <img
+                                    src="https://github.com/DPGAlliance/dpg-resources/blob/main/docs/assets/dpg-badge/dpg-badge-w.png?raw=true"
+                                    width="80"
+                                    alt="Digital Public Goods Badge"
+                                    class="footer-dpg-badge"
+                                />
+                            </a>
+                        </div>
+
+                        <!-- socials under brand on desktop -->
+                        <div class="footer-brand-socials">
+                            
+                            <a
+                                class="footer-brand-social-icon"
+                                title="Facebook"
+                                href="https://facebook.com/p/Seychelles-Meteorological-Authority-100064792476768/"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <span class="icon">
+                                    <svg id="icon-facebook" viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!-- facebook (brands): Font Awesome Free 6.4.0 CC BY 4.0--><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"></path></svg>
+                                </span>
+                            </a>
+                            
+                            <a
+                                class="footer-brand-social-icon"
+                                title="YouTube"
+                                href="https://www.youtube.com/@seychellesmetauthority"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <span class="icon">
+                                    <svg id="icon-youtube" viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!-- youtube (brands): Font Awesome Free 6.4.0 CC BY 4.0--><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"></path></svg>
+                                </span>
+                            </a>
+                            
+                            <a
+                                class="footer-brand-social-icon"
+                                title="WhatsApp"
+                                href="https://whatsapp.com/channel/0029VabNj4i9xVJfWIZapV1O"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <span class="icon">
+                                    <svg id="icon-whatsapp" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!-- whatsapp (brands): Font Awesome Free 6.4.0 CC BY 4.0--><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
+                                </span>
+                            </a>
+                            
+                            <a
+                                class="footer-brand-social-icon"
+                                title="X-twitter"
+                                href="https://x.com/seychellesmeteo"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <span class="icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+     id="icon-x-twitter"
+     viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+    <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/>
+</svg>
+                                </span>
+                            </a>
+                            
+                            <a
+                                class="footer-brand-social-icon"
+                                title="Inkedin"
+                                href="https://www.linkedin.com/company/seychellesmeteo/"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <span class="icon">
+                                    <svg id="icon-linkedin" viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!-- linkedin (brands): Font Awesome Free 6.4.0 CC BY 4.0--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"></path></svg>
+                                </span>
+                            </a>
+                            
+                            <a
+                                class="footer-brand-social-icon"
+                                title="github"
+                                href="https://github.com/seychelles-met"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <span class="icon">
+                                    <svg id="icon-github" viewbox="0 0 496 512" xmlns="http://www.w3.org/2000/svg"><!-- github (brands): Font Awesome Free 6.4.0 CC BY 4.0--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+                                </span>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="columns is-multiline is-mobile">
+                        <!-- NAV COLUMNS — rendered by footer_menu.html -->
+                         
+                        
+<div class="column is-half-mobile is-one-quarter-desktop">
+
+  <p class="footer-col-title is-uppercase">Organisation</p>
+
+  
+    
+      
+        <a href="/organisation/about-us/" class="footer-nav-link">
+          About Us
+        </a>
+      
+    
+      
+        <a href="/organisation/projects/" class="footer-nav-link">
+          Projects
+        </a>
+      
+    
+      
+        <a href="/organisation/partners/" class="footer-nav-link">
+          Partners
+        </a>
+      
+    
+      
+        <a href="/organisation/tenders-and-consultations/" class="footer-nav-link">
+          Tenders and Consultancies
+        </a>
+      
+    
+      
+        <a href="/organisation/vacancies/" class="footer-nav-link">
+          Vacancies
+        </a>
+      
+    
+      
+        <a href="/organisation/staff/" class="footer-nav-link">
+          Staff
+        </a>
+      
+    
+  
+
+  
+
+</div>
+  
+                        
+<div class="column is-half-mobile is-one-quarter-desktop">
+
+  <p class="footer-col-title is-uppercase">Services</p>
+
+  
+    
+      
+        <a href="/services/tsunami-warning-services/" class="footer-nav-link">
+          Tsunami
+        </a>
+      
+    
+      
+        <a href="/services/cyclone-warning/" class="footer-nav-link">
+          Cyclone
+        </a>
+      
+    
+      
+        <a href="/services/marine-services/" class="footer-nav-link">
+          Marine
+        </a>
+      
+    
+      
+        <a href="/services/weather-services/" class="footer-nav-link">
+          Weather
+        </a>
+      
+    
+      
+        <a href="/services/climate/" class="footer-nav-link">
+          Climate
+        </a>
+      
+    
+      
+        <a href="/services/aeronautical/" class="footer-nav-link">
+          Aeronautical
+        </a>
+      
+    
+  
+
+  
+
+</div>
+  
+                        
+<div class="column is-half-mobile is-one-quarter-desktop">
+
+  <p class="footer-col-title is-uppercase">Products</p>
+
+  
+    
+      
+        <a href="/our-products/seasonal-forecast/" class="footer-nav-link">
+          Seasonal Forecast
+        </a>
+      
+    
+      
+        <a href="/our-products/monthly-review/" class="footer-nav-link">
+          Monthly Climate Bulletin
+        </a>
+      
+    
+      
+        <a href="/our-products/tsunami-warning-bulletin/" class="footer-nav-link">
+          Tsunami Warning Bulletin
+        </a>
+      
+    
+      
+        <a href="/our-products/seven-day-forecast/" class="footer-nav-link">
+          Seven day forecast
+        </a>
+      
+    
+      
+        <a href="/our-products/sun-rise-and-sun-set/" class="footer-nav-link">
+          Sun Rise and Sun Set
+        </a>
+      
+    
+      
+        <a href="/our-products/moon-rise-and-moon-set/" class="footer-nav-link">
+          Moon Rise &amp; Set
+        </a>
+      
+    
+      
+        <a href="/our-products/tide-movement/" class="footer-nav-link">
+          Tide Movement
+        </a>
+      
+    
+      
+        <a href="/our-products/daily-forecast/" class="footer-nav-link">
+          Daily Forecast
+        </a>
+      
+    
+      
+        <a href="/our-products/marine-forecast/" class="footer-nav-link">
+          Marine Forecast 7th October 2025
+        </a>
+      
+    
+      
+        <a href="/our-products/climate-extreme-bulletin/" class="footer-nav-link">
+          Climate Extreme Bulletin
+        </a>
+      
+    
+  
+
+  
+
+</div>
+  
+                        
+<div class="column is-half-mobile is-one-quarter-desktop">
+
+  <p class="footer-col-title is-uppercase">Data and tools</p>
+
+  
+
+  
+    
+      
+        <a class="footer-nav-action button is-small is-rounded is-outlined"
+           
+             href="https://www.meteo.sc/mapviewer"
+             target="_blank" rel="noopener noreferrer"
+           >
+          Mapviewer
+        </a>
+      
+    
+      
+        <a class="footer-nav-action button is-small is-rounded is-outlined"
+           
+             href="/stations/"
+           >
+          Stations
+        </a>
+      
+    
+      
+        <a class="footer-nav-action button is-small is-rounded is-outlined"
+           
+             href="https://wis2.meteo.sc"
+             target="_blank" rel="noopener noreferrer"
+           >
+          Wis2 - Data Exchange
+        </a>
+      
+    
+  
+
+</div>
+  
+                        
+<div class="column is-half-mobile is-one-quarter-desktop">
+
+  <p class="footer-col-title is-uppercase">Useful Links</p>
+
+  
+
+  
+    
+      
+        <a class="footer-nav-link"
+           
+             href="https://www.puc.sc/"
+             target="_blank" rel="noopener noreferrer"
+           >
+          Public Utility Corporation
+        </a>
+      
+    
+      
+        <a class="footer-nav-link"
+           
+             href="https://www.macce.gov.sc/"
+             target="_blank" rel="noopener noreferrer"
+           >
+          Ministry of Agriculture, Climate Change and Environment
+        </a>
+      
+    
+      
+        <a class="footer-nav-link"
+           
+             href="https://www.drmd.sc/"
+             target="_blank" rel="noopener noreferrer"
+           >
+          Disaster Risk Management Division Seychelles
+        </a>
+      
+    
+      
+        <a class="footer-nav-link"
+           
+             href="https://tourism.gov.sc"
+             target="_blank" rel="noopener noreferrer"
+           >
+          Tourism Seychelles
+        </a>
+      
+    
+      
+        <a class="footer-nav-link"
+           
+             href="https://www.health.gov.sc/"
+             target="_blank" rel="noopener noreferrer"
+           >
+          Ministry of Health
+        </a>
+      
+    
+      
+        <a class="footer-nav-link"
+           
+             href="https://www.unisey.ac.sc/"
+             target="_blank" rel="noopener noreferrer"
+           >
+          University Of Seychelles
+        </a>
+      
+    
+  
+
+</div>
+ 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="site-footer-bottom container">
+        <div>
+            <div class="columns is-mobile is-vcentered">
+                <!-- LEFT: copyright + powered by -->
+                <div class="column">
+                    <div class="footer-bottom-left">
+                        
+                        <p class="footer-copy">
+                            &copy; Seychelles Meteorological Authority
+                            2026
+                        </p>
+                        
+                        <a
+                            class="footer-powered"
+                            href="https://github.com/wmo-raf/nmhs-cms"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Powered by Climweb v1.2.2
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+</div>
+
+<!-- Global javascript -->
+
+<script type="text/javascript" src="/static/js/common_cms.d16952c07026.js"></script>
+
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script type="text/javascript" src="/static/js/progressively.dc8b7568776e.js"></script>
+<script>
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            {
+                pageLanguage: "en",
+                includedLanguages: "en,crs,fr",
+                layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+                autoDisplay: false
+            },
+            "google_language_translator"
+        );
+    }
+</script>
+<script src="/static/js/google-translate.ecbdc34287a7.js"></script>
+<script type="text/javascript">
+    progressively.init()
+</script>
+
+<script src="/static/js/bulma-toast.min.18a0c20ee10e.js"></script>
+
+<script>
+    bulmaToast.setDefaults({
+        duration: 2500,
+        position: 'top-center',
+        closeOnClick: true,
+    })
+    
+</script>
+
+
+<script type="text/javascript" src="/static/js/highcharts.775641bab175.js"></script>
+<script type="text/javascript" src="/static/js/accessibility.d5fb0aca246b.js"></script>
+<script type="text/javascript" src="/static/js/exporting.89c247a85276.js"></script>
+<script type="text/javascript" src="/static/js/export-data.ca80f3bb4bdf.js"></script>
+<script type="text/javascript" src="/static/js/datagrouping.181e4b692bde.js"></script>
+<script type="text/javascript" src="/static/js/windbarb.4ab50aba79e5.js"></script>
+<script type="text/javascript" src="/static/js/bulmahead.38a7439a61f2.js"></script>
+<script type="text/javascript" src="/static/js/maplibre-gl.59dc07c01249.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script>
+const citySearchUrl = "https://www.meteo.sc/api/cities";
+const cityDetailUrl = "https://www.meteo.sc/weather/daily-table/";
+
+$(document).ready(function () {
+
+  /* ── DAY TABS ── */
+  const tabs   = document.querySelectorAll('.wd-day-tab');
+  const panels = document.querySelectorAll('.wd-panel');
+
+  function getDayKeyFromTab(tab) {
+    return tab ? tab.dataset.target.replace('wd-day-', '') : '';
+  }
+
+  // Activates tab panel for given dayKey, and renders graphs for that day
+  function setActiveDayTab(dayKey) {
+    tabs.forEach(function (t) {
+      const tabDay = getDayKeyFromTab(t);
+      t.classList.toggle('active', tabDay === dayKey);
+    });
+
+    panels.forEach(function (p) {
+      p.classList.toggle('wd-hidden', p.id !== 'wd-day-' + dayKey);
+    });
+
+    renderGraphsForDay(dayKey);
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      const dayKey = getDayKeyFromTab(tab);
+      setActiveDayTab(dayKey);
+    });
+  });
+
+  /* ── CITY SEARCH ── */
+  const onSelectCity = function ({ label, value }) {
+    if (cityDetailUrl) {
+      var url = cityDetailUrl.endsWith('/')
+        ? cityDetailUrl + value
+        : cityDetailUrl + '/' + value;
+      window.location.href = url;
+    }
+  };
+
+  const getMatchingCity = function (name) {
+    return fetch(citySearchUrl + '?name=' + encodeURIComponent(name))
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        return data.map(function (city) {
+          return { label: city.name, value: city.slug };
+        });
+      });
+  };
+
+  var citySearch = document.getElementById('city-search');
+  if (citySearch) {
+    bulmaHead('city-search', 'city-search-menu', getMatchingCity, onSelectCity, 200, 0);
+  }
+
+  /* ── HIGHCHARTS GRAPH STYLES ── */
+  const CHART_TITLE_STYLE = {
+    fontSize: '18px'
+  };
+
+  const CHART_RESPONSIVE_RULES = [{
+    condition: {
+      maxWidth: 500,
+      maxHeight: 400
+    },
+    chartOptions: {
+      title: {
+        style: {
+          fontSize: '14px'
+        }
+      },
+      legend: {
+        layout: 'horizontal',
+        align: 'center',
+        verticalAlign: 'bottom'
+      }
+    }
+  }];
+
+  // html2canvas (used for PDF export) can't resolve CSS var()/color-mix(), so
+  // theme colors are read from the CSS custom properties and pre-mixed to
+  // plain rgb()/rgba() strings here instead of relying on those CSS functions.
+  function readThemeColor(name, fallback) {
+    var value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return value || fallback;
+  }
+
+  function hexToRgba(hex) {
+    hex = hex.replace('#', '');
+    if (hex.length === 3) {
+      hex = hex.split('').map(function (c) { return c + c; }).join('');
+    }
+    var alpha = hex.length === 8 ? parseInt(hex.slice(6, 8), 16) / 255 : 1;
+    return {
+      r: parseInt(hex.slice(0, 2), 16),
+      g: parseInt(hex.slice(2, 4), 16),
+      b: parseInt(hex.slice(4, 6), 16),
+      a: alpha
+    };
+  }
+
+  function toColorString(hex) {
+    var c = hexToRgba(hex);
+    return c.a < 1
+      ? 'rgba(' + c.r + ', ' + c.g + ', ' + c.b + ', ' + c.a.toFixed(2) + ')'
+      : 'rgb(' + c.r + ', ' + c.g + ', ' + c.b + ')';
+  }
+
+  function mixColors(hexA, percentA, hexB) {
+    var a = hexToRgba(hexA);
+    var b = hexToRgba(hexB);
+    var p = percentA / 100;
+    var r = Math.round(a.r * p + b.r * (1 - p));
+    var g = Math.round(a.g * p + b.g * (1 - p));
+    var bl = Math.round(a.b * p + b.b * (1 - p));
+    return 'rgb(' + r + ', ' + g + ', ' + bl + ')';
+  }
+
+  var themePrimary = readThemeColor('--primary-color', '#0C447C');
+  var themePrimaryLight = readThemeColor('--primary-color-light', '#c2d0de');
+  var themePrimaryMedium = readThemeColor('--primary-color-medium', '#85A1BD');
+  var themeBackground = readThemeColor('--background-color', '#ced9e4');
+  var themeText = readThemeColor('--text-color', '#363636');
+
+  const CHART_COLORS = {
+    primary: toColorString(themePrimary),
+    primaryLight: toColorString(themePrimaryLight),
+    primaryMedium: toColorString(themePrimaryMedium),
+    background: toColorString(themeBackground),
+    text: toColorString(themeText),
+    precipitation: mixColors(themePrimary, 50, themeBackground),
+    airPressure: mixColors(themePrimary, 65, themeText),
+    humidity: mixColors(themePrimary, 78, themeBackground)
+  };
+
+  /* Values the backend could not parse as numbers (e.g. "25-60, Max 60") come
+     through as null. Keep them null so Highcharts renders a gap instead of
+     Number(null) === 0, which would plot a misleading zero. */
+  function toNumericSeries(values) {
+    return (values || []).map(function (value) {
+      return value === null || value === undefined || value === '' ? null : Number(value);
+    });
+  }
+
+
+  /* ── TEMPERATURE LINE GRAPH ── */
+  function renderTemperatureGraph(dayData, dayKey) {
+    const singlePoint = dayData.time_data.length === 1;
+
+    return Highcharts.chart('temperature-graph', {
+      chart: {
+        spacingTop: 20,
+        type: singlePoint ? 'column' : 'line'
+      },
+      title: {
+        text: 'Temperature',
+        align: 'center',
+        style: CHART_TITLE_STYLE
+      },
+      yAxis: {
+        title: {
+          text: 'Temperature (°C)'
+        },
+        labels: {
+          format: '{value}°C'
+        }
+      },
+      xAxis: {
+        type: 'category',
+        categories: dayData.time_data,
+        min: singlePoint ? 0 : null,
+        max: singlePoint ? 0 : null,
+        tickPixelInterval: 80,
+        
+      },
+      tooltip: {
+        valueSuffix: '°C',
+        shared: true
+      },
+      legend: {
+        enabled: true
+      },
+      plotOptions: {
+        series: {
+          marker: {
+            enabled: true,
+            radius: 4
+          },
+          label: {
+            connectorAllowed: false
+          }
+        },
+        column: {
+          pointWidth: singlePoint ? 50 : null,
+          borderRadius: 4
+        }
+      },
+      series: [
+        {
+          name: 'Maximum',
+          data: toNumericSeries(dayData.air_temperature_max),
+          color: CHART_COLORS.primary
+        },
+        {
+          name: 'Minimum',
+          data: toNumericSeries(dayData.air_temperature_min),
+          color: CHART_COLORS.primaryMedium
+        }
+      ],
+      responsive: {
+        rules: CHART_RESPONSIVE_RULES
+      },
+      credits: { enabled: false }
+    });
+  }
+
+  /* ── WIND BARB GRAPH ── */
+  function renderWindGraph(dayData, dayKey) {
+    const singlePoint = dayData.time_data.length === 1;
+    const windSpeeds = toNumericSeries(dayData.wind_speed);
+    const windDirs = toNumericSeries(dayData.wind_from_direction);
+
+    let windSpeedSeries = [];
+    let windBarbSeries = [];
+
+    if (singlePoint) {
+      windSpeedSeries = [[0, windSpeeds[0]]];
+      windBarbSeries = [{
+        x: 0,
+        value: windSpeeds[0],
+        direction: windDirs[0]
+      }];
+    } else {
+      windSpeedSeries = windSpeeds.map((speed, i) => [speed]);
+      windBarbSeries = windSpeeds.map((speed, i) => [speed, windDirs[i]]);
+    }
+
+    return Highcharts.chart('wind-graph', {
+      chart: {
+        spacingTop: 20
+      },
+      title: {
+        text: 'Wind',
+        align: 'center',
+        style: CHART_TITLE_STYLE
+      },
+      yAxis: {
+        title: {
+          text: 'Wind Speed (m/s)'
+        }
+      },
+      xAxis: {
+        type: 'category',
+        categories: dayData.time_data,
+        min: singlePoint ? 0 : null,
+        max: singlePoint ? 0 : null,
+        tickPixelInterval: 80,
+        offset: 40 
+      },
+      tooltip: {
+        valueSuffix: ' m/s',
+        shared: true
+      },
+      legend: {
+        enabled: true
+      },
+      series: [{
+        type: singlePoint ? 'column' : 'area',
+        name: 'Wind speed',
+        data: windSpeedSeries,
+        color: CHART_COLORS.primary,
+        pointWidth: singlePoint ? 50 : null,
+        fillColor: singlePoint ? null : {
+          linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+          stops: [
+            [0, CHART_COLORS.primary],
+            [1, CHART_COLORS.primaryLight]
+          ]
+        },
+        tooltip: {
+          shared: true,
+          valueSuffix: ' m/s'
+        },
+        states: {
+          inactive: {
+            opacity: 1
+          }
+        }
+      }, {
+        type: 'windbarb',
+        name: 'Wind',
+        data: windBarbSeries,
+        showInLegend: false,
+        tooltip: {
+          pointFormat: '{beaufort}, {direction:.0f}°'
+        }
+      }],
+      responsive: {
+        rules: CHART_RESPONSIVE_RULES
+      },
+      credits: { enabled: false }
+    });
+  }
+
+  /* ── PRECIPITATION BAR CHART ── */
+  function renderPrecipitationGraph(dayData, dayKey) {
+    const singlePoint = dayData.time_data.length === 1;
+    const precipitationData = toNumericSeries(dayData.precipitation_amount);
+
+    return Highcharts.chart('precipitation-graph', {
+      chart: {
+        spacingTop: 20,
+        type: 'column'
+      },
+      title: {
+        text: 'Precipitation',
+        align: 'center',
+        style: CHART_TITLE_STYLE
+      },
+      yAxis: {
+        title: {
+          text: 'Precipitation (mm)'
+        },
+        labels: {
+          format: '{value} mm'
+        }
+      },
+      xAxis: {
+        type: 'category',
+        categories: dayData.time_data,
+        min: singlePoint ? 0 : null,
+        max: singlePoint ? 0 : null,
+        tickPixelInterval: 80,
+      },
+      tooltip: {
+        valueSuffix: ' mm',
+        shared: true
+      },
+      legend: {
+        enabled: true
+      },
+      plotOptions: {
+        column: {
+          pointWidth: singlePoint ? 50 : null,
+          borderRadius: 4
+        }
+      },
+      series: [
+        {
+          name: 'Precipitation',
+          data: precipitationData,
+          color: CHART_COLORS.precipitation
+        }
+      ],
+      responsive: {
+        rules: CHART_RESPONSIVE_RULES
+      },
+      credits: { enabled: false }
+    });
+  }
+
+  /* ── AIR PRESSURE BAR CHART ── */
+  function renderAirPressureGraph(dayData, dayKey) {
+    const singlePoint = dayData.time_data.length === 1;
+    const airPressureData = toNumericSeries(dayData.air_pressure_at_sea_level);
+
+    return Highcharts.chart('air-pressure-graph', {
+      chart: {
+        spacingTop: 20,
+        type: 'column'
+      },
+      title: {
+        text: 'Air Pressure',
+        align: 'center',
+        style: CHART_TITLE_STYLE
+      },
+      yAxis: {
+        title: {
+          text: 'Air Pressure (hPa)'
+        },
+        labels: {
+          format: '{value} hPa'
+        }
+      },
+      xAxis: {
+        type: 'category',
+        categories: dayData.time_data,
+        min: singlePoint ? 0 : null,
+        max: singlePoint ? 0 : null,
+        tickPixelInterval: 80,
+      },
+      tooltip: {
+        valueSuffix: ' hPa',
+        shared: true
+      },
+      legend: {
+        enabled: true
+      },
+      plotOptions: {
+        column: {
+          pointWidth: singlePoint ? 50 : null,
+          borderRadius: 4
+        }
+      },
+      series: [
+        {
+          name: 'Air Pressure',
+          data: airPressureData,
+          color: CHART_COLORS.airPressure
+        }
+      ],
+      responsive: {
+        rules: CHART_RESPONSIVE_RULES
+      },
+      credits: { enabled: false }
+    });
+  }
+
+  /* ── RELATIVE HUMIDITY BAR CHART ── */
+  function renderHumidityGraph(dayData, dayKey) {
+    const singlePoint = dayData.time_data.length === 1;
+    const humidityData = toNumericSeries(dayData.relative_humidity);
+
+    return Highcharts.chart('humidity-graph', {
+      chart: {
+        spacingTop: 20,
+        type: 'column'
+      },
+      title: {
+        text: 'Relative Humidity',
+        align: 'center',
+        style: CHART_TITLE_STYLE
+      },
+      yAxis: {
+        title: {
+          text: 'Relative Humidity (%)'
+        },
+        labels: {
+          format: '{value} %'
+        }
+      },
+      xAxis: {
+        type: 'category',
+        categories: dayData.time_data,
+        min: singlePoint ? 0 : null,
+        max: singlePoint ? 0 : null,
+        tickPixelInterval: 80,
+      },
+      tooltip: {
+        valueSuffix: ' %',
+        shared: true
+      },
+      legend: {
+        enabled: true
+      },
+      plotOptions: {
+        column: {
+          pointWidth: singlePoint ? 50 : null,
+          borderRadius: 4
+        }
+      },
+      series: [
+        {
+          name: 'Relative Humidity',
+          data: humidityData,
+          color: CHART_COLORS.humidity
+        }
+      ],
+      responsive: {
+        rules: CHART_RESPONSIVE_RULES
+      },
+      credits: { enabled: false }
+    });
+  }
+
+  /* ── MAP (MapLibre GL using OpenStreetMap tiles) ── */
+  function renderMap() {
+    const cityData = JSON.parse(document.getElementById('city-map-data').textContent);
+    if (!cityData || cityData.city_y == null || cityData.city_x == null) return;
+
+    const style = {
+      version: 8,
+      sources: {
+        'osm-tiles': {
+          type: 'raster',
+          tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+          tileSize: 256
+        }
+      },
+      layers: [
+        {
+          id: 'osm-tiles-layer',
+          type: 'raster',
+          source: 'osm-tiles'
+        }
+      ]
+    };
+
+    // Initialize the map
+    const map = new maplibregl.Map({
+      container: 'city-map',
+      style: style,
+      center: [cityData.city_x, cityData.city_y],
+      zoom: 7,
+      scrollZoom: false,
+      preserveDrawingBuffer: true
+    });
+
+    // Add navigation control (zoom buttons)
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-right');
+
+    map.on('load', function () {
+      // pop-up and marker
+      const popupHtml = `<strong>${cityData.city_name || ''}</strong>` + 
+                        (cityData.city_condition ? ` <br> <span class="tag is-info">${cityData.city_condition}</span>` : '');
+      
+      const popup = new maplibregl.Popup({offset: 35}).setHTML(popupHtml);
+
+      const marker = new maplibregl.Marker({
+        color: 'var(--primary-color, #0C447C)'
+      })
+      .setLngLat([cityData.city_x, cityData.city_y])
+      .setPopup(popup)
+      .addTo(map);
+
+      marker.addClassName('wd-map-marker');
+    });
+
+  }
+
+  /* ── HANDLE RESPONSIVENESS FOR HIGHCHARTS GRAPHS ── */
+  window.addEventListener('resize', function() {
+    if (typeof Highcharts !== 'undefined' && Highcharts.charts) {
+      Highcharts.charts.forEach(function(chart) {
+        if (chart) {
+          chart.reflow(); // Instantly recalculated sizing arrays to match fluid container boundaries
+        }
+      });
+    }
+  });
+
+  /* ── RENDER GRAPHS based on active tab if weather data present ── */
+  const graphPayloads = JSON.parse(document.getElementById('graph-forecast-data').textContent);
+
+  // Kept so the PDF export can force each chart to reflow to the printable
+  // page width before capture (see '── GENERATE PDF ──' below).
+  let activeCharts = {};
+
+  const GRAPH_CONTAINER_IDS = [
+    'temperature-graph',
+    'precipitation-graph',
+    'wind-graph',
+    'air-pressure-graph',
+    'humidity-graph'
+  ];
+
+  // Days are switched client side against containers laid out once, so any
+  // chart the new day does not draw has to be torn down explicitly. Otherwise
+  // the previous day's chart stays on screen and is read as this day's.
+  function destroyGraphs() {
+    Object.keys(activeCharts).forEach(function (key) {
+      const chart = activeCharts[key];
+      if (chart && typeof chart.destroy === 'function') {
+        chart.destroy();
+      }
+    });
+
+    activeCharts = {};
+
+    GRAPH_CONTAINER_IDS.forEach(function (id) {
+      const container = document.getElementById(id);
+      if (container) {
+        container.innerHTML = '';
+      }
+    });
+  }
+
+  function renderGraphsForDay(dayKey) {
+    destroyGraphs();
+
+    const noDataMessage = document.getElementById('wd-no-graph-data');
+    const showNoDataMessage = function (show) {
+      if (noDataMessage) {
+        noDataMessage.classList.toggle('wd-hidden', !show);
+      }
+    };
+
+    if (!dayKey) {
+      return;
+    }
+
+    const dayData = graphPayloads[dayKey];
+    if (!dayData || !dayData.time_data || !dayData.time_data.length) {
+      showNoDataMessage(true);
+      return;
+    }
+
+    if (dayData.has_temperature_data) {
+      activeCharts.temperature = renderTemperatureGraph(dayData, dayKey);
+    }
+
+    if (dayData.has_wind_data) {
+      activeCharts.wind = renderWindGraph(dayData, dayKey);
+    }
+
+    if (dayData.has_precipitation_data) {
+      activeCharts.precipitation = renderPrecipitationGraph(dayData, dayKey);
+    }
+
+    if (dayData.has_air_pressure_data) {
+      activeCharts.airPressure = renderAirPressureGraph(dayData, dayKey);
+    }
+
+    if (dayData.has_humidity_data) {
+      activeCharts.humidity = renderHumidityGraph(dayData, dayKey);
+    }
+
+    showNoDataMessage(Object.keys(activeCharts).length === 0);
+  }
+  
+  /* ── INITIALIZE ACTIVE TAB ── */
+  const activeTab = document.querySelector('.wd-day-tab.active') || tabs[0];
+  if (activeTab) {
+    setActiveDayTab(getDayKeyFromTab(activeTab));
+  }
+
+  /* ── RENDER MAP ── */
+  renderMap();
+
+  /* ── GENERATE PDF ── */
+  $('#export-pdf').on('click', function() {
+    const element = document.getElementById('wd-page');
+    const cityName = document.querySelector('.wd-city') ? document.querySelector('.wd-city').textContent.trim() : 'weather';
+    const activeDay = document.querySelector('.wd-day-tab.active') ? document.querySelector('.wd-day-tab.active').textContent.trim() : '';
+    const filename = `${cityName.replace(/\s+/g, '_')}_${activeDay.replace(/\s+/g, '_')}_wd_page.pdf`;
+    const opt = {
+        margin:       0.5,
+        filename:     filename,
+        image:        { type: 'jpeg', quality: 1 },
+        html2canvas:  {
+          scale: 2,
+          useCORS: true,
+          scrollX: 0,
+          scrollY: 0
+        },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
+        pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+
+    // html2pdf clones the page into a capture container that's forced to the
+    // PDF's printable width (~7.27in on A4 with these margins). Highcharts
+    // SVGs and the forecast table keep whatever pixel width they had on the
+    // live (much wider) screen, so without this they overflow that container
+    // and get clipped instead of scaled. Temporarily narrow the live layout
+    // to fit the printable width and reflow the charts before capturing,
+    // then restore the normal responsive layout afterwards.
+    function restoreLayout() {
+      element.classList.remove('wd-pdf-export');
+      Object.keys(activeCharts).forEach(function (key) {
+        if (activeCharts[key]) activeCharts[key].reflow();
+      });
+    }
+
+    element.classList.add('wd-pdf-export');
+    Object.keys(activeCharts).forEach(function (key) {
+      if (activeCharts[key]) activeCharts[key].reflow();
+    });
+
+    html2pdf().from(element).set(opt).save()
+      .then(restoreLayout)
+      .catch(function (err) {
+        restoreLayout();
+        console.error(err);
+      });
+  });
+  
+});
+</script>
+
+
+
+    
+
+
+<div id="sl-share" class="sl-share">
+  <button type="button" class="sl-share-btn" id="sl-share-btn"
+          aria-label="Get a short link to this page"
+          title="Get a short link to this page">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    </svg>
+  </button>
+
+  <div class="sl-share-panel" id="sl-share-panel" hidden>
+    <div class="sl-share-panel-head">
+      <span class="sl-share-panel-title">Short link</span>
+      <button type="button" class="sl-share-close" id="sl-share-close"
+              aria-label="Close">&times;</button>
+    </div>
+    <div class="sl-share-row">
+      <input type="text" id="sl-share-url" class="sl-share-input" readonly
+             onclick="this.select();" placeholder="Generating…">
+      <button type="button" class="sl-share-copy" id="sl-share-copy">Copy</button>
+    </div>
+    <p class="sl-share-msg" id="sl-share-msg" hidden></p>
+  </div>
+</div>
+
+<style>
+  .sl-share {
+    position: fixed;
+    right: 35px;
+    bottom: 35px;
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  .sl-share-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary-color, #185FA5);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+  }
+  .sl-share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.24);
+  }
+  .sl-share-btn svg { width: 22px; height: 22px; }
+  .sl-share-btn.is-loading { opacity: 0.7; cursor: default; }
+  .sl-share-btn.is-loading svg { animation: sl-spin 0.7s linear infinite; }
+  @keyframes sl-spin { to { transform: rotate(360deg); } }
+
+  .sl-share-panel {
+    width: 320px;
+    max-width: calc(100vw - 40px);
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: var(--border-radius, 12px);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.16);
+    padding: 14px;
+    order: -1;
+  }
+  .sl-share-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .sl-share-panel-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+  .sl-share-close {
+    border: none;
+    background: none;
+    font-size: 20px;
+    line-height: 1;
+    color: #999;
+    cursor: pointer;
+    padding: 0 2px;
+  }
+  .sl-share-close:hover { color: #555; }
+
+  .sl-share-row { display: flex; gap: 8px; }
+  .sl-share-input {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+    color: #1a1a1a;
+    background: #fafafa;
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+  }
+  .sl-share-input:focus {
+    outline: none;
+    border-color: var(--primary-color, #185FA5);
+    background: #fff;
+  }
+  .sl-share-copy {
+    padding: 0 14px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: #fff;
+    background: var(--primary-color, #185FA5);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .sl-share-copy:hover { opacity: 0.9; }
+
+  .sl-share-msg {
+    margin: 8px 0 0;
+    font-size: 12px;
+    color: #888;
+  }
+  .sl-share-msg.is-error { color: #d64545; }
+
+</style>
+
+<script>
+  (function () {
+    var root   = document.getElementById('sl-share');
+    if (!root) return;
+    var btn    = document.getElementById('sl-share-btn');
+    var panel  = document.getElementById('sl-share-panel');
+    var input  = document.getElementById('sl-share-url');
+    var copy   = document.getElementById('sl-share-copy');
+    var close  = document.getElementById('sl-share-close');
+    var msg    = document.getElementById('sl-share-msg');
+    var endpoint = "/api/shorten/";
+    var csrftoken = "ccDS5pf014EeCvKYE8HwjlQc1XX8XJ6AO0EdwnammOUxCCZwI5NtroNFoFW91Hek";
+    var fetched = false;
+
+    function getCookie(name) {
+      var m = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+      return m ? m.pop() : '';
+    }
+
+    function showMessage(text, isError) {
+      msg.textContent = text;
+      msg.classList.toggle('is-error', !!isError);
+      msg.hidden = !text;
+    }
+
+    function openPanel() {
+      panel.hidden = false;
+      if (fetched) { input.select(); return; }
+
+      btn.classList.add('is-loading');
+      showMessage('', false);
+
+      var body = new URLSearchParams();
+      body.append('url', window.location.href);
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrftoken || getCookie('csrftoken'),
+          'X-Requested-With': 'XMLHttpRequest',
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: body.toString(),
+      })
+        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+        .then(function (res) {
+          btn.classList.remove('is-loading');
+          if (!res.ok) {
+            showMessage(res.data.error || 'Could not create a short link.', true);
+            return;
+          }
+          fetched = true;
+          input.value = res.data.short_url;
+          input.select();
+          showMessage(
+            res.data.created
+              ? 'Short link created.'
+              : 'Reusing an existing short link for this page.',
+            false
+          );
+        })
+        .catch(function () {
+          btn.classList.remove('is-loading');
+          showMessage('Could not create a short link.', true);
+        });
+    }
+
+    function closePanel() { panel.hidden = true; }
+
+    btn.addEventListener('click', function () {
+      if (panel.hidden) { openPanel(); } else { closePanel(); }
+    });
+    close.addEventListener('click', closePanel);
+
+    copy.addEventListener('click', function () {
+      if (!input.value) return;
+      navigator.clipboard.writeText(input.value).then(function () {
+        var label = copy.textContent;
+        copy.textContent = 'Copied!';
+        setTimeout(function () { copy.textContent = label; }, 1500);
+      });
+    });
+
+    // Close when clicking outside the widget
+    document.addEventListener('click', function (e) {
+      if (!panel.hidden && !root.contains(e.target)) closePanel();
+    });
+  })();
+</script>
+
+
+</body>
+</html>
+

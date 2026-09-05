@@ -25,13 +25,17 @@ class ForecastSyncWorker(
             val repo = SmaRepository()
 
             // Refresh forecasts for all 3 main islands (covers what users might switch to)
-            val islands = listOf(IslandLocation.MAHE, IslandLocation.PRASLIN, IslandLocation.LA_DIGUE)
+            val islands = listOf(
+                IslandLocation.DEFAULT_MAHE,
+                IslandLocation.DEFAULT_PRASLIN,
+                IslandLocation.DEFAULT_LA_DIGUE
+            )
 
             islands.forEach { island ->
                 val result = repo.getHomeWeatherForecast(island)
                 result.onSuccess { forecasts ->
                     // Convert to Room entities
-                    val entities = forecasts.mapIndexed { _, forecast ->
+                    val entities = forecasts.map { forecast ->
                         CachedForecastEntity(
                             islandSlug = island.slug,
                             date = forecast.date,
@@ -39,7 +43,7 @@ class ForecastSyncWorker(
                             conditionIconUrl = forecast.conditionIconUrl,
                             tempMax = forecast.tempMax,
                             tempMin = forecast.tempMin,
-                            windDisplay = forecast.windDisplay,
+                            windDisplay = forecast.wind,
                             seaState = forecast.seaState,
                             rainChance = forecast.rainChance
                         )
