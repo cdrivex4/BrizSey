@@ -26,6 +26,12 @@ data class IslandLocation(
             else -> "Seychelles"
         }
 
+    val latitude: Double
+        get() = coordinates.getOrNull(1) ?: -4.6743
+
+    val longitude: Double
+        get() = coordinates.getOrNull(0) ?: 55.5212
+
     companion object {
         val DEFAULT_MAHE = IslandLocation(
             id = "2a38c33c-eac7-4448-8b58-8b9f305186af",

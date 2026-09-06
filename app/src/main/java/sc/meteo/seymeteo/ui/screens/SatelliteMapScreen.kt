@@ -340,6 +340,89 @@ fun SatelliteMapScreen(
                 };
                 opacitySlider.addTo(map);
 
+                // 6. Nowcasting Advection Vectors & Front Isochrones Layer Group
+                var advectionGroup = L.layerGroup().addTo(map);
+
+                // Approaching Front Wavefront Isochrones (15m, 30m, 45m)
+                var isochrone15 = L.polyline([
+                    [-4.5800, 55.6000],
+                    [-4.6800, 55.6500],
+                    [-4.7800, 55.6700]
+                ], { color: '#EF4444', weight: 2.5, dashArray: '6, 6', opacity: 0.85 }).addTo(advectionGroup);
+                isochrone15.bindTooltip("🌧️ Front Isochrone T+15 min", { permanent: false, className: 'custom-popup' });
+
+                var isochrone30 = L.polyline([
+                    [-4.5400, 55.6800],
+                    [-4.6600, 55.7400],
+                    [-4.7600, 55.7700]
+                ], { color: '#F59E0B', weight: 2, dashArray: '4, 6', opacity: 0.75 }).addTo(advectionGroup);
+                isochrone30.bindTooltip("🌧️ Front Isochrone T+30 min", { permanent: false, className: 'custom-popup' });
+
+                var isochrone45 = L.polyline([
+                    [-4.5000, 55.7600],
+                    [-4.6400, 55.8300],
+                    [-4.7400, 55.8700]
+                ], { color: '#38BDF8', weight: 1.5, dashArray: '4, 4', opacity: 0.65 }).addTo(advectionGroup);
+                isochrone45.bindTooltip("🌧️ Front Isochrone T+45 min", { permanent: false, className: 'custom-popup' });
+
+                // SE Trade Wind / Advection Front Velocity Vector Arrows
+                var frontArrow = L.polyline([
+                    [-4.7200, 55.6500],
+                    [-4.6600, 55.5100]
+                ], { color: '#38BDF8', weight: 3.5, opacity: 0.9 }).addTo(advectionGroup);
+                frontArrow.bindPopup("<strong>Precipitation Advection Vector</strong><br/>Velocity: 24 km/h towards NW (315°)<br/>Trade Wind Inflow: SE 135°");
+
+                // 7. Mahé Central Granitic Mountain Spine (Orographic Shield) Layer Group
+                var spineGroup = L.layerGroup().addTo(map);
+                var maheRidgeLine = [
+                    [-4.6150, 55.4250], // Signal Hill
+                    [-4.6433, 55.4383], // Morne Seychellois (905m)
+                    [-4.6700, 55.4600], // Congo Rouge / Mont Sébert
+                    [-4.7100, 55.4900], // Montagne Posée
+                    [-4.7600, 55.5100]  // South Mahé Ridge
+                ];
+
+                var spinePolyline = L.polyline(maheRidgeLine, {
+                    color: '#F59E0B',
+                    weight: 4,
+                    dashArray: '8, 6',
+                    opacity: 0.9
+                }).addTo(spineGroup);
+
+                spinePolyline.bindPopup(
+                    '<div class="custom-popup">' +
+                    '<strong>🏔️ Mahé Granitic Spine (Morne Seychellois 905m)</strong><br/>' +
+                    '<span style="color:#FBBF24">● Windward East Slope:</span> +35% Orographic Uplift<br/>' +
+                    '<span style="color:#34D399">● Leeward West Slope:</span> -50% Rain Shadow Shield' +
+                    '</div>'
+                );
+
+                // 8. User Kinematic Position & Evasion Vector Layer Group
+                var userGroup = L.layerGroup().addTo(map);
+                var userMarker = L.circleMarker([-4.6191, 55.4513], {
+                    radius: 9,
+                    fillColor: '#10B981',
+                    color: '#FFFFFF',
+                    weight: 3,
+                    opacity: 1,
+                    fillOpacity: 0.95
+                }).addTo(userGroup);
+
+                userMarker.bindPopup(
+                    '<div class="custom-popup">' +
+                    '<strong>📍 User Position (Victoria / Mahé)</strong><br/>' +
+                    '<span>Scenario: Nowcasting Active</span><br/>' +
+                    '<strong style="color:#34D399">🛡️ Recommended Evasion:</strong> 290° WNW toward Beau Vallon Bay' +
+                    '</div>'
+                );
+
+                // Evasion Heading Arrow (towards Leeward Beau Vallon)
+                var evasionArrow = L.polyline([
+                    [-4.6191, 55.4513],
+                    [-4.6050, 55.4150]
+                ], { color: '#34D399', weight: 3, dashArray: '3, 4', opacity: 0.9 }).addTo(userGroup);
+                evasionArrow.bindTooltip("Optimal Evasion Vector (WNW)", { permanent: false });
+
                 // Layer Switcher Controls
                 var baseMaps = {
                     "Street Map": osm,
@@ -349,7 +432,10 @@ fun SatelliteMapScreen(
                 var overlayMaps = {
                     "Live Clouds (EUMETSAT)": eumetsatCloud,
                     "Doppler Radar Timeline": rainViewerGroup,
-                    "Infrared Storm Monitor": eumetsatInfrared
+                    "Infrared Storm Monitor": eumetsatInfrared,
+                    "Advection Isochrones (15/30/45m)": advectionGroup,
+                    "Mahé Mountain Spine Shield": spineGroup,
+                    "User Kinematics & Evasion": userGroup
                 };
 
                 L.control.layers(baseMaps, overlayMaps, { collapsed: false, position: 'topright' }).addTo(map);

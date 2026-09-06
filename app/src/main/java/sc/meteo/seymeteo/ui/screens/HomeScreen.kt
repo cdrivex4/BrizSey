@@ -198,7 +198,21 @@ fun HomeScreen(
                         )
                     }
 
-                    // 4. Island Selector (Mahé, Praslin, La Digue)
+                    // 4. Nowcasting Precipitation Advection & Interception Engine (Scenario A / B)
+                    item {
+                        RainInterceptionCard(
+                            solution = uiState.interceptionSolution,
+                            isSimulationMode = uiState.isSimulationMode,
+                            simulatedSpeedKmh = uiState.simulatedSpeedKmh,
+                            simulatedBearingDeg = uiState.simulatedBearingDeg,
+                            onUpdateSimulation = { speed, bearing, isSim ->
+                                viewModel.updateSimulation(speed, bearing, isSim)
+                            },
+                            glassOpacity = glassOpacity
+                        )
+                    }
+
+                    // 5. Island Selector (Mahé, Praslin, La Digue)
                     item {
                         IslandSelector(
                             islands = uiState.availableIslands,
