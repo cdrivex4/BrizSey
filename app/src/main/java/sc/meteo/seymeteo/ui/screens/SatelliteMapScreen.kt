@@ -172,7 +172,7 @@ fun SatelliteMapScreen(
                 });
 
                 // 3. EUMETSAT Live Natural Color Cloud Layer (Restored from DataStore)
-                var currentOpacity = f;
+                var currentOpacity = ${opacityPref};
                 var eumetsatCloud = L.tileLayer.wms('https://view.eumetsat.int/geoserver/wms', {
                     layers: 'msg_fes:rgb_naturalenhncd',
                     format: 'image/png',
@@ -197,8 +197,8 @@ fun SatelliteMapScreen(
                 // 5. Multi-Frame RainViewer Dynamic Radar Player
                 var radarFrames = [];
                 var radarLayers = [];
-                var currentFrameIndex = ;
-                var isPlaying = ;
+                var currentFrameIndex = ${frameIndexPref};
+                var isPlaying = ${isPlayingPref};
                 var playInterval = null;
 
                 var rainViewerGroup = L.layerGroup().addTo(map);
@@ -334,7 +334,7 @@ fun SatelliteMapScreen(
                 opacitySlider.onAdd = function(map) {
                     var div = L.DomUtil.create('div', 'opacity-control');
                     div.innerHTML = '<strong>Cloud / Radar Opacity</strong><br/>' +
-                                    '<input id="slider" type="range" min="0" max="100" value="" /> <span id="op-val">%</span>';
+                                    '<input id="slider" type="range" min="0" max="100" value="${initialOpacityPct}" /> <span id="op-val">${initialOpacityPct}%</span>';
                     L.DomEvent.disableClickPropagation(div);
                     return div;
                 };
@@ -494,6 +494,9 @@ fun SatelliteMapScreen(
                             useWideViewPort = true
                             builtInZoomControls = true
                             displayZoomControls = false
+                            mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+                            allowFileAccess = true
+                            allowContentAccess = true
                         }
                         addJavascriptInterface(AndroidRadarBridge(), "AndroidRadar")
                         webViewClient = object : WebViewClient() {
