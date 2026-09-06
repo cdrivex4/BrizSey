@@ -161,6 +161,11 @@ fun HomeScreen(
                     }
                 }
 
+                // Atmospheric Predictability & Psychological Reassurance Card
+                item {
+                    PredictabilityCard(assessment = uiState.predictability)
+                }
+
                 // Island Selector (Mahé, Praslin, La Digue)
                 item {
                     IslandSelector(

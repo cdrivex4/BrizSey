@@ -59,7 +59,13 @@ data class CapAlertInfo(
     val instruction: String?,
     val areaDesc: String?,
     val sent: String?
-)
+) {
+    val isExtreme: Boolean
+        get() = severity?.equals("Extreme", ignoreCase = true) == true
+
+    val isSevere: Boolean
+        get() = isExtreme || severity?.equals("Severe", ignoreCase = true) == true
+}
 
 /** Convenience extension to map from GeoJSON feature to flat domain model. */
 fun CapAlertFeature.toCapAlertInfo(): CapAlertInfo? {

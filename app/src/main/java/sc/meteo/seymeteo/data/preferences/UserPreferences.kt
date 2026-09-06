@@ -11,6 +11,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import sc.meteo.seymeteo.data.model.UserPersona
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_prefs")
 
@@ -27,6 +28,7 @@ class UserPreferences(private val context: Context) {
         val KEY_NOTIFY_EXTREME = booleanPreferencesKey("notify_extreme")
         val KEY_NOTIFY_SEVERE = booleanPreferencesKey("notify_severe")
         val KEY_NOTIFY_MODERATE = booleanPreferencesKey("notify_moderate")
+        val KEY_USER_PERSONA = stringPreferencesKey("user_persona")       // "general" | "maritime" | "agriculture" | "tourism"
         val KEY_ONBOARDING_DONE = booleanPreferencesKey("onboarding_done")
         val KEY_LAST_SELECTED_SLUG = stringPreferencesKey("last_island_slug")
         val KEY_LAST_SYNC_MS = longPreferencesKey("last_sync_ms")
@@ -70,6 +72,10 @@ class UserPreferences(private val context: Context) {
         it[KEY_NOTIFY_MODERATE] ?: false
     }
 
+    val userPersona: Flow<UserPersona> = context.dataStore.data.map {
+        UserPersona.fromId(it[KEY_USER_PERSONA] ?: UserPersona.GENERAL_CITIZEN.id)
+    }
+
     val onboardingDone: Flow<Boolean> = context.dataStore.data.map {
         it[KEY_ONBOARDING_DONE] ?: false
     }
@@ -93,6 +99,7 @@ class UserPreferences(private val context: Context) {
     suspend fun setNotifyExtreme(value: Boolean) = context.dataStore.edit { it[KEY_NOTIFY_EXTREME] = value }
     suspend fun setNotifySevere(value: Boolean) = context.dataStore.edit { it[KEY_NOTIFY_SEVERE] = value }
     suspend fun setNotifyModerate(value: Boolean) = context.dataStore.edit { it[KEY_NOTIFY_MODERATE] = value }
+    suspend fun setUserPersona(persona: UserPersona) = context.dataStore.edit { it[KEY_USER_PERSONA] = persona.id }
     suspend fun setOnboardingDone() = context.dataStore.edit { it[KEY_ONBOARDING_DONE] = true }
     suspend fun setLastSelectedSlug(slug: String) = context.dataStore.edit { it[KEY_LAST_SELECTED_SLUG] = slug }
     suspend fun setLastSyncMs(ms: Long) = context.dataStore.edit { it[KEY_LAST_SYNC_MS] = ms }

@@ -28,7 +28,7 @@ fun SatelliteMapScreen(
     var isLoading by remember { mutableStateOf(true) }
     var webViewRef by remember { mutableStateOf<WebView?>(null) }
 
-    // Standalone Leaflet HTML with maxNativeZoom auto-scaling, EUMETSAT clouds, and RainViewer
+    // Standalone Leaflet HTML with Multi-Frame RainViewer Radar Timeline, EUMETSAT clouds, and Opacity Controls
     val leafletHtml = """
         <!DOCTYPE html>
         <html>
@@ -55,19 +55,74 @@ fun SatelliteMapScreen(
                 .opacity-control {
                     background: rgba(15, 43, 72, 0.94);
                     color: white;
-                    padding: 8px 14px;
+                    padding: 6px 12px;
                     border-radius: 12px;
                     border: 1px solid rgba(255,255,255,0.2);
                     font-family: sans-serif;
-                    font-size: 12px;
+                    font-size: 11px;
                     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
                 }
                 .opacity-control input[type=range] {
-                    width: 140px;
-                    margin-top: 4px;
+                    width: 110px;
+                    margin-top: 2px;
                     accent-color: #38BDF8;
                 }
-                .radar-status {
+                
+                /* Radar Timeline Player Control */
+                .timeline-control {
+                    background: rgba(15, 43, 72, 0.94);
+                    color: white;
+                    padding: 8px 14px;
+                    border-radius: 16px;
+                    border: 1px solid rgba(255,255,255,0.25);
+                    font-family: sans-serif;
+                    font-size: 12px;
+                    box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    min-width: 220px;
+                }
+                .timeline-header {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                    font-size: 11px;
+                    margin-bottom: 4px;
+                }
+                .timeline-title {
+                    font-weight: bold;
+                    color: #38BDF8;
+                }
+                .timeline-time {
+                    font-weight: bold;
+                    color: #F8FAFC;
+                    background: rgba(56, 189, 248, 0.2);
+                    padding: 1px 6px;
+                    border-radius: 4px;
+                }
+                .timeline-buttons {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    margin: 4px 0;
+                }
+                .t-btn {
+                    background: #0284C7;
+                    border: none;
+                    color: white;
+                    border-radius: 8px;
+                    padding: 4px 10px;
+                    font-size: 12px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+                .t-btn:active { background: #0369A1; }
+                .timeline-slider {
+                    width: 100%;
+                    accent-color: #38BDF8;
+                }
+                .radar-pulse {
                     display: inline-block;
                     width: 8px;
                     height: 8px;
@@ -101,13 +156,14 @@ fun SatelliteMapScreen(
                     attribution: 'Tiles &copy; Esri'
                 });
 
-                // 3. EUMETSAT Live Natural Color Cloud Layer (WMS handles all zoom levels cleanly)
+                // 3. EUMETSAT Live Natural Color Cloud Layer (55% default opacity)
+                var currentOpacity = 0.55;
                 var eumetsatCloud = L.tileLayer.wms('https://view.eumetsat.int/geoserver/wms', {
                     layers: 'msg_fes:rgb_naturalenhncd',
                     format: 'image/png',
                     transparent: true,
                     version: '1.3.0',
-                    opacity: 0.55,
+                    opacity: currentOpacity,
                     maxZoom: 18,
                     attribution: 'EUMETSAT'
                 }).addTo(map);
@@ -123,30 +179,127 @@ fun SatelliteMapScreen(
                     attribution: 'EUMETSAT IR'
                 });
 
-                // 5. Dynamic RainViewer Global Radar Layer with maxNativeZoom=6 and tileSize=512 for smooth scaling
-                var rainViewerLayer = L.layerGroup().addTo(map);
-                var activeRadarTile = null;
+                // 5. Multi-Frame RainViewer Dynamic Radar Player
+                var radarFrames = [];
+                var radarLayers = [];
+                var currentFrameIndex = 0;
+                var isPlaying = false;
+                var playInterval = null;
+
+                var rainViewerGroup = L.layerGroup().addTo(map);
 
                 fetch('https://api.rainviewer.com/public/weather-maps.json')
                     .then(function(res) { return res.json(); })
                     .then(function(data) {
                         if (data && data.radar && data.radar.past && data.radar.past.length > 0) {
-                            var latest = data.radar.past[data.radar.past.length - 1];
-                            // Using 512px tiles and maxNativeZoom=6 allows Leaflet to stretch tiles without 'Not Supported' errors
-                            var radarTileUrl = 'https://tilecache.rainviewer.com' + latest.path + '/512/{z}/{x}/{y}/2/1_1.png';
-                            activeRadarTile = L.tileLayer(radarTileUrl, {
-                                opacity: 0.75,
-                                maxZoom: 18,
-                                maxNativeZoom: 6,
-                                tileSize: 512,
-                                attribution: 'RainViewer'
+                            radarFrames = data.radar.past;
+                            
+                            // Initialize tile layer for each frame with smooth scaling
+                            radarFrames.forEach(function(frame) {
+                                var tileUrl = 'https://tilecache.rainviewer.com' + frame.path + '/512/{z}/{x}/{y}/2/1_1.png';
+                                var layer = L.tileLayer(tileUrl, {
+                                    opacity: 0,
+                                    maxZoom: 18,
+                                    maxNativeZoom: 6,
+                                    tileSize: 512,
+                                    attribution: 'RainViewer'
+                                });
+                                radarLayers.push(layer);
+                                rainViewerGroup.addLayer(layer);
                             });
-                            rainViewerLayer.addLayer(activeRadarTile);
+
+                            // Set to latest active frame
+                            currentFrameIndex = radarFrames.length - 1;
+                            showRadarFrame(currentFrameIndex);
+                            updateTimelineUI();
                         }
                     })
                     .catch(function(err) {
-                        console.error('Failed to load RainViewer radar frames', err);
+                        console.error('Failed to load RainViewer frames', err);
                     });
+
+                function showRadarFrame(index) {
+                    if (radarLayers.length === 0) return;
+                    radarLayers.forEach(function(layer, idx) {
+                        if (idx === index) {
+                            layer.setOpacity(currentOpacity);
+                        } else {
+                            layer.setOpacity(0);
+                        }
+                    });
+                    currentFrameIndex = index;
+                    updateTimelineUI();
+                }
+
+                function formatFrameTime(timestamp) {
+                    var date = new Date(timestamp * 1000);
+                    var hours = String(date.getHours()).padStart(2, '0');
+                    var minutes = String(date.getMinutes()).padStart(2, '0');
+                    return hours + ':' + minutes;
+                }
+
+                function updateTimelineUI() {
+                    var timeLabel = document.getElementById('frame-time');
+                    var slider = document.getElementById('frame-slider');
+                    if (radarFrames.length > 0 && currentFrameIndex < radarFrames.length) {
+                        var frame = radarFrames[currentFrameIndex];
+                        var isLatest = (currentFrameIndex === radarFrames.length - 1);
+                        if (timeLabel) {
+                            timeLabel.innerText = isLatest ? 'LIVE (' + formatFrameTime(frame.time) + ')' : formatFrameTime(frame.time);
+                        }
+                        if (slider) {
+                            slider.max = radarFrames.length - 1;
+                            slider.value = currentFrameIndex;
+                        }
+                    }
+                }
+
+                function togglePlay() {
+                    var playBtn = document.getElementById('btn-play');
+                    if (isPlaying) {
+                        clearInterval(playInterval);
+                        isPlaying = false;
+                        if (playBtn) playBtn.innerText = '▶ Play';
+                    } else {
+                        isPlaying = true;
+                        if (playBtn) playBtn.innerText = '⏸ Pause';
+                        playInterval = setInterval(function() {
+                            var nextIdx = (currentFrameIndex + 1) % radarFrames.length;
+                            showRadarFrame(nextIdx);
+                        }, 1000);
+                    }
+                }
+
+                // Timeline Controller Control at Bottom Center
+                var timelineControl = L.control({ position: 'bottomright' });
+                timelineControl.onAdd = function(map) {
+                    var div = L.DomUtil.create('div', 'timeline-control');
+                    div.innerHTML = 
+                        '<div class="timeline-header">' +
+                            '<span class="timeline-title"><span class="radar-pulse"></span>Doppler Timeline</span>' +
+                            '<span id="frame-time" class="timeline-time">Loading...</span>' +
+                        '</div>' +
+                        '<div class="timeline-buttons">' +
+                            '<button id="btn-prev" class="t-btn">⏮</button>' +
+                            '<button id="btn-play" class="t-btn">▶ Play</button>' +
+                            '<button id="btn-next" class="t-btn">⏭</button>' +
+                        '</div>' +
+                        '<input id="frame-slider" class="timeline-slider" type="range" min="0" max="10" value="0" />';
+                    L.DomEvent.disableClickPropagation(div);
+                    return div;
+                };
+                timelineControl.addTo(map);
+
+                // Add interactive Cloud Opacity Slider at bottom-left
+                var opacitySlider = L.control({ position: 'bottomleft' });
+                opacitySlider.onAdd = function(map) {
+                    var div = L.DomUtil.create('div', 'opacity-control');
+                    div.innerHTML = '<strong>Cloud / Radar Opacity</strong><br/>' +
+                                    '<input id="slider" type="range" min="0" max="100" value="55" /> <span id="op-val">55%</span>';
+                    L.DomEvent.disableClickPropagation(div);
+                    return div;
+                };
+                opacitySlider.addTo(map);
 
                 // Layer Switcher Controls
                 var baseMaps = {
@@ -156,41 +309,51 @@ fun SatelliteMapScreen(
 
                 var overlayMaps = {
                     "Live Clouds (EUMETSAT)": eumetsatCloud,
-                    "Live Rain Radar (RainViewer)": rainViewerLayer,
+                    "Doppler Radar Timeline": rainViewerGroup,
                     "Infrared Storm Monitor": eumetsatInfrared
                 };
 
                 L.control.layers(baseMaps, overlayMaps, { collapsed: false, position: 'topright' }).addTo(map);
 
-                // Add interactive Cloud Opacity Slider at bottom-left
-                var opacitySlider = L.control({ position: 'bottomleft' });
-                opacitySlider.onAdd = function(map) {
-                    var div = L.DomUtil.create('div', 'opacity-control');
-                    div.innerHTML = '<strong><span class="radar-status"></span>Cloud & Radar Opacity</strong><br/>' +
-                                    '<input id="slider" type="range" min="0" max="100" value="60" /> <span id="op-val">60%</span>';
-                    L.DomEvent.disableClickPropagation(div);
-                    return div;
-                };
-                opacitySlider.addTo(map);
-
-                // Wire slider change event to adjust both Cloud and Radar opacities
+                // Wire interactive timeline events
                 setTimeout(function() {
+                    var btnPlay = document.getElementById('btn-play');
+                    var btnPrev = document.getElementById('btn-prev');
+                    var btnNext = document.getElementById('btn-next');
+                    var frameSlider = document.getElementById('frame-slider');
                     var slider = document.getElementById('slider');
                     var valDisplay = document.getElementById('op-val');
+
+                    if (btnPlay) btnPlay.addEventListener('click', togglePlay);
+                    if (btnPrev) btnPrev.addEventListener('click', function() {
+                        if (isPlaying) togglePlay();
+                        var prevIdx = (currentFrameIndex - 1 + radarFrames.length) % radarFrames.length;
+                        showRadarFrame(prevIdx);
+                    });
+                    if (btnNext) btnNext.addEventListener('click', function() {
+                        if (isPlaying) togglePlay();
+                        var nextIdx = (currentFrameIndex + 1) % radarFrames.length;
+                        showRadarFrame(nextIdx);
+                    });
+                    if (frameSlider) frameSlider.addEventListener('input', function(e) {
+                        if (isPlaying) togglePlay();
+                        showRadarFrame(parseInt(e.target.value));
+                    });
+
                     if (slider) {
                         slider.addEventListener('input', function(e) {
-                            var val = e.target.value / 100;
-                            eumetsatCloud.setOpacity(val);
-                            eumetsatInfrared.setOpacity(val);
-                            if (activeRadarTile) {
-                                activeRadarTile.setOpacity(val);
+                            currentOpacity = e.target.value / 100;
+                            eumetsatCloud.setOpacity(currentOpacity);
+                            eumetsatInfrared.setOpacity(currentOpacity);
+                            if (radarLayers.length > 0 && currentFrameIndex < radarLayers.length) {
+                                radarLayers[currentFrameIndex].setOpacity(currentOpacity);
                             }
                             if (valDisplay) valDisplay.innerText = e.target.value + '%';
                         });
                     }
-                }, 500);
+                }, 600);
 
-                // Island Microclimate Markers with detailed topography notes
+                // Island Microclimate Markers
                 var islands = [
                     { name: "Victoria & Port (Mahé)", lat: -4.6191, lon: 55.4513, desc: "Urban / Coastal Port" },
                     { name: "Pointe Larue / Airport", lat: -4.6743, lon: 55.5212, desc: "Official SMA Met Station" },
@@ -229,7 +392,7 @@ fun SatelliteMapScreen(
                 title = {
                     Column {
                         Text("Live Satellite & Cloud Radar", style = MaterialTheme.typography.titleMedium)
-                        Text("EUMETSAT Clouds + RainViewer Live Radar", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.8f))
+                        Text("EUMETSAT Clouds + Doppler Timeline Player", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.8f))
                     }
                 },
                 navigationIcon = {

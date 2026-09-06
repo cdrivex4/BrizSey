@@ -8,11 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import sc.meteo.seymeteo.data.api.SmaRepository
-import sc.meteo.seymeteo.data.model.CapAlertInfo
-import sc.meteo.seymeteo.data.model.DailyForecastItem
-import sc.meteo.seymeteo.data.model.IslandLocation
-import sc.meteo.seymeteo.data.model.MarineTideData
-import sc.meteo.seymeteo.data.model.SunMoonInfo
+import sc.meteo.seymeteo.data.model.*
 
 data class WeatherUiState(
     val isLoading: Boolean = true,
@@ -24,6 +20,7 @@ data class WeatherUiState(
     val selectedIsland: IslandLocation = IslandLocation.DEFAULT_MAHE,
     val forecastItems: List<DailyForecastItem> = emptyList(),
     val activeAlerts: List<CapAlertInfo> = emptyList(),
+    val predictability: PredictabilityAssessment = PredictabilityAssessment.evaluate(emptyList(), emptyList()),
     val marineTideData: MarineTideData = MarineTideData.createSampleData("Mahé"),
     val sunMoonInfo: SunMoonInfo = SunMoonInfo.createSampleData()
 )
@@ -59,9 +56,10 @@ class WeatherViewModel(
             // Reload forecast for newly selected island
             val result = repository.getHomeWeatherForecast(island)
             result.onSuccess { forecasts ->
-                _uiState.update {
-                    it.copy(
+                _uiState.update { current ->
+                    current.copy(
                         forecastItems = forecasts,
+                        predictability = PredictabilityAssessment.evaluate(forecasts, current.activeAlerts),
                         marineTideData = repository.getMarineTideData(island)
                     )
                 }
@@ -72,7 +70,11 @@ class WeatherViewModel(
     private suspend fun fetchDataInternal() {
         val currentIsland = _uiState.value.selectedIsland
 
-        // Forecasts
+        // 1. Fetch Alerts (non-blocking)
+        val alertsResult = repository.getCapAlerts()
+        val alerts = alertsResult.getOrDefault(emptyList())
+
+        // 2. Fetch Forecasts
         repository.getHomeWeatherForecast(currentIsland)
             .onSuccess { forecasts ->
                 _uiState.update {
@@ -82,6 +84,8 @@ class WeatherViewModel(
                         isOffline = false,
                         errorMessage = null,
                         forecastItems = forecasts,
+                        activeAlerts = alerts,
+                        predictability = PredictabilityAssessment.evaluate(forecasts, alerts),
                         lastUpdatedMs = System.currentTimeMillis(),
                         marineTideData = repository.getMarineTideData(currentIsland),
                         sunMoonInfo = repository.getSunMoonData()
@@ -94,15 +98,11 @@ class WeatherViewModel(
                         isLoading = false,
                         isRefreshing = false,
                         isOffline = true,
+                        activeAlerts = alerts,
+                        predictability = PredictabilityAssessment.evaluate(it.forecastItems, alerts),
                         errorMessage = "Unable to reach SMA: ${e.localizedMessage ?: "Check connection"}"
                     )
                 }
-            }
-
-        // Alerts (non-blocking — best effort)
-        repository.getCapAlerts()
-            .onSuccess { alerts ->
-                _uiState.update { it.copy(activeAlerts = alerts) }
             }
     }
 }

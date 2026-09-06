@@ -1,9 +1,11 @@
 package sc.meteo.seymeteo.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
@@ -11,11 +13,19 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import sc.meteo.seymeteo.data.model.UserPersona
 import sc.meteo.seymeteo.data.preferences.UserPreferences
+import sc.meteo.seymeteo.ui.theme.SeyNavyPrimary
+import sc.meteo.seymeteo.ui.theme.SeyOceanCyan
+import sc.meteo.seymeteo.ui.theme.SeyTextPrimary
+import sc.meteo.seymeteo.ui.theme.SeyTextSecondary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,6 +41,7 @@ fun SettingsScreen(
     val timeFormat by prefs.timeFormat.collectAsState(initial = "24h")
     val theme by prefs.theme.collectAsState(initial = "system")
     val refreshMin by prefs.refreshIntervalMinutes.collectAsState(initial = 30)
+    val userPersona by prefs.userPersona.collectAsState(initial = UserPersona.GENERAL_CITIZEN)
     val notifyExtreme by prefs.notifyExtreme.collectAsState(initial = true)
     val notifySevere by prefs.notifySevere.collectAsState(initial = true)
     val notifyModerate by prefs.notifyModerate.collectAsState(initial = false)
@@ -54,7 +65,7 @@ fun SettingsScreen(
             contentPadding = PaddingValues(bottom = 32.dp)
         ) {
             // ---- Display ----
-            item { SettingsSectionHeader(text = "Display", icon = Icons.Default.Palette) }
+            item { SettingsSectionHeader(text = "Display & Units", icon = Icons.Default.Palette) }
 
             item {
                 SettingsSegmentedRow(
@@ -92,6 +103,35 @@ fun SettingsScreen(
                 )
             }
 
+            // ---- Cost-Loss Profile (Decision Theory Grounding) ----
+            item { SettingsSectionHeader(text = "Alert Sensitivity Profile", icon = Icons.Default.Tune) }
+
+            item {
+                Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)) {
+                    Text(
+                        text = "Cost-Loss Protection Model (World Bank 11407)",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        text = "Customizes alert thresholds to match your personal activity and mitigate false-alarm alert fatigue.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = SeyTextSecondary,
+                        modifier = Modifier.padding(top = 2.dp, bottom = 8.dp)
+                    )
+
+                    UserPersona.entries.forEach { persona ->
+                        PersonaCard(
+                            persona = persona,
+                            isSelected = userPersona == persona,
+                            onSelect = { scope.launch { prefs.setUserPersona(persona) } }
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                    }
+                }
+            }
+
             // ---- Data & Sync ----
             item { SettingsSectionHeader(text = "Data & Sync", icon = Icons.Default.Sync) }
 
@@ -105,12 +145,12 @@ fun SettingsScreen(
             }
 
             // ---- Notifications ----
-            item { SettingsSectionHeader(text = "Notifications", icon = Icons.Default.Notifications) }
+            item { SettingsSectionHeader(text = "Notification Channels", icon = Icons.Default.Notifications) }
 
             item {
                 SettingsSwitchRow(
                     label = "🔴 Extreme Alerts",
-                    subtitle = "Cyclone, tsunami warnings",
+                    subtitle = "Cyclone, tsunami bulletins",
                     checked = notifyExtreme,
                     onToggle = { scope.launch { prefs.setNotifyExtreme(it) } }
                 )
@@ -119,7 +159,7 @@ fun SettingsScreen(
             item {
                 SettingsSwitchRow(
                     label = "🟠 Severe Warnings",
-                    subtitle = "Heavy rain, storm surge",
+                    subtitle = "Torrential rain, storm surges",
                     checked = notifySevere,
                     onToggle = { scope.launch { prefs.setNotifySevere(it) } }
                 )
@@ -128,29 +168,103 @@ fun SettingsScreen(
             item {
                 SettingsSwitchRow(
                     label = "🟡 Advisories",
-                    subtitle = "Small craft, wind watches",
+                    subtitle = "Small craft watches, wind gusts",
                     checked = notifyModerate,
                     onToggle = { scope.launch { prefs.setNotifyModerate(it) } }
                 )
             }
 
             // ---- About ----
-            item { SettingsSectionHeader(text = "About", icon = Icons.Default.Info) }
+            item { SettingsSectionHeader(text = "About & Research", icon = Icons.Default.Info) }
 
             item {
-                SettingsInfoRow(label = "Data Source", value = "Seychelles Met Authority")
+                SettingsInfoRow(label = "Data Provider", value = "Seychelles Met Authority (meteo.sc)")
             }
             item {
-                SettingsInfoRow(label = "Version", value = "1.0.0 (debug)")
+                SettingsInfoRow(label = "Microclimates", value = "Open-Meteo High-Res Grid")
             }
             item {
-                SettingsInfoRow(label = "SMA Website", value = "www.meteo.sc")
+                SettingsInfoRow(label = "Radar / Clouds", value = "EUMETSAT & RainViewer Live")
+            }
+            item {
+                SettingsInfoRow(label = "Version", value = "1.1.0 (Research Enhanced)")
             }
         }
     }
 }
 
 // ---- Helper Composables ----
+
+@Composable
+private fun PersonaCard(
+    persona: UserPersona,
+    isSelected: Boolean,
+    onSelect: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onSelect),
+        shape = RoundedCornerShape(12.dp),
+        color = if (isSelected) SeyNavyPrimary.copy(alpha = 0.08f) else Color(0xFFF8FAFC),
+        border = BorderStroke(
+            width = if (isSelected) 1.5.dp else 1.dp,
+            color = if (isSelected) SeyNavyPrimary else Color(0xFFE2E8F0)
+        )
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.Top
+        ) {
+            RadioButton(
+                selected = isSelected,
+                onClick = onSelect,
+                colors = RadioButtonDefaults.colors(selectedColor = SeyNavyPrimary)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = persona.title,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = if (isSelected) SeyNavyPrimary else SeyTextPrimary
+                    )
+                    Surface(
+                        color = if (isSelected) SeyNavyPrimary else Color(0xFF94A3B8),
+                        shape = RoundedCornerShape(6.dp)
+                    ) {
+                        Text(
+                            text = "C/L ${(persona.costLossRatio * 100).toInt()}%",
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = Color.White,
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+                Text(
+                    text = persona.subtitle,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = SeyOceanCyan,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Text(
+                    text = persona.description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = SeyTextSecondary,
+                    fontSize = 11.sp,
+                    modifier = Modifier.padding(top = 2.dp)
+                )
+            }
+        }
+    }
+}
 
 @Composable
 private fun SettingsSectionHeader(text: String, icon: ImageVector) {
