@@ -1,140 +1,142 @@
-# Graph Report - .  (2026-09-05)
+# Graph Report - SeyMeteo  (2026-09-06)
 
 ## Corpus Check
-- cluster-only mode — file stats not available
+- Corpus is ~43,068 words - fits in a single context window. You may not need a graph.
 
 ## Summary
-- 215 nodes · 297 edges · 19 communities (17 shown, 2 thin omitted)
-- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 17 edges (avg confidence: 0.8)
+- 235 nodes · 393 edges · 20 communities
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Community 0|Community 0]]
-- [[_COMMUNITY_Community 1|Community 1]]
-- [[_COMMUNITY_Community 2|Community 2]]
-- [[_COMMUNITY_Community 3|Community 3]]
-- [[_COMMUNITY_Community 4|Community 4]]
-- [[_COMMUNITY_Community 5|Community 5]]
-- [[_COMMUNITY_Community 6|Community 6]]
-- [[_COMMUNITY_Community 7|Community 7]]
-- [[_COMMUNITY_Community 8|Community 8]]
-- [[_COMMUNITY_Community 9|Community 9]]
-- [[_COMMUNITY_Community 10|Community 10]]
-- [[_COMMUNITY_Community 11|Community 11]]
-- [[_COMMUNITY_Community 12|Community 12]]
-- [[_COMMUNITY_Community 13|Community 13]]
-- [[_COMMUNITY_Community 14|Community 14]]
-- [[_COMMUNITY_Community 15|Community 15]]
-- [[_COMMUNITY_Community 16|Community 16]]
+- Community 0
+- Community 1
+- Community 2
+- Community 3
+- Community 4
+- Community 5
+- Community 6
+- Community 7
+- Community 8
+- Community 9
+- Community 10
+- Community 11
+- Community 12
+- Community 13
+- Community 14
+- Community 15
 
 ## God Nodes (most connected - your core abstractions)
-1. `UserPreferences` - 20 edges
-2. `FavouriteDao` - 11 edges
-3. `IslandLocation` - 11 edges
-4. `HomeScreen()` - 11 edges
-5. `SmaRepository` - 10 edges
-6. `WeatherViewModel` - 9 edges
-7. `AlertDao` - 8 edges
-8. `ForecastDao` - 8 edges
-9. `SeyMeteoDatabase` - 6 edges
-10. `FavouriteLocationEntity` - 6 edges
+1. `UserPreferences` - 22 edges
+2. `IslandLocation` - 15 edges
+3. `SmaRepository` - 14 edges
+4. `UserPersona` - 13 edges
+5. `HomeScreen()` - 13 edges
+6. `FavouriteDao` - 12 edges
+7. `CapAlertInfo` - 10 edges
+8. `WeatherViewModel` - 10 edges
+9. `SeyMeteoDatabase` - 9 edges
+10. `AlertDao` - 9 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `SettingsScreen()` --calls--> `UserPreferences`  [INFERRED]
-  ui/screens/SettingsScreen.kt → data/preferences/UserPreferences.kt
-- `CurrentWeatherCard()` --references--> `IslandLocation`  [EXTRACTED]
-  ui/components/CurrentWeatherCard.kt → data/model/IslandLocation.kt
-- `IslandSelector()` --references--> `IslandLocation`  [EXTRACTED]
-  ui/components/IslandSelector.kt → data/model/IslandLocation.kt
-- `CurrentWeatherCard()` --references--> `DailyForecastItem`  [EXTRACTED]
-  ui/components/CurrentWeatherCard.kt → data/model/WeatherForecast.kt
-- `ForecastRowItem()` --references--> `DailyForecastItem`  [EXTRACTED]
-  ui/components/SevenDayForecastCard.kt → data/model/WeatherForecast.kt
+- `HomeScreen()` --calls--> `AlertCard()`  [INFERRED]
+  app/src/main/java/sc/meteo/seymeteo/ui/screens/HomeScreen.kt → app/src/main/java/sc/meteo/seymeteo/ui/components/AlertCard.kt
+- `HomeScreen()` --calls--> `CurrentWeatherCard()`  [INFERRED]
+  app/src/main/java/sc/meteo/seymeteo/ui/screens/HomeScreen.kt → app/src/main/java/sc/meteo/seymeteo/ui/components/CurrentWeatherCard.kt
+- `HomeScreen()` --calls--> `IslandSelector()`  [INFERRED]
+  app/src/main/java/sc/meteo/seymeteo/ui/screens/HomeScreen.kt → app/src/main/java/sc/meteo/seymeteo/ui/components/IslandSelector.kt
+- `HomeScreen()` --calls--> `MarineTideCard()`  [INFERRED]
+  app/src/main/java/sc/meteo/seymeteo/ui/screens/HomeScreen.kt → app/src/main/java/sc/meteo/seymeteo/ui/components/MarineTideCard.kt
+- `HomeScreen()` --calls--> `PredictabilityCard()`  [INFERRED]
+  app/src/main/java/sc/meteo/seymeteo/ui/screens/HomeScreen.kt → app/src/main/java/sc/meteo/seymeteo/ui/components/PredictabilityCard.kt
 
 ## Import Cycles
 - None detected.
 
-## Communities (19 total, 2 thin omitted)
+## Communities (20 total, 0 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.12
-Nodes (14): create(), List, SmaApiService, List, Result, SmaRepository, IslandLocation, String (+6 more)
+Cohesion: 0.09
+Nodes (14): UserPersona, FARMER_AGRICULTURE, GENERAL_CITIZEN, MARITIME_FISHER, TOURISM_OUTDOOR, Flow, UserPreferences, ImageVector (+6 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.10
-Nodes (17): CapAlertProperties, Boolean, Long, AlertCard(), Modifier, CurrentWeatherCard(), ImageVector, Modifier (+9 more)
+Cohesion: 0.12
+Nodes (11): SmaApiService, Result, SmaRepository, CapAlertGeoJson, IslandLocation, HomeForecastResponse, IslandSelector(), Modifier (+3 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.17
-Nodes (6): Boolean, Flow, Int, Long, String, UserPreferences
+Cohesion: 0.16
+Nodes (6): FavouriteDao, Flow, FavouriteLocationEntity, Context, SeyMeteoDatabase, RoomDatabase
 
 ### Community 3 - "Community 3"
-Cohesion: 0.12
-Nodes (10): CoroutineWorker, CapAlertFeature, CapAlertGeoJson, CapAlertInfo, toCapAlertInfo(), AlertNotificationBuilder, AlertPollerWorker, Result (+2 more)
+Cohesion: 0.18
+Nodes (12): MainActivity, Screen, HOME, SATELLITE_MAP, SETTINGS, SatelliteMapScreen(), WebViewClient, SeyMeteoTheme() (+4 more)
 
 ### Community 4 - "Community 4"
-Cohesion: 0.16
-Nodes (7): FavouriteDao, Boolean, Flow, Int, List, String, FavouriteLocationEntity
+Cohesion: 0.18
+Nodes (10): CapAlertFeature, CapAlertInfo, CapAlertProperties, toCapAlertInfo(), AlertNotificationBuilder, AlertCard(), Modifier, AlertPollerWorker (+2 more)
 
 ### Community 5 - "Community 5"
 Cohesion: 0.20
-Nodes (6): ForecastDao, Flow, List, Long, String, CachedForecastEntity
+Nodes (9): PredictabilityAssessment, PredictabilityLevel, HIGH, MODERATE, UNSTABLE, Modifier, PredictabilityCard(), Modifier (+1 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.20
-Nodes (6): AlertDao, Flow, List, Long, String, CachedAlertEntity
+Cohesion: 0.25
+Nodes (11): DailyForecastItem, DayForecastCollection, ForecastFeature, ForecastProperties, CurrentWeatherCard(), ImageVector, Modifier, WeatherMetricChip() (+3 more)
 
 ### Community 7 - "Community 7"
-Cohesion: 0.24
-Nodes (7): IslandResolver, ResolvedIsland, GpsLocation, haversineDistanceKm(), Flow, LocationService, Double
+Cohesion: 0.23
+Nodes (3): AlertDao, Flow, CachedAlertEntity
 
 ### Community 8 - "Community 8"
-Cohesion: 0.31
-Nodes (9): createSampleData(), String, MarineTideData, TidePoint, Modifier, String, MarineInfoBox(), MarineTideCard() (+1 more)
+Cohesion: 0.23
+Nodes (3): ForecastDao, Flow, CachedForecastEntity
 
 ### Community 9 - "Community 9"
-Cohesion: 0.31
-Nodes (10): Pair, Boolean, ImageVector, List, String, SettingsInfoRow(), SettingsScreen(), SettingsSectionHeader() (+2 more)
+Cohesion: 0.33
+Nodes (6): HomeScreen(), Modifier, WeatherUiState, WeatherViewModel, StateFlow, ViewModel
 
 ### Community 10 - "Community 10"
-Cohesion: 0.28
-Nodes (6): createSampleData(), SunMoonInfo, Modifier, String, SunMoonCard(), SunMoonRow()
+Cohesion: 0.40
+Nodes (6): MarineTideData, TidePoint, Modifier, MarineInfoBox(), MarineTideCard(), TideItemPill()
 
 ### Community 11 - "Community 11"
-Cohesion: 0.31
-Nodes (4): StateFlow, WeatherUiState, WeatherViewModel, ViewModel
+Cohesion: 0.29
+Nodes (6): IslandResolver, ResolvedIsland, GpsLocation, haversineDistanceKm(), Flow, LocationService
 
 ### Community 12 - "Community 12"
-Cohesion: 0.25
-Nodes (5): Bundle, ComponentActivity, MainActivity, Boolean, SeyMeteoTheme()
+Cohesion: 0.29
+Nodes (7): GlanceAppWidget, SeyMeteoGlanceReceiver, Context, GlanceAppWidget, SeyMeteoGlanceWidget, GlanceAppWidgetReceiver, GlanceId
 
 ### Community 13 - "Community 13"
-Cohesion: 0.33
-Nodes (4): getInstance(), Context, SeyMeteoDatabase, RoomDatabase
+Cohesion: 0.31
+Nodes (4): Context, SeyMeteoNotificationChannels, SeyMeteoApplication, Application
 
 ### Community 14 - "Community 14"
-Cohesion: 0.47
-Nodes (5): ForecastRowItem(), Boolean, List, Modifier, SevenDayForecastCard()
+Cohesion: 0.36
+Nodes (4): SunMoonInfo, Modifier, SunMoonCard(), SunMoonRow()
+
+### Community 15 - "Community 15"
+Cohesion: 0.33
+Nodes (4): OpenMeteoApiService, OpenMeteoCurrent, OpenMeteoDaily, OpenMeteoResponse
 
 ## Knowledge Gaps
-- **4 isolated node(s):** `ResolvedIsland`, `CapAlertFeature`, `DayForecastCollection`, `ForecastFeature`
-  These have ≤1 connection - possible missing edges or undocumented components.
-- **2 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **18 isolated node(s):** `HOME`, `SETTINGS`, `SATELLITE_MAP`, `OpenMeteoCurrent`, `OpenMeteoDaily` (+13 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 57 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `SmaRepository` connect `Community 0` to `Community 10`, `Community 3`?**
-  _High betweenness centrality (0.497) - this node is a cross-community bridge._
-- **Why does `IslandLocation` connect `Community 0` to `Community 1`, `Community 11`, `Community 7`?**
-  _High betweenness centrality (0.279) - this node is a cross-community bridge._
-- **Why does `UserPreferences` connect `Community 2` to `Community 9`, `Community 3`?**
-  _High betweenness centrality (0.236) - this node is a cross-community bridge._
-- **Are the 2 inferred relationships involving `UserPreferences` (e.g. with `SettingsScreen()` and `.doWork()`) actually correct?**
-  _`UserPreferences` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 8 inferred relationships involving `HomeScreen()` (e.g. with `.onCreate()` and `AlertCard()`) actually correct?**
+- **Why does `IslandLocation` connect `Community 1` to `Community 10`, `Community 11`, `Community 6`?**
+  _High betweenness centrality (0.183) - this node is a cross-community bridge._
+- **Why does `SeyMeteoDatabase` connect `Community 2` to `Community 1`, `Community 4`, `Community 7`, `Community 8`, `Community 12`?**
+  _High betweenness centrality (0.172) - this node is a cross-community bridge._
+- **Why does `UserPreferences` connect `Community 0` to `Community 1`, `Community 4`?**
+  _High betweenness centrality (0.172) - this node is a cross-community bridge._
+- **Are the 8 inferred relationships involving `HomeScreen()` (e.g. with `AlertCard()` and `CurrentWeatherCard()`) actually correct?**
   _`HomeScreen()` has 8 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 2 inferred relationships involving `SmaRepository` (e.g. with `.doWork()` and `.doWork()`) actually correct?**
-  _`SmaRepository` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `ResolvedIsland`, `CapAlertFeature`, `DayForecastCollection` to the rest of the system?**
-  _4 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `HOME`, `SETTINGS`, `SATELLITE_MAP` to the rest of the system?**
+  _18 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `Community 0` be split into smaller, more focused modules?**
+  _Cohesion score 0.09032258064516129 - nodes in this community are weakly interconnected._
+- **Should `Community 1` be split into smaller, more focused modules?**
+  _Cohesion score 0.1164021164021164 - nodes in this community are weakly interconnected._

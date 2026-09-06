@@ -75,3 +75,30 @@ This document captures key architectural decisions made during development and t
 **Decision:** WorkManager polls `/api/cap/alerts.geojson` every 15 minutes. New identifiers (not previously seen in Room) trigger local `NotificationManager` notifications. This works without any FCM server-side setup.
 
 **Trade-off:** 15-min delay vs true push. Acceptable for weather alerts (typhoon warnings don't appear and disappear in 15 minutes). Can be upgraded to FCM later if SMA provides server-sent push.
+
+---
+
+## ADR-007: Decision-Theoretic Cost-Loss Alert Filtering & Atmospheric Predictability Index
+
+**Date:** 2026-09-06  
+**Status:** Accepted
+
+**Context:** Naive push alerts trigger for all active warnings regardless of user context, causing severe false-alarm fatigue ("The Mistrust Penalty", World Bank WP 11407). Different users have vastly different risk tolerances (e.g. a maritime fisher facing vessel risk vs. a general citizen facing minor commute delays).
+
+**Decision:**
+1. Implement persona-based alert thresholding in `AlertPollerWorker`: calculate risk weight $P_{risk}$ and compare against persona cost-loss ratio $C_{prot} / C_{loss}$ (`General Citizen` = 0.65, `Maritime Fisher` = 0.20, `Farmer` = 0.35, `Tourism` = 0.50). Sub-threshold alerts are silently cached in Room SQLite for in-app viewing without interrupting the user.
+2. Calculate a 0-100% Atmospheric Predictability & Consensus Index (`PredictabilityScore.kt`) that translates complex multi-source meteorological variance into clear psychological reassurance copy on `HomeScreen`.
+
+---
+
+## ADR-008: Jetpack Glance App Widget & Multi-Frame Doppler Radar Timeline
+
+**Date:** 2026-09-06  
+**Status:** Accepted
+
+**Context:** Users need instant glanceable island weather on their Android launcher without launching the app, and need visual temporal progression of convective clouds and rain radar.
+
+**Decision:**
+1. Use `androidx.glance` to render a modern home screen widget (`SeyMeteoGlanceWidget.kt`) that reads from Room DB with 0ms network latency.
+2. In `SatelliteMapScreen.kt`, query the full array of RainViewer Doppler radar frames to provide a 10-minute timestep timeline playback slider with opacity controls over Leaflet OpenStreetMap tiles.
+

@@ -15,19 +15,20 @@
 | Feature | Status |
 |---------|--------|
 | 7-day forecast (Mahé, Praslin, La Digue) | ✅ Live |
-| Offline-first Room DB cache | ✅ |
-| Background auto-refresh (WorkManager) | ✅ |
-| GPS auto-detect closest island | ✅ |
-| Favourite locations system | ✅ |
-| CAP severe weather alerts | ✅ |
-| Local push notifications (cyclone, tsunami) | ✅ |
-| Marine sea-state & tide overview | ✅ |
-| Sun/moon rise-set info | ✅ |
-| Satellite/radar preview | ✅ |
-| Settings (°C/°F, wind units, theme, 12/24h) | ✅ |
-| Home screen Glance widget | 🚧 In progress |
-| Multilingual (English / Français / Kreol) | 🚧 In progress |
-| Tide curve chart | 🚧 In progress |
+| Offline-first Room DB cache | ✅ Live |
+| Atmospheric Predictability & Reassurance Gauge | ✅ Live |
+| Cost-Loss Persona Alert Engine (World Bank 11407) | ✅ Live |
+| 12-Frame Interactive Doppler Radar Timeline Player | ✅ Live |
+| Home screen Glance widget | ✅ Live |
+| Background auto-refresh (WorkManager) | ✅ Live |
+| GPS auto-detect closest island | ✅ Live |
+| Favourite locations system | ✅ Live |
+| CAP severe weather alerts & local notifications | ✅ Live |
+| Marine sea-state & tide overview | ✅ Live |
+| Sun/moon rise-set info | ✅ Live |
+| Satellite/radar preview with opacity controls | ✅ Live |
+| Settings (°C/°F, wind units, theme, 12/24h, persona) | ✅ Live |
+| Android 8.0 (API 26) through Android 15 support | ✅ Live |
 
 ---
 
