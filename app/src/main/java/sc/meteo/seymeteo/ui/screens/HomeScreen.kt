@@ -198,7 +198,7 @@ fun HomeScreen(
                         )
                     }
 
-                    // 4. Nowcasting Precipitation Advection & Interception Engine (Scenario A / B)
+                    // 4. Nowcasting Precipitation Advection & Interception Engine
                     item {
                         RainInterceptionCard(
                             solution = uiState.interceptionSolution,
@@ -212,7 +212,15 @@ fun HomeScreen(
                         )
                     }
 
-                    // 5. Island Selector (Mahé, Praslin, La Digue)
+                    // 5. Topographic Microclimate & Beach Calmness Prediction (DEM 30m)
+                    item {
+                        MicroclimatePredictionCard(
+                            prediction = uiState.microclimatePrediction,
+                            glassOpacity = glassOpacity
+                        )
+                    }
+
+                    // 6. Island Selector (Mahé, Praslin, La Digue)
                     item {
                         IslandSelector(
                             islands = uiState.availableIslands,

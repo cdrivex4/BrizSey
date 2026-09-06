@@ -16,17 +16,23 @@
 |---------|--------|
 | 7-day forecast (Mahé, Praslin, La Digue) | ✅ Live |
 | Offline-first Room DB cache | ✅ Live |
+| Topographic Microclimate & Beach Calmness Engine (DEM 30m) | ✅ Live |
+| Lifting Condensation Level (LCL) Thermodynamic Piercing | ✅ Live |
+| Leeward Rain Shadow & Windward Orographic Lift Predictor | ✅ Live |
+| Coastal Safe Swimming & Wave Swell Guide (Beau Vallon, Anse Royale, etc.) | ✅ Live |
+| Nowcasting Precipitation Advection & Dynamic Interception | ✅ Live |
 | Atmospheric Predictability & Reassurance Gauge | ✅ Live |
 | Cost-Loss Persona Alert Engine (World Bank 11407) | ✅ Live |
 | 12-Frame Interactive Doppler Radar Timeline Player | ✅ Live |
 | Home screen Glance widget | ✅ Live |
 | Background auto-refresh (WorkManager) | ✅ Live |
-| GPS auto-detect closest island | ✅ Live |
+| GPS auto-detect closest island & kinematic speed/heading | ✅ Live |
 | Favourite locations system | ✅ Live |
 | CAP severe weather alerts & local notifications | ✅ Live |
 | Marine sea-state & tide overview | ✅ Live |
 | Sun/moon rise-set info | ✅ Live |
 | Satellite/radar preview with opacity controls | ✅ Live |
+| Scientific Dissertation & Meteorological Model Paper | 📄 [Read Paper](doc/BRIZSEY_SCIENTIFIC_DISSERTATION.md) |
 | Settings (°C/°F, wind units, theme, 12/24h, persona) | ✅ Live |
 | Android 8.0 (API 26) through Android 15 support | ✅ Live |
 

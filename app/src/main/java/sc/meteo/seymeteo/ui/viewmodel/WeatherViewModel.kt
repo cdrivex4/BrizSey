@@ -14,6 +14,7 @@ import sc.meteo.seymeteo.data.location.LocationService
 import sc.meteo.seymeteo.data.model.*
 import sc.meteo.seymeteo.domain.nowcasting.RadarAdvectionEngine
 import sc.meteo.seymeteo.domain.nowcasting.RainInterceptionSolver
+import sc.meteo.seymeteo.domain.nowcasting.TopographicMicroclimatePredictor
 
 data class WeatherUiState(
     val isLoading: Boolean = true,
@@ -30,6 +31,7 @@ data class WeatherUiState(
     val sunMoonInfo: SunMoonInfo = SunMoonInfo.createSampleData(),
     val activeFront: WeatherFront? = null,
     val interceptionSolution: InterceptionSolution? = null,
+    val microclimatePrediction: IslandMicroclimatePrediction? = null,
     val isSimulationMode: Boolean = false,
     val simulatedSpeedKmh: Float = 0f,
     val simulatedBearingDeg: Float = 315f
@@ -39,6 +41,7 @@ class WeatherViewModel(
     private val repository: SmaRepository = SmaRepository(),
     private val advectionEngine: RadarAdvectionEngine = RadarAdvectionEngine(),
     private val interceptionSolver: RainInterceptionSolver = RainInterceptionSolver(),
+    private val microclimatePredictor: TopographicMicroclimatePredictor = TopographicMicroclimatePredictor(),
     private val locationService: LocationService = SeyMeteoApplication.instance.locationService
 ) : ViewModel() {
 
@@ -97,13 +100,15 @@ class WeatherViewModel(
                     val front = advectionEngine.estimateActiveFront(islandGps, forecasts.firstOrNull())
                     val userKinematics = resolveUserKinematics(current, islandGps)
                     val solution = interceptionSolver.solveInterception(userKinematics, front)
+                    val microclimate = microclimatePredictor.predictIslandMicroclimate(forecasts.firstOrNull())
 
                     current.copy(
                         forecastItems = forecasts,
                         predictability = PredictabilityAssessment.evaluate(forecasts, current.activeAlerts),
                         marineTideData = repository.getMarineTideData(island),
                         activeFront = front,
-                        interceptionSolution = solution
+                        interceptionSolution = solution,
+                        microclimatePrediction = microclimate
                     )
                 }
             }
@@ -167,6 +172,7 @@ class WeatherViewModel(
                 val front = advectionEngine.estimateActiveFront(islandGps, forecasts.firstOrNull())
                 val userKinematics = resolveUserKinematics(_uiState.value, islandGps)
                 val solution = interceptionSolver.solveInterception(userKinematics, front)
+                val microclimate = microclimatePredictor.predictIslandMicroclimate(forecasts.firstOrNull())
 
                 _uiState.update {
                     it.copy(
@@ -181,7 +187,8 @@ class WeatherViewModel(
                         marineTideData = repository.getMarineTideData(currentIsland),
                         sunMoonInfo = repository.getSunMoonData(),
                         activeFront = front,
-                        interceptionSolution = solution
+                        interceptionSolution = solution,
+                        microclimatePrediction = microclimate
                     )
                 }
             }
