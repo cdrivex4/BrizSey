@@ -33,6 +33,7 @@
 | Sun/moon rise-set info | ✅ Live |
 | Satellite/radar preview with opacity controls | ✅ Live |
 | Scientific Dissertation & Meteorological Model Paper | 📄 [Read Paper](doc/BRIZSEY_SCIENTIFIC_DISSERTATION.md) |
+| Strategic AI & Future Roadmap | 🚀 [View Roadmap](TODO.md) |
 | Settings (°C/°F, wind units, theme, 12/24h, persona) | ✅ Live |
 | Android 8.0 (API 26) through Android 15 support | ✅ Live |
 
@@ -53,6 +54,17 @@ This dissertation details:
 - **Full Academic Bibliography**: 36 comprehensive, peer-reviewed scientific citations.
 
 > ℹ️ **Documentation Synchronization Protocol**: Whenever project features, physical models, or domain logic are modified, [`doc/BRIZSEY_SCIENTIFIC_DISSERTATION.md`](doc/BRIZSEY_SCIENTIFIC_DISSERTATION.md) is maintained as a core project document and updated in tandem with codebase changes.
+
+---
+
+## 🚀 Strategic Roadmap & Advanced AI Innovations
+
+Explore our comprehensive research and engineering roadmap in 👉 **[TODO.md](TODO.md)**:
+- **Google DeepMind GraphCast / GenCast & MetNet-3**: On-premise GNN deployment at SMA downscaled to Mahé's 30m DEM for sub-kilometer microclimate resolution.
+- **Deep Generative Radar Nowcasting (DGMR)**: High-resolution spatiotemporal precipitation probability grids $P(x,y,t)$ up to 6 hours ahead.
+- **Commute & "Dry Corridor" Departure Optimizer**: Algorithmic solution to the optimal departure time problem $\min_	au \mathcal{J}(	au)$ advising commuters when to set out to avoid getting rained on.
+- **Automated Broadcast Generative Video Reports**: Headless 3D topographic fly-overs with WMO meteorological symbols and neural multilingual voice synthesis (Creole, English, French).
+- **Climate Change & SIDS Resilience**: Coral bleaching Degree Heating Weeks (DHW), tropical cyclone track genesis, and coastal inundation modeling under IPCC SSP scenarios.
 
 ---
 
