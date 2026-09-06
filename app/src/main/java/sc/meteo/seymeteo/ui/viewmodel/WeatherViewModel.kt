@@ -32,9 +32,7 @@ data class WeatherUiState(
     val activeFront: WeatherFront? = null,
     val interceptionSolution: InterceptionSolution? = null,
     val microclimatePrediction: IslandMicroclimatePrediction? = null,
-    val isSimulationMode: Boolean = false,
-    val simulatedSpeedKmh: Float = 0f,
-    val simulatedBearingDeg: Float = 315f
+    val userKinematics: UserKinematics = UserKinematics(location = GpsLocation(-4.6191, 55.4513))
 )
 
 class WeatherViewModel(
@@ -57,19 +55,16 @@ class WeatherViewModel(
         viewModelScope.launch {
             locationService.userKinematics.collect { kinematics ->
                 _uiState.update { current ->
-                    if (!current.isSimulationMode) {
-                        val front = current.activeFront ?: advectionEngine.estimateActiveFront(
-                            kinematics.location,
-                            current.forecastItems.firstOrNull()
-                        )
-                        val solution = interceptionSolver.solveInterception(kinematics, front)
-                        current.copy(
-                            activeFront = front,
-                            interceptionSolution = solution
-                        )
-                    } else {
-                        current
-                    }
+                    val front = current.activeFront ?: advectionEngine.estimateActiveFront(
+                        kinematics.location,
+                        current.forecastItems.firstOrNull()
+                    )
+                    val solution = interceptionSolver.solveInterception(kinematics, front)
+                    current.copy(
+                        userKinematics = kinematics,
+                        activeFront = front,
+                        interceptionSolution = solution
+                    )
                 }
             }
         }
@@ -92,14 +87,13 @@ class WeatherViewModel(
     fun selectIsland(island: IslandLocation) {
         _uiState.update { it.copy(selectedIsland = island) }
         viewModelScope.launch {
-            // Reload forecast for newly selected island
             val result = repository.getHomeWeatherForecast(island)
             result.onSuccess { forecasts ->
                 _uiState.update { current ->
                     val islandGps = GpsLocation(island.latitude, island.longitude)
                     val front = advectionEngine.estimateActiveFront(islandGps, forecasts.firstOrNull())
-                    val userKinematics = resolveUserKinematics(current, islandGps)
-                    val solution = interceptionSolver.solveInterception(userKinematics, front)
+                    val currentKinematics = locationService.currentUserKinematics
+                    val solution = interceptionSolver.solveInterception(currentKinematics, front)
                     val microclimate = microclimatePredictor.predictIslandMicroclimate(forecasts.firstOrNull())
 
                     current.copy(
@@ -115,49 +109,6 @@ class WeatherViewModel(
         }
     }
 
-    /**
-     * Updates simulated user speed and bearing to test dynamic evasion live in UI.
-     */
-    fun updateSimulation(speedKmh: Float, bearingDeg: Float, isSimulated: Boolean) {
-        _uiState.update { current ->
-            val islandGps = GpsLocation(current.selectedIsland.latitude, current.selectedIsland.longitude)
-            val front = current.activeFront ?: advectionEngine.estimateActiveFront(islandGps, current.forecastItems.firstOrNull())
-            val userKinematics = UserKinematics(
-                location = islandGps,
-                speedKmh = speedKmh.toDouble(),
-                bearingDeg = bearingDeg.toDouble(),
-                isMoving = isSimulated && speedKmh > 1.5
-            )
-            val solution = interceptionSolver.solveInterception(userKinematics, front)
-
-            current.copy(
-                isSimulationMode = isSimulated,
-                simulatedSpeedKmh = speedKmh,
-                simulatedBearingDeg = bearingDeg,
-                activeFront = front,
-                interceptionSolution = solution
-            )
-        }
-    }
-
-    private fun resolveUserKinematics(state: WeatherUiState, islandGps: GpsLocation): UserKinematics {
-        return if (state.isSimulationMode) {
-            UserKinematics(
-                location = islandGps,
-                speedKmh = state.simulatedSpeedKmh.toDouble(),
-                bearingDeg = state.simulatedBearingDeg.toDouble(),
-                isMoving = state.simulatedSpeedKmh > 1.5
-            )
-        } else {
-            UserKinematics(
-                location = islandGps,
-                speedKmh = 0.0,
-                bearingDeg = 0.0,
-                isMoving = false
-            )
-        }
-    }
-
     private suspend fun fetchDataInternal() {
         val currentIsland = _uiState.value.selectedIsland
         val islandGps = GpsLocation(currentIsland.latitude, currentIsland.longitude)
@@ -170,8 +121,8 @@ class WeatherViewModel(
         repository.getHomeWeatherForecast(currentIsland)
             .onSuccess { forecasts ->
                 val front = advectionEngine.estimateActiveFront(islandGps, forecasts.firstOrNull())
-                val userKinematics = resolveUserKinematics(_uiState.value, islandGps)
-                val solution = interceptionSolver.solveInterception(userKinematics, front)
+                val currentKinematics = locationService.currentUserKinematics
+                val solution = interceptionSolver.solveInterception(currentKinematics, front)
                 val microclimate = microclimatePredictor.predictIslandMicroclimate(forecasts.firstOrNull())
 
                 _uiState.update {
@@ -186,6 +137,7 @@ class WeatherViewModel(
                         lastUpdatedMs = System.currentTimeMillis(),
                         marineTideData = repository.getMarineTideData(currentIsland),
                         sunMoonInfo = repository.getSunMoonData(),
+                        userKinematics = currentKinematics,
                         activeFront = front,
                         interceptionSolution = solution,
                         microclimatePrediction = microclimate

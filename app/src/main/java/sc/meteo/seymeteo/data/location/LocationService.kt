@@ -32,6 +32,7 @@ class LocationService(context: Context) {
         )
     )
     val userKinematics: Flow<UserKinematics> = _userKinematics.asStateFlow()
+    val currentUserKinematics: UserKinematics get() = _userKinematics.value
 
     private var isTracking = false
 

@@ -202,12 +202,6 @@ fun HomeScreen(
                     item {
                         RainInterceptionCard(
                             solution = uiState.interceptionSolution,
-                            isSimulationMode = uiState.isSimulationMode,
-                            simulatedSpeedKmh = uiState.simulatedSpeedKmh,
-                            simulatedBearingDeg = uiState.simulatedBearingDeg,
-                            onUpdateSimulation = { speed, bearing, isSim ->
-                                viewModel.updateSimulation(speed, bearing, isSim)
-                            },
                             glassOpacity = glassOpacity
                         )
                     }

@@ -1,6 +1,5 @@
 package sc.meteo.seymeteo.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import sc.meteo.seymeteo.data.model.InterceptionScenario
 import sc.meteo.seymeteo.data.model.InterceptionSolution
 import sc.meteo.seymeteo.ui.theme.SeyOceanCyan
 import kotlin.math.roundToInt
@@ -24,18 +24,12 @@ import kotlin.math.roundToInt
 @Composable
 fun RainInterceptionCard(
     solution: InterceptionSolution?,
-    isSimulationMode: Boolean,
-    simulatedSpeedKmh: Float,
-    simulatedBearingDeg: Float,
-    onUpdateSimulation: (speedKmh: Float, bearingDeg: Float, isSimulated: Boolean) -> Unit,
     glassOpacity: Float,
     modifier: Modifier = Modifier
 ) {
     if (solution == null) return
 
-    var isSimulatorExpanded by remember { mutableStateOf(false) }
-
-    val isUserMoving = solution.userVector.speedKmh >= 2.0
+    val isUserMoving = solution.scenario == InterceptionScenario.SCENARIO_B_DYNAMIC_EVASION || solution.userVector.speedKmh >= 2.0
 
     val borderColor = if (solution.isRainImminent && !solution.isEvadingSuccessfully) {
         Color(0xFFF59E0B).copy(alpha = (glassOpacity * 0.9f + 0.15f).coerceIn(0.2f, 0.6f))
@@ -313,101 +307,49 @@ fun RainInterceptionCard(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // 5. Kinematics Simulation Toggle / Test Drawer
-            Row(
+            // 5. Live GPS Kinematics Telemetry Strip (Direct Hardware GPS Feed)
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                color = Color(0xFF071B2F).copy(alpha = 0.4f),
+                shape = RoundedCornerShape(10.dp),
+                border = BorderStroke(0.5.dp, Color.White.copy(alpha = 0.08f))
             ) {
-                TextButton(
-                    onClick = { isSimulatorExpanded = !isSimulatorExpanded },
-                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 2.dp)
-                ) {
-                    Icon(
-                        imageVector = if (isSimulatorExpanded) Icons.Default.ExpandLess else Icons.Default.Tune,
-                        contentDescription = null,
-                        tint = SeyOceanCyan,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = if (isSimulatorExpanded) "Hide Motion Simulator" else "Kinematics Simulator & What-If Planner",
-                        color = SeyOceanCyan,
-                        style = MaterialTheme.typography.labelSmall,
-                        fontSize = 11.sp
-                    )
-                }
-            }
-
-            AnimatedVisibility(visible = isSimulatorExpanded) {
-                Column(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 8.dp)
+                        .padding(horizontal = 10.dp, vertical = 6.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = "Simulated User Speed: ${simulatedSpeedKmh.roundToInt()} km/h",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = Color.White,
-                        fontSize = 11.sp
-                    )
-                    Slider(
-                        value = simulatedSpeedKmh,
-                        onValueChange = { speed ->
-                            onUpdateSimulation(speed, simulatedBearingDeg, speed > 0.5f)
-                        },
-                        valueRange = 0f..80f,
-                        colors = SliderDefaults.colors(
-                            thumbColor = SeyOceanCyan,
-                            activeTrackColor = SeyOceanCyan
-                        )
-                    )
-
-                    Text(
-                        text = "Simulated Heading: ${simulatedBearingDeg.roundToInt()}° (${getBearingLabel(simulatedBearingDeg)})",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = Color.White,
-                        fontSize = 11.sp
-                    )
-                    Slider(
-                        value = simulatedBearingDeg,
-                        onValueChange = { bearing ->
-                            onUpdateSimulation(simulatedSpeedKmh, bearing, simulatedSpeedKmh > 0.5f)
-                        },
-                        valueRange = 0f..360f,
-                        colors = SliderDefaults.colors(
-                            thumbColor = SeyOceanCyan,
-                            activeTrackColor = SeyOceanCyan
-                        )
-                    )
-
-                    // Quick Action Presets
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.weight(1f)
                     ) {
-                        OutlinedButton(
-                            onClick = { onUpdateSimulation(0f, 0f, false) },
-                            modifier = Modifier.weight(1f),
-                            contentPadding = PaddingValues(2.dp)
-                        ) {
-                            Text("Reset GPS", fontSize = 10.sp, color = Color.White)
-                        }
-                        OutlinedButton(
-                            onClick = { onUpdateSimulation(45f, 315f, true) },
-                            modifier = Modifier.weight(1.3f),
-                            contentPadding = PaddingValues(2.dp)
-                        ) {
-                            Text("Evade NW (45 km/h)", fontSize = 10.sp, color = Color(0xFF34D399))
-                        }
-                        OutlinedButton(
-                            onClick = { onUpdateSimulation(40f, 135f, true) },
-                            modifier = Modifier.weight(1.3f),
-                            contentPadding = PaddingValues(2.dp)
-                        ) {
-                            Text("Intercept SE (40 km/h)", fontSize = 10.sp, color = Color(0xFFFBBF24))
-                        }
+                        Icon(
+                            imageVector = Icons.Default.GpsFixed,
+                            contentDescription = null,
+                            tint = if (isUserMoving) Color(0xFF34D399) else Color(0xFF38BDF8),
+                            modifier = Modifier.size(14.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = if (isUserMoving) {
+                                "GPS: ${solution.userVector.speedKmh.roundToInt()} km/h · Heading ${solution.userVector.bearingDeg.roundToInt()}° (${getBearingLabel(solution.userVector.bearingDeg.toFloat())})"
+                            } else {
+                                "GPS: 0 km/h (Stationary Observer)"
+                            },
+                            style = MaterialTheme.typography.labelSmall,
+                            color = Color.White.copy(alpha = 0.85f),
+                            fontSize = 11.sp
+                        )
                     }
+
+                    Text(
+                        text = "🛰️ Live GPS",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White.copy(alpha = 0.45f),
+                        fontSize = 9.sp
+                    )
                 }
             }
         }
