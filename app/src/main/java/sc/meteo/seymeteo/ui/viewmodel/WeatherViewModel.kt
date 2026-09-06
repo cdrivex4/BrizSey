@@ -7,8 +7,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import sc.meteo.seymeteo.SeyMeteoApplication
 import sc.meteo.seymeteo.data.api.SmaRepository
 import sc.meteo.seymeteo.data.location.GpsLocation
+import sc.meteo.seymeteo.data.location.LocationService
 import sc.meteo.seymeteo.data.model.*
 import sc.meteo.seymeteo.domain.nowcasting.RadarAdvectionEngine
 import sc.meteo.seymeteo.domain.nowcasting.RainInterceptionSolver
@@ -36,7 +38,8 @@ data class WeatherUiState(
 class WeatherViewModel(
     private val repository: SmaRepository = SmaRepository(),
     private val advectionEngine: RadarAdvectionEngine = RadarAdvectionEngine(),
-    private val interceptionSolver: RainInterceptionSolver = RainInterceptionSolver()
+    private val interceptionSolver: RainInterceptionSolver = RainInterceptionSolver(),
+    private val locationService: LocationService = SeyMeteoApplication.instance.locationService
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(WeatherUiState())
@@ -44,6 +47,29 @@ class WeatherViewModel(
 
     init {
         loadInitialData()
+        observeLiveGpsKinematics()
+    }
+
+    private fun observeLiveGpsKinematics() {
+        viewModelScope.launch {
+            locationService.userKinematics.collect { kinematics ->
+                _uiState.update { current ->
+                    if (!current.isSimulationMode) {
+                        val front = current.activeFront ?: advectionEngine.estimateActiveFront(
+                            kinematics.location,
+                            current.forecastItems.firstOrNull()
+                        )
+                        val solution = interceptionSolver.solveInterception(kinematics, front)
+                        current.copy(
+                            activeFront = front,
+                            interceptionSolution = solution
+                        )
+                    } else {
+                        current
+                    }
+                }
+            }
+        }
     }
 
     fun loadInitialData() {
@@ -85,7 +111,7 @@ class WeatherViewModel(
     }
 
     /**
-     * Updates simulated user speed and bearing to test Scenario B dynamic evasion live in UI.
+     * Updates simulated user speed and bearing to test dynamic evasion live in UI.
      */
     fun updateSimulation(speedKmh: Float, bearingDeg: Float, isSimulated: Boolean) {
         _uiState.update { current ->

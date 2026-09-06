@@ -17,9 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import sc.meteo.seymeteo.data.model.InterceptionScenario
 import sc.meteo.seymeteo.data.model.InterceptionSolution
-import sc.meteo.seymeteo.ui.theme.SeyNavyDark
 import sc.meteo.seymeteo.ui.theme.SeyOceanCyan
 import kotlin.math.roundToInt
 
@@ -36,6 +34,8 @@ fun RainInterceptionCard(
     if (solution == null) return
 
     var isSimulatorExpanded by remember { mutableStateOf(false) }
+
+    val isUserMoving = solution.userVector.speedKmh >= 2.0
 
     val borderColor = if (solution.isRainImminent && !solution.isEvadingSuccessfully) {
         Color(0xFFF59E0B).copy(alpha = (glassOpacity * 0.9f + 0.15f).coerceIn(0.2f, 0.6f))
@@ -56,7 +56,7 @@ fun RainInterceptionCard(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            // 1. Header row: Title + Scenario Badge
+            // 1. Header row: Title + Live Motion Status Badge
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -79,26 +79,33 @@ fun RainInterceptionCard(
                     )
                 }
 
-                val badgeText = if (solution.scenario == InterceptionScenario.SCENARIO_A_STATIONARY) {
-                    "Scenario A · Stationary"
-                } else {
-                    "Scenario B · Dynamic"
-                }
-
-                val badgeBg = if (solution.isEvadingSuccessfully) {
-                    Color(0xFF10B981).copy(alpha = 0.25f)
-                } else if (solution.isRainImminent) {
-                    Color(0xFFF59E0B).copy(alpha = 0.25f)
-                } else {
-                    Color(0xFF38BDF8).copy(alpha = 0.25f)
-                }
-
-                val badgeColor = if (solution.isEvadingSuccessfully) {
-                    Color(0xFF34D399)
-                } else if (solution.isRainImminent) {
-                    Color(0xFFFBBF24)
-                } else {
-                    Color(0xFF38BDF8)
+                // Dynamic Status Badge automatically resolved from kinematics
+                val (badgeText, badgeBg, badgeColor) = when {
+                    solution.isEvadingSuccessfully && isUserMoving -> Triple(
+                        "🛡️ Evading Front",
+                        Color(0xFF10B981).copy(alpha = 0.25f),
+                        Color(0xFF34D399)
+                    )
+                    isUserMoving && solution.userVector.speedKmh < 10.0 -> Triple(
+                        "🚶 Walking · ${solution.userVector.speedKmh.roundToInt()} km/h",
+                        Color(0xFF0284C7).copy(alpha = 0.25f),
+                        Color(0xFF38BDF8)
+                    )
+                    isUserMoving -> Triple(
+                        "🚗 In Motion · ${solution.userVector.speedKmh.roundToInt()} km/h",
+                        Color(0xFF0284C7).copy(alpha = 0.25f),
+                        Color(0xFF38BDF8)
+                    )
+                    solution.isRainImminent -> Triple(
+                        "🌧️ Rain Imminent",
+                        Color(0xFFF59E0B).copy(alpha = 0.25f),
+                        Color(0xFFFBBF24)
+                    )
+                    else -> Triple(
+                        "📍 Stationary",
+                        Color(0xFF64748B).copy(alpha = 0.25f),
+                        Color(0xFF94A3B8)
+                    )
                 }
 
                 Surface(
@@ -239,7 +246,7 @@ fun RainInterceptionCard(
                 ) {
                     Column(modifier = Modifier.padding(8.dp)) {
                         Text(
-                            text = "RIDGE UPLIFT",
+                            text = "RIDGE SHIELD",
                             style = MaterialTheme.typography.labelSmall,
                             color = Color.White.copy(alpha = 0.6f),
                             fontSize = 9.sp
@@ -324,7 +331,7 @@ fun RainInterceptionCard(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = if (isSimulatorExpanded) "Hide Kinematics Simulator" else "Test Velocity / Evasion Simulator (Scenario B)",
+                        text = if (isSimulatorExpanded) "Hide Motion Simulator" else "Kinematics Simulator & What-If Planner",
                         color = SeyOceanCyan,
                         style = MaterialTheme.typography.labelSmall,
                         fontSize = 11.sp
@@ -384,7 +391,7 @@ fun RainInterceptionCard(
                             modifier = Modifier.weight(1f),
                             contentPadding = PaddingValues(2.dp)
                         ) {
-                            Text("Stationary (0)", fontSize = 10.sp, color = Color.White)
+                            Text("Reset GPS", fontSize = 10.sp, color = Color.White)
                         }
                         OutlinedButton(
                             onClick = { onUpdateSimulation(45f, 315f, true) },

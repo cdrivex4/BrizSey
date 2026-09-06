@@ -3,8 +3,8 @@ package sc.meteo.seymeteo.data.location
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
+import android.os.Looper
+import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,11 +13,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import sc.meteo.seymeteo.data.model.UserKinematics
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.pow
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.*
 
 data class GpsLocation(val latitude: Double, val longitude: Double)
 
@@ -37,6 +33,61 @@ class LocationService(context: Context) {
     )
     val userKinematics: Flow<UserKinematics> = _userKinematics.asStateFlow()
 
+    private var isTracking = false
+
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(result: LocationResult) {
+            val location = result.lastLocation ?: return
+            val gps = GpsLocation(location.latitude, location.longitude)
+            _currentLocation.value = gps
+
+            val speedKmh = (location.speed * 3.6).toDouble()
+            val bearingDeg = location.bearing.toDouble()
+            val isMoving = speedKmh >= 2.0 // > 2 km/h indicates intentional human/vehicle motion
+
+            _userKinematics.value = UserKinematics(
+                location = gps,
+                speedKmh = max(0.0, speedKmh),
+                bearingDeg = (bearingDeg + 360.0) % 360.0,
+                isMoving = isMoving,
+                accuracyMeters = location.accuracy,
+                timestampMs = System.currentTimeMillis()
+            )
+        }
+    }
+
+    /**
+     * Starts high-resolution GPS tracking when the app is active in foreground.
+     * Throttled to 5 seconds / 5 meters to preserve device battery life.
+     */
+    @SuppressLint("MissingPermission")
+    fun startRealtimeTracking() {
+        if (isTracking) return
+        try {
+            val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000L)
+                .setMinUpdateIntervalMillis(2500L)
+                .setMinUpdateDistanceMeters(3.0f)
+                .setWaitForAccurateLocation(false)
+                .build()
+
+            fusedClient.requestLocationUpdates(request, locationCallback, Looper.getMainLooper())
+            isTracking = true
+        } catch (_: SecurityException) {
+            // Permission not yet granted
+        }
+    }
+
+    /**
+     * Stops GPS updates immediately when the app goes into background or pauses to prevent battery drain.
+     */
+    fun stopRealtimeTracking() {
+        if (!isTracking) return
+        try {
+            fusedClient.removeLocationUpdates(locationCallback)
+            isTracking = false
+        } catch (_: Exception) {}
+    }
+
     /**
      * One-shot current position fetch using PRIORITY_BALANCED_POWER_ACCURACY.
      * Caller must have ACCESS_FINE_LOCATION or ACCESS_COARSE_LOCATION granted.
@@ -55,8 +106,8 @@ class LocationService(context: Context) {
                         val isMoving = speedKmh >= 2.0
                         _userKinematics.value = UserKinematics(
                             location = gps,
-                            speedKmh = speedKmh,
-                            bearingDeg = bearingDeg,
+                            speedKmh = max(0.0, speedKmh),
+                            bearingDeg = (bearingDeg + 360.0) % 360.0,
                             isMoving = isMoving,
                             accuracyMeters = location.accuracy
                         )
@@ -72,7 +123,7 @@ class LocationService(context: Context) {
     }
 
     /**
-     * Updates kinematics manually (e.g. for testing or simulated motion in UI).
+     * Updates kinematics manually (e.g. for testing simulated motion in UI).
      */
     fun updateSimulatedKinematics(
         location: GpsLocation,

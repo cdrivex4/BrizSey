@@ -122,14 +122,14 @@ class RainInterceptionSolver(
 
         val headline = when {
             isInsideFront -> "Active Rain Cell Overhead"
-            timeToRainMinutes != null -> "Rain Front Arrival in $timeToRainMinutes min"
-            else -> "Front Passing Clear (No Direct Impact)"
+            timeToRainMinutes != null -> "Rain Expected in $timeToRainMinutes min"
+            else -> "Conditions Clear (No Rain Approaching)"
         }
 
         val description = when {
-            isInsideFront -> "Stationary location is currently inside the rain core. Expected clear window in ~$rainDurationMinutes min. ${orographic.zoneLabel}."
-            timeToRainMinutes != null -> "Stationary monitoring: Front closing at ${String.format("%.1f", max(0.0, approachSpeedKmh))} km/h. Arrival window estimated in $timeToRainMinutes min (${distanceToBoundary.roundToInt()} km away). ${orographic.zoneLabel}."
-            else -> "Front trajectory is tracking away from your current stationary position. Stable conditions."
+            isInsideFront -> "Currently within rain boundary. Clear skies expected in ~$rainDurationMinutes min. ${orographic.zoneLabel}."
+            timeToRainMinutes != null -> "Front approaching at ${String.format("%.1f", max(0.0, approachSpeedKmh))} km/h (${distanceToBoundary.roundToInt()} km away). Estimated onset in $timeToRainMinutes min. ${orographic.zoneLabel}."
+            else -> "Rain front trajectory tracks clear of your current location."
         }
 
         return InterceptionSolution(
