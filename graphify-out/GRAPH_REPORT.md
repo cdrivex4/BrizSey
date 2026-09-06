@@ -1,8 +1,7 @@
 # Graph Report - SeyMeteo  (2026-09-07)
 
 ## Corpus Check
-- 82 files · ~459,723 words
-- Verdict: corpus is large enough that graph structure adds value.
+- Large corpus: 87 files · ~595,956 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder.
 
 ## Summary
 - 345 nodes · 652 edges · 20 communities
