@@ -38,6 +38,24 @@
 
 ---
 
+## 📜 Scientific Dissertation & Meteorological Model
+
+BrizSey is built on a publication-grade scientific and meteorological framework documented in full in:
+
+👉 **[BRIZSEY_SCIENTIFIC_DISSERTATION.md](doc/BRIZSEY_SCIENTIFIC_DISSERTATION.md)** — *Topographically-Resolved Microclimate Nowcasting, Dynamic Precipitation Interception, and Coastal Marine Dynamics for Granitic Tropical Archipelagos*.
+
+This dissertation details:
+- **Boundary Layer Thermodynamics**: Magnus-Tetens dew point formulation ($T_d$) and Lifting Condensation Level ($z_{\text{LCL}} \approx 125(T - T_d)\,\text{m}$) comparing cloud base against Mahé's 905m Morne Seychellois spine.
+- **Forced Orographic Lift & Föhn Rain Shadows**: Kinematic surface velocity ($\omega = \vec{v}_{\text{wind}} \cdot \nabla z$) and adiabatic descent warming ($\Delta T \approx +3.89^\circ\text{C}$).
+- **Froude Number Flow Regimes**: Atmospheric flow splitting around granitic obstacles ($Fr = U / (N \cdot h_m)$).
+- **Coastal Marine Wave Generation**: Sverdrup-Munk-Bretschneider (SMB) shallow-water wave growth and topographic fetch sheltering.
+- **Kinematic Nowcasting & Relative Evasion Vector Geometry**: $\vec{v}_{\text{rel}} = \vec{v}_{\text{front}} - \vec{v}_{\text{user}}$ solving for dynamic interception times and safe-haven corridors.
+- **Full Academic Bibliography**: 36 comprehensive, peer-reviewed scientific citations.
+
+> ℹ️ **Documentation Synchronization Protocol**: Whenever project features, physical models, or domain logic are modified, [`doc/BRIZSEY_SCIENTIFIC_DISSERTATION.md`](doc/BRIZSEY_SCIENTIFIC_DISSERTATION.md) is maintained as a core project document and updated in tandem with codebase changes.
+
+---
+
 ## 📸 Screenshots
 
 > _Coming soon — install the debug APK on your device and send us screenshots!_

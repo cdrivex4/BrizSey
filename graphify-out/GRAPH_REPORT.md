@@ -1,7 +1,7 @@
 # Graph Report - SeyMeteo  (2026-09-07)
 
 ## Corpus Check
-- 80 files · ~454,269 words
+- 80 files · ~455,636 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
