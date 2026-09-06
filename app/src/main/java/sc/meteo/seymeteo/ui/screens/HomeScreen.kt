@@ -21,7 +21,6 @@ import sc.meteo.seymeteo.ui.components.*
 import sc.meteo.seymeteo.ui.theme.SeyNavyDark
 import sc.meteo.seymeteo.ui.theme.SeyNavyPrimary
 import sc.meteo.seymeteo.ui.theme.SeyOceanCyan
-import sc.meteo.seymeteo.ui.theme.SeySurfaceLight
 import sc.meteo.seymeteo.ui.viewmodel.WeatherViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,10 +38,24 @@ fun HomeScreen(
     val timeFormatter = remember { SimpleDateFormat("HH:mm", Locale.ENGLISH) }
     val lastUpdatedText = remember(uiState.lastUpdatedMs) {
         if (uiState.lastUpdatedMs > 0) {
-            "Live Sync: ${timeFormatter.format(Date(uiState.lastUpdatedMs))} (Auto-sync 30m)"
+            "Live Sync:  (Auto-sync 30m)"
         } else {
             "Connecting to live feed..."
         }
+    }
+
+    val currentForecast = uiState.forecastItems.firstOrNull()
+    val condition = remember(currentForecast) {
+        resolveCondition(
+            conditionLabel = currentForecast?.conditionLabel,
+            rainChance = currentForecast?.rainChance,
+            wind = currentForecast?.wind
+        )
+    }
+
+    val windSpeedKmh = remember(currentForecast) {
+        val windStr = currentForecast?.wind ?: "21"
+        Regex("\\d+").find(windStr)?.value?.toFloatOrNull() ?: 21f
     }
 
     Scaffold(
@@ -51,13 +64,14 @@ fun HomeScreen(
                 title = {
                     Column {
                         Text(
-                            text = "SeyMeteo",
+                            text = "ZilCast",
                             style = MaterialTheme.typography.titleLarge,
                             color = Color.White,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.ExtraBold,
+                            letterSpacing = 0.5.sp
                         )
                         Text(
-                            text = "Seychelles Meteorological Authority",
+                            text = "Seychelles Archipelago Weather · SMA",
                             style = MaterialTheme.typography.labelSmall,
                             color = Color(0xCCFFFFFF),
                             fontSize = 11.sp
@@ -85,130 +99,155 @@ fun HomeScreen(
                 )
             )
         },
-        containerColor = SeySurfaceLight
+        containerColor = Color(0xFF071324)
     ) { innerPadding ->
-        if (uiState.isLoading && uiState.forecastItems.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    CircularProgressIndicator(color = SeyNavyPrimary)
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        text = "Loading live Seychelles weather...",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = SeyNavyPrimary
-                    )
+        AtmosphericWindowBackground(
+            condition = condition,
+            windSpeedKmh = windSpeedKmh,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            if (uiState.isLoading && uiState.forecastItems.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        CircularProgressIndicator(color = Color(0xFF38BDF8))
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = "Looking through the island window...",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.White
+                        )
+                    }
                 }
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-            ) {
-                // Live Sync Status Banner
-                item {
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 6.dp),
-                        color = SeyNavyDark,
-                        shape = RoundedCornerShape(10.dp)
-                    ) {
-                        Row(
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    // 1. Live Sync Status Banner (Frosted Glass)
+                    item {
+                        Surface(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 12.dp, vertical = 6.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+                                .padding(horizontal = 16.dp, vertical = 6.dp),
+                            color = Color(0xAA0A1F35),
+                            shape = RoundedCornerShape(12.dp),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x2238BDF8))
                         ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Default.Sync,
-                                    contentDescription = null,
-                                    tint = SeyOceanCyan,
-                                    modifier = Modifier.size(14.dp)
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = lastUpdatedText,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = Color.White.copy(alpha = 0.9f),
-                                    fontSize = 11.sp
-                                )
-                            }
-                            if (uiState.isRefreshing) {
-                                Text(
-                                    text = "Updating...",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = SeyOceanCyan,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 10.sp
-                                )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 12.dp, vertical = 6.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = Icons.Default.Sync,
+                                        contentDescription = null,
+                                        tint = SeyOceanCyan,
+                                        modifier = Modifier.size(14.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text(
+                                        text = lastUpdatedText,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = Color.White.copy(alpha = 0.9f),
+                                        fontSize = 11.sp
+                                    )
+                                }
+                                if (uiState.isRefreshing) {
+                                    Text(
+                                        text = "Updating...",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = SeyOceanCyan,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 10.sp
+                                    )
+                                }
                             }
                         }
                     }
-                }
 
-                // Active CAP Emergency Alerts
-                if (uiState.activeAlerts.isNotEmpty()) {
-                    items(uiState.activeAlerts.size) { index ->
-                        AlertCard(alert = uiState.activeAlerts[index])
+                    // 2. Active CAP Emergency Alerts
+                    if (uiState.activeAlerts.isNotEmpty()) {
+                        items(uiState.activeAlerts.size) { index ->
+                            AlertCard(alert = uiState.activeAlerts[index])
+                        }
                     }
-                }
 
-                // Atmospheric Predictability & Psychological Reassurance Card
-                item {
-                    PredictabilityCard(assessment = uiState.predictability)
-                }
-
-                // Island Selector (Mahé, Praslin, La Digue)
-                item {
-                    IslandSelector(
-                        islands = uiState.availableIslands,
-                        selectedIsland = uiState.selectedIsland,
-                        onIslandSelected = { island -> viewModel.selectIsland(island) }
-                    )
-                }
-
-                // Main Current Weather Card
-                item {
-                    CurrentWeatherCard(
-                        island = uiState.selectedIsland,
-                        currentForecast = uiState.forecastItems.firstOrNull()
-                    )
-                }
-
-                // 7-Day Probabilistic Forecast
-                if (uiState.forecastItems.isNotEmpty()) {
+                    // 3. Weather Insight Carousel (Swipeable Rain Alert, Golden Hour Sunset, Stability)
                     item {
-                        SevenDayForecastCard(forecastItems = uiState.forecastItems)
+                        WeatherInsightCarousel(
+                            forecast = currentForecast,
+                            predictability = uiState.predictability,
+                            marineData = uiState.marineTideData,
+                            sunMoonInfo = uiState.sunMoonInfo
+                        )
                     }
-                }
 
-                // Marine & Tides Hub
-                item {
-                    MarineTideCard(marineData = uiState.marineTideData)
-                }
+                    // 4. Island Selector (Mahé, Praslin, La Digue)
+                    item {
+                        IslandSelector(
+                            islands = uiState.availableIslands,
+                            selectedIsland = uiState.selectedIsland,
+                            onIslandSelected = { island -> viewModel.selectIsland(island) }
+                        )
+                    }
 
-                // Sun & Moon Tracker
-                item {
-                    SunMoonCard(sunMoonInfo = uiState.sunMoonInfo)
-                }
+                    // 5. Main Current Weather Hero Card
+                    item {
+                        CurrentWeatherCard(
+                            island = uiState.selectedIsland,
+                            currentForecast = currentForecast
+                        )
+                    }
 
-                // Satellite Radar Feed Card (Clickable)
-                item {
-                    SatelliteRadarCard(
-                        onOpenRadar = onOpenSatelliteRadar
-                    )
-                }
+                    // 6. Smooth Bezier Hourly Forecast & Precipitation Curve
+                    if (uiState.forecastItems.isNotEmpty()) {
+                        item {
+                            HourlyForecastCurve(forecastItems = uiState.forecastItems)
+                        }
+                    }
 
-                item {
-                    Spacer(modifier = Modifier.height(24.dp))
+                    // 7. 2x2 Radial Weather Instruments Cluster (Wind Compass, Pressure Arc, UV, Humidity)
+                    item {
+                        RadialWeatherInstrumentsGrid(
+                            forecast = currentForecast,
+                            marineData = uiState.marineTideData
+                        )
+                    }
+
+                    // 8. 7-Day Extended Forecast with Gradient Range Capsules
+                    if (uiState.forecastItems.isNotEmpty()) {
+                        item {
+                            SevenDayForecastCard(forecastItems = uiState.forecastItems)
+                        }
+                    }
+
+                    // 9. Marine & Tides Hub
+                    item {
+                        MarineTideCard(marineData = uiState.marineTideData)
+                    }
+
+                    // 10. Sun & Moon Celestial Tracker
+                    item {
+                        SunMoonCard(sunMoonInfo = uiState.sunMoonInfo)
+                    }
+
+                    // 11. Interactive Satellite & Doppler Radar Card (Clickable)
+                    item {
+                        SatelliteRadarCard(
+                            onOpenRadar = onOpenSatelliteRadar
+                        )
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(28.dp))
+                    }
                 }
             }
         }

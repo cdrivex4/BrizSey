@@ -3,6 +3,7 @@ package sc.meteo.seymeteo.ui.screens
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.view.ViewGroup
+import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -15,8 +16,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import kotlinx.coroutines.launch
+import sc.meteo.seymeteo.data.preferences.UserPreferences
 import sc.meteo.seymeteo.ui.theme.SeyNavyPrimary
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -25,10 +29,21 @@ import sc.meteo.seymeteo.ui.theme.SeyNavyPrimary
 fun SatelliteMapScreen(
     onBack: () -> Unit
 ) {
+    val context = LocalContext.current
+    val userPrefs = remember { UserPreferences(context) }
+    val coroutineScope = rememberCoroutineScope()
+
+    val isPlayingPref by userPrefs.radarIsPlaying.collectAsState(initial = false)
+    val isMutedPref by userPrefs.radarIsMuted.collectAsState(initial = true)
+    val opacityPref by userPrefs.radarOpacity.collectAsState(initial = 0.55f)
+    val frameIndexPref by userPrefs.radarFrameIndex.collectAsState(initial = 0)
+
     var isLoading by remember { mutableStateOf(true) }
     var webViewRef by remember { mutableStateOf<WebView?>(null) }
 
-    // Standalone Leaflet HTML with Multi-Frame RainViewer Radar Timeline, EUMETSAT clouds, and Opacity Controls
+    val initialOpacityPct = (opacityPref * 100).toInt().coerceIn(10, 100)
+
+    // Standalone Leaflet HTML with Multi-Frame RainViewer Radar Timeline, EUMETSAT clouds, and Persistent Controls
     val leafletHtml = """
         <!DOCTYPE html>
         <html>
@@ -156,8 +171,8 @@ fun SatelliteMapScreen(
                     attribution: 'Tiles &copy; Esri'
                 });
 
-                // 3. EUMETSAT Live Natural Color Cloud Layer (55% default opacity)
-                var currentOpacity = 0.55;
+                // 3. EUMETSAT Live Natural Color Cloud Layer (Restored from DataStore)
+                var currentOpacity = f;
                 var eumetsatCloud = L.tileLayer.wms('https://view.eumetsat.int/geoserver/wms', {
                     layers: 'msg_fes:rgb_naturalenhncd',
                     format: 'image/png',
@@ -168,7 +183,7 @@ fun SatelliteMapScreen(
                     attribution: 'EUMETSAT'
                 }).addTo(map);
 
-                // 4. EUMETSAT Thermal Infrared Storm Monitor (Highlights intense convective storm tops)
+                // 4. EUMETSAT Thermal Infrared Storm Monitor
                 var eumetsatInfrared = L.tileLayer.wms('https://view.eumetsat.int/geoserver/wms', {
                     layers: 'msg_fes:ir108',
                     format: 'image/png',
@@ -182,8 +197,8 @@ fun SatelliteMapScreen(
                 // 5. Multi-Frame RainViewer Dynamic Radar Player
                 var radarFrames = [];
                 var radarLayers = [];
-                var currentFrameIndex = 0;
-                var isPlaying = false;
+                var currentFrameIndex = ;
+                var isPlaying = ;
                 var playInterval = null;
 
                 var rainViewerGroup = L.layerGroup().addTo(map);
@@ -194,7 +209,6 @@ fun SatelliteMapScreen(
                         if (data && data.radar && data.radar.past && data.radar.past.length > 0) {
                             radarFrames = data.radar.past;
                             
-                            // Initialize tile layer for each frame with smooth scaling
                             radarFrames.forEach(function(frame) {
                                 var tileUrl = 'https://tilecache.rainviewer.com' + frame.path + '/512/{z}/{x}/{y}/2/1_1.png';
                                 var layer = L.tileLayer(tileUrl, {
@@ -208,10 +222,15 @@ fun SatelliteMapScreen(
                                 rainViewerGroup.addLayer(layer);
                             });
 
-                            // Set to latest active frame
-                            currentFrameIndex = radarFrames.length - 1;
+                            if (currentFrameIndex >= radarFrames.length || currentFrameIndex <= 0) {
+                                currentFrameIndex = radarFrames.length - 1;
+                            }
                             showRadarFrame(currentFrameIndex);
                             updateTimelineUI();
+
+                            if (isPlaying) {
+                                startPlayLoop();
+                            }
                         }
                     })
                     .catch(function(err) {
@@ -229,6 +248,10 @@ fun SatelliteMapScreen(
                     });
                     currentFrameIndex = index;
                     updateTimelineUI();
+
+                    if (window.AndroidRadar) {
+                        window.AndroidRadar.onFrameIndexChanged(index);
+                    }
                 }
 
                 function formatFrameTime(timestamp) {
@@ -254,23 +277,39 @@ fun SatelliteMapScreen(
                     }
                 }
 
-                function togglePlay() {
+                function startPlayLoop() {
                     var playBtn = document.getElementById('btn-play');
-                    if (isPlaying) {
-                        clearInterval(playInterval);
-                        isPlaying = false;
-                        if (playBtn) playBtn.innerText = '▶ Play';
-                    } else {
-                        isPlaying = true;
-                        if (playBtn) playBtn.innerText = '⏸ Pause';
-                        playInterval = setInterval(function() {
-                            var nextIdx = (currentFrameIndex + 1) % radarFrames.length;
-                            showRadarFrame(nextIdx);
-                        }, 1000);
+                    if (playBtn) playBtn.innerText = '⏸ Pause';
+                    isPlaying = true;
+                    clearInterval(playInterval);
+                    playInterval = setInterval(function() {
+                        var nextIdx = (currentFrameIndex + 1) % radarFrames.length;
+                        showRadarFrame(nextIdx);
+                    }, 1000);
+                    if (window.AndroidRadar) {
+                        window.AndroidRadar.onPlayStateChanged(true);
                     }
                 }
 
-                // Timeline Controller Control at Bottom Center
+                function stopPlayLoop() {
+                    var playBtn = document.getElementById('btn-play');
+                    if (playBtn) playBtn.innerText = '▶ Play';
+                    isPlaying = false;
+                    clearInterval(playInterval);
+                    if (window.AndroidRadar) {
+                        window.AndroidRadar.onPlayStateChanged(false);
+                    }
+                }
+
+                function togglePlay() {
+                    if (isPlaying) {
+                        stopPlayLoop();
+                    } else {
+                        startPlayLoop();
+                    }
+                }
+
+                // Timeline Controller Control
                 var timelineControl = L.control({ position: 'bottomright' });
                 timelineControl.onAdd = function(map) {
                     var div = L.DomUtil.create('div', 'timeline-control');
@@ -281,21 +320,21 @@ fun SatelliteMapScreen(
                         '</div>' +
                         '<div class="timeline-buttons">' +
                             '<button id="btn-prev" class="t-btn">⏮</button>' +
-                            '<button id="btn-play" class="t-btn">▶ Play</button>' +
+                            '<button id="btn-play" class="t-btn">' + (isPlaying ? '⏸ Pause' : '▶ Play') + '</button>' +
                             '<button id="btn-next" class="t-btn">⏭</button>' +
                         '</div>' +
-                        '<input id="frame-slider" class="timeline-slider" type="range" min="0" max="10" value="0" />';
+                        '<input id="frame-slider" class="timeline-slider" type="range" min="0" max="10" value="' + currentFrameIndex + '" />';
                     L.DomEvent.disableClickPropagation(div);
                     return div;
                 };
                 timelineControl.addTo(map);
 
-                // Add interactive Cloud Opacity Slider at bottom-left
+                // Add interactive Cloud Opacity Slider
                 var opacitySlider = L.control({ position: 'bottomleft' });
                 opacitySlider.onAdd = function(map) {
                     var div = L.DomUtil.create('div', 'opacity-control');
                     div.innerHTML = '<strong>Cloud / Radar Opacity</strong><br/>' +
-                                    '<input id="slider" type="range" min="0" max="100" value="55" /> <span id="op-val">55%</span>';
+                                    '<input id="slider" type="range" min="0" max="100" value="" /> <span id="op-val">%</span>';
                     L.DomEvent.disableClickPropagation(div);
                     return div;
                 };
@@ -315,7 +354,6 @@ fun SatelliteMapScreen(
 
                 L.control.layers(baseMaps, overlayMaps, { collapsed: false, position: 'topright' }).addTo(map);
 
-                // Wire interactive timeline events
                 setTimeout(function() {
                     var btnPlay = document.getElementById('btn-play');
                     var btnPrev = document.getElementById('btn-prev');
@@ -326,17 +364,17 @@ fun SatelliteMapScreen(
 
                     if (btnPlay) btnPlay.addEventListener('click', togglePlay);
                     if (btnPrev) btnPrev.addEventListener('click', function() {
-                        if (isPlaying) togglePlay();
+                        if (isPlaying) stopPlayLoop();
                         var prevIdx = (currentFrameIndex - 1 + radarFrames.length) % radarFrames.length;
                         showRadarFrame(prevIdx);
                     });
                     if (btnNext) btnNext.addEventListener('click', function() {
-                        if (isPlaying) togglePlay();
+                        if (isPlaying) stopPlayLoop();
                         var nextIdx = (currentFrameIndex + 1) % radarFrames.length;
                         showRadarFrame(nextIdx);
                     });
                     if (frameSlider) frameSlider.addEventListener('input', function(e) {
-                        if (isPlaying) togglePlay();
+                        if (isPlaying) stopPlayLoop();
                         showRadarFrame(parseInt(e.target.value));
                     });
 
@@ -349,6 +387,9 @@ fun SatelliteMapScreen(
                                 radarLayers[currentFrameIndex].setOpacity(currentOpacity);
                             }
                             if (valDisplay) valDisplay.innerText = e.target.value + '%';
+                            if (window.AndroidRadar) {
+                                window.AndroidRadar.onOpacityChanged(currentOpacity);
+                            }
                         });
                     }
                 }, 600);
@@ -386,6 +427,28 @@ fun SatelliteMapScreen(
         </html>
     """.trimIndent()
 
+    class AndroidRadarBridge {
+        @JavascriptInterface
+        fun onPlayStateChanged(playing: Boolean) {
+            coroutineScope.launch { userPrefs.setRadarIsPlaying(playing) }
+        }
+
+        @JavascriptInterface
+        fun onMuteChanged(muted: Boolean) {
+            coroutineScope.launch { userPrefs.setRadarIsMuted(muted) }
+        }
+
+        @JavascriptInterface
+        fun onOpacityChanged(opacity: Float) {
+            coroutineScope.launch { userPrefs.setRadarOpacity(opacity) }
+        }
+
+        @JavascriptInterface
+        fun onFrameIndexChanged(index: Int) {
+            coroutineScope.launch { userPrefs.setRadarFrameIndex(index) }
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -418,8 +481,8 @@ fun SatelliteMapScreen(
                 .padding(paddingValues)
         ) {
             AndroidView(
-                factory = { context ->
-                    WebView(context).apply {
+                factory = { ctx ->
+                    WebView(ctx).apply {
                         layoutParams = ViewGroup.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT
@@ -432,6 +495,7 @@ fun SatelliteMapScreen(
                             builtInZoomControls = true
                             displayZoomControls = false
                         }
+                        addJavascriptInterface(AndroidRadarBridge(), "AndroidRadar")
                         webViewClient = object : WebViewClient() {
                             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                                 isLoading = true

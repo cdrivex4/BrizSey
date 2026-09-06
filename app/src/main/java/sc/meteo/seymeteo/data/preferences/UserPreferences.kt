@@ -29,6 +29,10 @@ class UserPreferences(private val context: Context) {
         val KEY_NOTIFY_SEVERE = booleanPreferencesKey("notify_severe")
         val KEY_NOTIFY_MODERATE = booleanPreferencesKey("notify_moderate")
         val KEY_USER_PERSONA = stringPreferencesKey("user_persona")       // "general" | "maritime" | "agriculture" | "tourism"
+        val KEY_RADAR_PLAYING = booleanPreferencesKey("radar_playing")
+        val KEY_RADAR_MUTED = booleanPreferencesKey("radar_muted")
+        val KEY_RADAR_OPACITY = androidx.datastore.preferences.core.floatPreferencesKey("radar_opacity")
+        val KEY_RADAR_FRAME_INDEX = intPreferencesKey("radar_frame_index")
         val KEY_ONBOARDING_DONE = booleanPreferencesKey("onboarding_done")
         val KEY_LAST_SELECTED_SLUG = stringPreferencesKey("last_island_slug")
         val KEY_LAST_SYNC_MS = longPreferencesKey("last_sync_ms")
@@ -76,6 +80,22 @@ class UserPreferences(private val context: Context) {
         UserPersona.fromId(it[KEY_USER_PERSONA] ?: UserPersona.GENERAL_CITIZEN.id)
     }
 
+    val radarIsPlaying: Flow<Boolean> = context.dataStore.data.map {
+        it[KEY_RADAR_PLAYING] ?: false
+    }
+
+    val radarIsMuted: Flow<Boolean> = context.dataStore.data.map {
+        it[KEY_RADAR_MUTED] ?: true
+    }
+
+    val radarOpacity: Flow<Float> = context.dataStore.data.map {
+        it[KEY_RADAR_OPACITY] ?: 0.55f
+    }
+
+    val radarFrameIndex: Flow<Int> = context.dataStore.data.map {
+        it[KEY_RADAR_FRAME_INDEX] ?: 0
+    }
+
     val onboardingDone: Flow<Boolean> = context.dataStore.data.map {
         it[KEY_ONBOARDING_DONE] ?: false
     }
@@ -100,6 +120,10 @@ class UserPreferences(private val context: Context) {
     suspend fun setNotifySevere(value: Boolean) = context.dataStore.edit { it[KEY_NOTIFY_SEVERE] = value }
     suspend fun setNotifyModerate(value: Boolean) = context.dataStore.edit { it[KEY_NOTIFY_MODERATE] = value }
     suspend fun setUserPersona(persona: UserPersona) = context.dataStore.edit { it[KEY_USER_PERSONA] = persona.id }
+    suspend fun setRadarIsPlaying(value: Boolean) = context.dataStore.edit { it[KEY_RADAR_PLAYING] = value }
+    suspend fun setRadarIsMuted(value: Boolean) = context.dataStore.edit { it[KEY_RADAR_MUTED] = value }
+    suspend fun setRadarOpacity(value: Float) = context.dataStore.edit { it[KEY_RADAR_OPACITY] = value }
+    suspend fun setRadarFrameIndex(value: Int) = context.dataStore.edit { it[KEY_RADAR_FRAME_INDEX] = value }
     suspend fun setOnboardingDone() = context.dataStore.edit { it[KEY_ONBOARDING_DONE] = true }
     suspend fun setLastSelectedSlug(slug: String) = context.dataStore.edit { it[KEY_LAST_SELECTED_SLUG] = slug }
     suspend fun setLastSyncMs(ms: Long) = context.dataStore.edit { it[KEY_LAST_SYNC_MS] = ms }

@@ -102,3 +102,23 @@ This document captures key architectural decisions made during development and t
 1. Use `androidx.glance` to render a modern home screen widget (`SeyMeteoGlanceWidget.kt`) that reads from Room DB with 0ms network latency.
 2. In `SatelliteMapScreen.kt`, query the full array of RainViewer Doppler radar frames to provide a 10-minute timestep timeline playback slider with opacity controls over Leaflet OpenStreetMap tiles.
 
+---
+
+## ADR-009: Living Atmospheric Window Canvas & Samsung-Grade Fluid Visualizations
+
+**Date:** 2026-09-06  
+**Status:** Accepted
+
+**Context:** Users want a sensory, living connection to the tropical weather outside — treating the screen as a frosted plane of glass with rain droplets running down it in rainy conditions, swaying palm silhouettes modulated by live wind speed, radiant golden sunbeams, continuous cubic Bezier temperature curves, and carousel insights.
+
+**Decision:**
+1. Implement `AtmosphericWindowBackground.kt` using procedural Compose Canvas rendering:
+   - Dynamic multi-stop sky atmosphere gradients.
+   - Harmonic sway physics ($A \sin(\omega t + \phi)$) for palm and foliage silhouettes driven by `windSpeedKmh`.
+   - Physics-based water droplets & slanted streaks sliding down the glass pane during precipitation.
+   - Frosted glassmorphism container cards with subtle glass highlights and borders.
+2. Implement `HourlyForecastCurve.kt` with continuous cubic Bezier splines and rain droplet percentage pills.
+3. Implement `WeatherInsightCarousel.kt` and `RadialGauges.kt` (Wind compass dial, barometric pressure arc, UV, humidity).
+4. Persist radar player state, timeline frames, opacity, and mute preferences in DataStore via `@JavascriptInterface` bridge.
+
+
