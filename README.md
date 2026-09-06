@@ -34,6 +34,7 @@
 | Satellite/radar preview with opacity controls | ✅ Live |
 | Scientific Dissertation & Meteorological Model Paper | 📄 [Read Paper](doc/BRIZSEY_SCIENTIFIC_DISSERTATION.md) |
 | Strategic AI & Future Roadmap | 🚀 [View Roadmap](TODO.md) |
+| Developer & AI Handoff Guide | 🤝 [View Handoff Guide](HANDOFF.md) |
 | Settings (°C/°F, wind units, theme, 12/24h, persona) | ✅ Live |
 | Android 8.0 (API 26) through Android 15 support | ✅ Live |
 
