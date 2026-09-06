@@ -1,8 +1,28 @@
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.devtools.ksp)
 }
+
+val versionPropsFile = rootProject.file("version.properties")
+val versionProps = Properties().apply {
+    if (versionPropsFile.exists()) {
+        FileInputStream(versionPropsFile).use { load(it) }
+    } else {
+        setProperty("BUILD_NUMBER", "1")
+        setProperty("VERSION_NAME", "1.2.0")
+        setProperty("COPYRIGHT_NOTICE", "Copyright of https://cdrivex4.github.io/ 2026.")
+        FileOutputStream(versionPropsFile).use { store(it, "BrizSey Version Properties") }
+    }
+}
+
+val currentBuildNumber = (versionProps.getProperty("BUILD_NUMBER") ?: "1").toInt()
+val currentVersionName = versionProps.getProperty("VERSION_NAME") ?: "1.2.0"
+val copyrightNotice = versionProps.getProperty("COPYRIGHT_NOTICE") ?: "Copyright of https://cdrivex4.github.io/ 2026."
 
 android {
     namespace = "sc.meteo.seymeteo"
@@ -12,8 +32,11 @@ android {
         applicationId = "sc.meteo.seymeteo"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = currentBuildNumber
+        versionName = currentVersionName
+
+        buildConfigField("int", "BUILD_NUMBER", "$currentBuildNumber")
+        buildConfigField("String", "COPYRIGHT_NOTICE", "\"$copyrightNotice\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -40,11 +63,26 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+}
+
+tasks.register("incrementBuildNumber") {
+    doLast {
+        val props = Properties()
+        if (versionPropsFile.exists()) {
+            FileInputStream(versionPropsFile).use { props.load(it) }
+        }
+        val cur = (props.getProperty("BUILD_NUMBER") ?: "0").toInt()
+        val next = cur + 1
+        props.setProperty("BUILD_NUMBER", next.toString())
+        FileOutputStream(versionPropsFile).use { props.store(it, "BrizSey Version Properties") }
+        println("BrizSey: Incremented build number from $cur to $next")
     }
 }
 

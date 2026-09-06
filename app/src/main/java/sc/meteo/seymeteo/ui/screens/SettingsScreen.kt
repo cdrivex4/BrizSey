@@ -1,5 +1,7 @@
 package sc.meteo.seymeteo.ui.screens
 
+import sc.meteo.seymeteo.BuildConfig
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -226,16 +228,59 @@ fun SettingsScreen(
                 SettingsInfoRow(label = "Application", value = "BrizSey")
             }
             item {
+                SettingsInfoRow(label = "Version", value = "v${BuildConfig.VERSION_NAME}")
+            }
+            item {
+                SettingsInfoRow(label = "Build Number", value = "Build #${BuildConfig.BUILD_NUMBER}")
+            }
+            item {
                 SettingsInfoRow(label = "Data Provider", value = "Seychelles Met Authority (meteo.sc)")
             }
             item {
-                SettingsInfoRow(label = "Microclimates", value = "Open-Meteo High-Res Grid")
+                SettingsInfoRow(label = "Microclimates", value = "30m DEM + Open-Meteo High-Res Grid")
             }
             item {
-                SettingsInfoRow(label = "Radar / Clouds", value = "EUMETSAT & RainViewer Live")
+                SettingsInfoRow(label = "Radar & Nowcasting", value = "EUMETSAT & RainViewer Live")
             }
+
+            // ---- Bottom Build & Copyright Footer ----
             item {
-                SettingsInfoRow(label = "Version", value = "1.2.0 (BrizSey Atmospheric Glass)")
+                Spacer(modifier = Modifier.height(24.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "BrizSey v${BuildConfig.VERSION_NAME} · Build #${BuildConfig.BUILD_NUMBER}",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = SeyTextSecondary,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "${BuildConfig.COPYRIGHT_NOTICE}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = SeyOceanCyan,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.clickable {
+                            val intent = android.content.Intent(
+                                android.content.Intent.ACTION_VIEW,
+                                android.net.Uri.parse("https://cdrivex4.github.io/")
+                            )
+                            context.startActivity(intent)
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = "Granitic Archipelago Meteorological Intelligence",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = SeyTextSecondary.copy(alpha = 0.7f),
+                        fontSize = 10.sp
+                    )
+                }
             }
         }
     }

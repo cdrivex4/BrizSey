@@ -119,7 +119,10 @@ SeyMeteo/
    - [`doc/BRIZSEY_SCIENTIFIC_DISSERTATION.md`](doc/BRIZSEY_SCIENTIFIC_DISSERTATION.md) updated with 43 academic citations and Section 8 on AI Foundation Models, DGMR Nowcasting, Commute Departure Optimization, and Generative Video.
 3. **Strategic AI Roadmap Established**:
    - [`TODO.md`](TODO.md) created detailing Phases 1–6 (Google DeepMind GraphCast, DGMR, Commute Planner, Generative Video Reports, Climate Change/Coral DHW).
-4. **Build & Sideload Verified**:
+4. **Incremental Build Numbering & Copyright System**:
+   - Centralized `version.properties` tracking `BUILD_NUMBER`, `VERSION_NAME`, and `COPYRIGHT_NOTICE` (`Copyright of https://cdrivex4.github.io/ 2026.`).
+   - Exposed via Android `BuildConfig` and displayed both in the "About & Research" list and in the interactive footer of `SettingsScreen.kt`.
+5. **Build & Sideload Verified**:
    - Unit tests passing ($100\%$).
    - Debug APK compiled and installed on connected physical device (Samsung Galaxy S22 Ultra).
 
