@@ -44,13 +44,14 @@ fun IslandSelector(
     islands: List<IslandLocation>,
     selectedIsland: IslandLocation,
     onIslandSelected: (IslandLocation) -> Unit,
+    glassOpacity: Float = 0.35f,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 6.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         islands.forEach { island ->
@@ -60,8 +61,15 @@ fun IslandSelector(
                     .clip(RoundedCornerShape(20.dp))
                     .clickable { onIslandSelected(island) },
                 shape = RoundedCornerShape(20.dp),
-                color = if (isSelected) SeyNavyPrimary else SeySurfaceCard,
-                shadowElevation = if (isSelected) 4.dp else 1.dp
+                color = if (isSelected) {
+                    Color(0xFF0284C7).copy(alpha = (glassOpacity + 0.5f).coerceAtMost(0.9f))
+                } else {
+                    Color(0xFF0F2B48).copy(alpha = glassOpacity)
+                },
+                border = androidx.compose.foundation.BorderStroke(
+                    width = 1.dp,
+                    color = if (isSelected) Color(0xFF38BDF8) else Color(0xFF38BDF8).copy(alpha = (glassOpacity * 0.8f + 0.1f).coerceIn(0.15f, 0.45f))
+                )
             ) {
                 Row(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
@@ -78,7 +86,7 @@ fun IslandSelector(
                         text = island.displayName,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                        color = if (isSelected) Color.White else SeyTextPrimary
+                        color = if (isSelected) Color.White else Color(0xFFCBD5E1)
                     )
                 }
             }

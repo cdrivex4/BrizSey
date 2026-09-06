@@ -1,6 +1,6 @@
-# SeyMeteo 🌤️
+# BrizSey 🌤️🏝️
 
-> A modern, offline-first weather and marine app for the Seychelles archipelago — built on top of the **Seychelles Meteorological Authority (SMA)** public API at [meteo.sc](https://www.meteo.sc).
+> A living, fluid glassmorphic weather and marine app for the Seychelles archipelago — inspired by *Vents Alizés* trade winds and built on the **Seychelles Meteorological Authority (SMA)** live API at [meteo.sc](https://www.meteo.sc).
 
 [![Android](https://img.shields.io/badge/Platform-Android-green.svg)](https://android.com)
 [![Kotlin](https://img.shields.io/badge/Language-Kotlin-blue.svg)](https://kotlinlang.org)
@@ -94,8 +94,8 @@ SeyMeteo follows a clean **MVVM + Repository + Offline-First** architecture:
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/SeyMeteo.git
-cd SeyMeteo
+git clone https://github.com/cdrivex4/BrizSey.git
+cd BrizSey
 
 # Build debug APK
 ./gradlew assembleDebug

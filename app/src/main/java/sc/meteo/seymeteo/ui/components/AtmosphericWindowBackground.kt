@@ -146,9 +146,9 @@ fun AtmosphericWindowBackground(
                 .background(
                     Brush.verticalGradient(
                         colors = listOf(
-                            Color(0x330A192F),
-                            Color(0x66071324),
-                            Color(0x99050C17)
+                            Color(0x150A192F),
+                            Color(0x25071324),
+                            Color(0x3D050C17)
                         )
                     )
                 )

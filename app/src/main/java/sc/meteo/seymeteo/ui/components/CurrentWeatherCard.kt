@@ -47,6 +47,7 @@ import sc.meteo.seymeteo.ui.theme.SeySunGold
 fun CurrentWeatherCard(
     island: IslandLocation,
     currentForecast: DailyForecastItem?,
+    glassOpacity: Float = 0.35f,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -54,19 +55,12 @@ fun CurrentWeatherCard(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = RoundedCornerShape(24.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF0F2B48).copy(alpha = glassOpacity)),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF38BDF8).copy(alpha = (glassOpacity * 0.8f + 0.1f).coerceIn(0.15f, 0.45f)))
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            SeyNavyPrimary,
-                            SeyNavyDark
-                        )
-                    )
-                )
                 .padding(20.dp)
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {

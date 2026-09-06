@@ -13,10 +13,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import sc.meteo.seymeteo.data.preferences.UserPreferences
 import sc.meteo.seymeteo.ui.components.*
 import sc.meteo.seymeteo.ui.theme.SeyNavyDark
 import sc.meteo.seymeteo.ui.theme.SeyNavyPrimary
@@ -34,11 +36,14 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    val prefs = remember { UserPreferences(context) }
+    val glassOpacity by prefs.glassOpacity.collectAsState(initial = 0.35f)
 
     val timeFormatter = remember { SimpleDateFormat("HH:mm", Locale.ENGLISH) }
     val lastUpdatedText = remember(uiState.lastUpdatedMs) {
         if (uiState.lastUpdatedMs > 0) {
-            "Live Sync:  (Auto-sync 30m)"
+            "Live Sync: ${timeFormatter.format(Date(uiState.lastUpdatedMs))} (Auto-sync 30m)"
         } else {
             "Connecting to live feed..."
         }
@@ -64,14 +69,14 @@ fun HomeScreen(
                 title = {
                     Column {
                         Text(
-                            text = "ZilCast",
+                            text = "BrizSey",
                             style = MaterialTheme.typography.titleLarge,
                             color = Color.White,
                             fontWeight = FontWeight.ExtraBold,
                             letterSpacing = 0.5.sp
                         )
                         Text(
-                            text = "Seychelles Archipelago Weather · SMA",
+                            text = "Seychelles Archipelago Weather & Marine · SMA",
                             style = MaterialTheme.typography.labelSmall,
                             color = Color(0xCCFFFFFF),
                             fontSize = 11.sp
@@ -95,7 +100,7 @@ fun HomeScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = SeyNavyPrimary
+                    containerColor = Color(0xDD0A192F)
                 )
             )
         },
@@ -133,14 +138,14 @@ fun HomeScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp, vertical = 6.dp),
-                            color = Color(0xAA0A1F35),
-                            shape = RoundedCornerShape(12.dp),
-                            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x2238BDF8))
+                            color = Color(0xFF0F2B48).copy(alpha = glassOpacity),
+                            shape = RoundedCornerShape(14.dp),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF38BDF8).copy(alpha = (glassOpacity * 0.8f + 0.1f).coerceIn(0.15f, 0.45f)))
                         ) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(horizontal = 12.dp, vertical = 6.dp),
+                                    .padding(horizontal = 12.dp, vertical = 8.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
@@ -175,7 +180,10 @@ fun HomeScreen(
                     // 2. Active CAP Emergency Alerts
                     if (uiState.activeAlerts.isNotEmpty()) {
                         items(uiState.activeAlerts.size) { index ->
-                            AlertCard(alert = uiState.activeAlerts[index])
+                            AlertCard(
+                                alert = uiState.activeAlerts[index],
+                                glassOpacity = glassOpacity
+                            )
                         }
                     }
 
@@ -185,7 +193,8 @@ fun HomeScreen(
                             forecast = currentForecast,
                             predictability = uiState.predictability,
                             marineData = uiState.marineTideData,
-                            sunMoonInfo = uiState.sunMoonInfo
+                            sunMoonInfo = uiState.sunMoonInfo,
+                            glassOpacity = glassOpacity
                         )
                     }
 
@@ -194,7 +203,8 @@ fun HomeScreen(
                         IslandSelector(
                             islands = uiState.availableIslands,
                             selectedIsland = uiState.selectedIsland,
-                            onIslandSelected = { island -> viewModel.selectIsland(island) }
+                            onIslandSelected = { island -> viewModel.selectIsland(island) },
+                            glassOpacity = glassOpacity
                         )
                     }
 
@@ -202,14 +212,18 @@ fun HomeScreen(
                     item {
                         CurrentWeatherCard(
                             island = uiState.selectedIsland,
-                            currentForecast = currentForecast
+                            currentForecast = currentForecast,
+                            glassOpacity = glassOpacity
                         )
                     }
 
                     // 6. Smooth Bezier Hourly Forecast & Precipitation Curve
                     if (uiState.forecastItems.isNotEmpty()) {
                         item {
-                            HourlyForecastCurve(forecastItems = uiState.forecastItems)
+                            HourlyForecastCurve(
+                                forecastItems = uiState.forecastItems,
+                                glassOpacity = glassOpacity
+                            )
                         }
                     }
 
@@ -217,30 +231,41 @@ fun HomeScreen(
                     item {
                         RadialWeatherInstrumentsGrid(
                             forecast = currentForecast,
-                            marineData = uiState.marineTideData
+                            marineData = uiState.marineTideData,
+                            glassOpacity = glassOpacity
                         )
                     }
 
                     // 8. 7-Day Extended Forecast with Gradient Range Capsules
                     if (uiState.forecastItems.isNotEmpty()) {
                         item {
-                            SevenDayForecastCard(forecastItems = uiState.forecastItems)
+                            SevenDayForecastCard(
+                                forecastItems = uiState.forecastItems,
+                                glassOpacity = glassOpacity
+                            )
                         }
                     }
 
                     // 9. Marine & Tides Hub
                     item {
-                        MarineTideCard(marineData = uiState.marineTideData)
+                        MarineTideCard(
+                            marineData = uiState.marineTideData,
+                            glassOpacity = glassOpacity
+                        )
                     }
 
                     // 10. Sun & Moon Celestial Tracker
                     item {
-                        SunMoonCard(sunMoonInfo = uiState.sunMoonInfo)
+                        SunMoonCard(
+                            sunMoonInfo = uiState.sunMoonInfo,
+                            glassOpacity = glassOpacity
+                        )
                     }
 
                     // 11. Interactive Satellite & Doppler Radar Card (Clickable)
                     item {
                         SatelliteRadarCard(
+                            glassOpacity = glassOpacity,
                             onOpenRadar = onOpenSatelliteRadar
                         )
                     }

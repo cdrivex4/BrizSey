@@ -33,6 +33,7 @@ class UserPreferences(private val context: Context) {
         val KEY_RADAR_MUTED = booleanPreferencesKey("radar_muted")
         val KEY_RADAR_OPACITY = androidx.datastore.preferences.core.floatPreferencesKey("radar_opacity")
         val KEY_RADAR_FRAME_INDEX = intPreferencesKey("radar_frame_index")
+        val KEY_GLASS_OPACITY = androidx.datastore.preferences.core.floatPreferencesKey("glass_opacity")
         val KEY_ONBOARDING_DONE = booleanPreferencesKey("onboarding_done")
         val KEY_LAST_SELECTED_SLUG = stringPreferencesKey("last_island_slug")
         val KEY_LAST_SYNC_MS = longPreferencesKey("last_sync_ms")
@@ -96,6 +97,10 @@ class UserPreferences(private val context: Context) {
         it[KEY_RADAR_FRAME_INDEX] ?: 0
     }
 
+    val glassOpacity: Flow<Float> = context.dataStore.data.map {
+        it[KEY_GLASS_OPACITY] ?: 0.35f
+    }
+
     val onboardingDone: Flow<Boolean> = context.dataStore.data.map {
         it[KEY_ONBOARDING_DONE] ?: false
     }
@@ -124,6 +129,7 @@ class UserPreferences(private val context: Context) {
     suspend fun setRadarIsMuted(value: Boolean) = context.dataStore.edit { it[KEY_RADAR_MUTED] = value }
     suspend fun setRadarOpacity(value: Float) = context.dataStore.edit { it[KEY_RADAR_OPACITY] = value }
     suspend fun setRadarFrameIndex(value: Int) = context.dataStore.edit { it[KEY_RADAR_FRAME_INDEX] = value }
+    suspend fun setGlassOpacity(value: Float) = context.dataStore.edit { it[KEY_GLASS_OPACITY] = value }
     suspend fun setOnboardingDone() = context.dataStore.edit { it[KEY_ONBOARDING_DONE] = true }
     suspend fun setLastSelectedSlug(slug: String) = context.dataStore.edit { it[KEY_LAST_SELECTED_SLUG] = slug }
     suspend fun setLastSyncMs(ms: Long) = context.dataStore.edit { it[KEY_LAST_SYNC_MS] = ms }

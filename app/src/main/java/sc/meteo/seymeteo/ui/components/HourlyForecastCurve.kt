@@ -38,6 +38,7 @@ data class HourlyPoint(
 @Composable
 fun HourlyForecastCurve(
     forecastItems: List<DailyForecastItem>,
+    glassOpacity: Float = 0.35f,
     modifier: Modifier = Modifier
 ) {
     // Synthesize 12-hour / 24-hour progressive timeline points from daily forecast items & diurnal cycle
@@ -85,8 +86,8 @@ fun HourlyForecastCurve(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xCC0F2B48)),
-        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x3338BDF8))
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF0F2B48).copy(alpha = glassOpacity)),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF38BDF8).copy(alpha = (glassOpacity * 0.8f + 0.1f).coerceIn(0.15f, 0.45f)))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -251,7 +252,7 @@ fun HourlyForecastCurve(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = "°",
+                                    text = "${point.temp}°",
                                     style = MaterialTheme.typography.titleSmall,
                                     color = Color.White,
                                     fontWeight = FontWeight.Bold,
@@ -285,7 +286,7 @@ fun HourlyForecastCurve(
                                     )
                                     Spacer(modifier = Modifier.width(2.dp))
                                     Text(
-                                        text = "%",
+                                        text = "${point.rainChancePct}%",
                                         style = MaterialTheme.typography.labelSmall,
                                         color = if (point.rainChancePct >= 40) Color(0xFFBAE6FD) else Color(0xFF94A3B8),
                                         fontSize = 10.sp,

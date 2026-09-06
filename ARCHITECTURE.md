@@ -121,4 +121,19 @@ This document captures key architectural decisions made during development and t
 3. Implement `WeatherInsightCarousel.kt` and `RadialGauges.kt` (Wind compass dial, barometric pressure arc, UV, humidity).
 4. Persist radar player state, timeline frames, opacity, and mute preferences in DataStore via `@JavascriptInterface` bridge.
 
+---
+
+## ADR-010: BrizSey Rebrand & User-Adjustable Glass Translucency System
+
+**Date:** 2026-09-06  
+**Status:** Accepted
+
+**Context:** Users require customizable transparency levels so they can adjust the visual depth of the living atmospheric window background while retaining 100% legibility of forecast numbers, gauge readouts, and charts. Rebrand to **BrizSey** to emphasize the Seychellois breeze and trade wind heritage (*Vents Alizés*).
+
+**Decision:**
+1. Rebrand app to **BrizSey** across application manifest, strings, UI headers, and remote repository (`https://github.com/cdrivex4/BrizSey`).
+2. Implement user-controlled glass translucency slider (15% to 85% opacity) in `SettingsScreen.kt` backed by reactive DataStore preference (`KEY_GLASS_OPACITY`).
+3. Pass `glassOpacity` dynamically through Compose State down to all floating container cards (`CurrentWeatherCard`, `WeatherInsightCarousel`, `HourlyForecastCurve`, `RadialWeatherInstrumentsGrid`, `SevenDayForecastCard`, `MarineTideCard`, `SunMoonCard`, `SatelliteRadarCard`, `AlertCard`, `IslandSelector`).
+4. Ensure all typographic layers, icons, and numerical data maintain 100% solid alpha and high-contrast color palettes regardless of the glass opacity level.
+
 

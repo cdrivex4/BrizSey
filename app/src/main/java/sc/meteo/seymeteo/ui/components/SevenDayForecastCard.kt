@@ -23,6 +23,7 @@ import sc.meteo.seymeteo.data.model.DailyForecastItem
 @Composable
 fun SevenDayForecastCard(
     forecastItems: List<DailyForecastItem>,
+    glassOpacity: Float = 0.35f,
     modifier: Modifier = Modifier
 ) {
     val overallMin = forecastItems.minOfOrNull { it.tempMin.toInt() } ?: 23
@@ -33,8 +34,8 @@ fun SevenDayForecastCard(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xCC0F2B48)),
-        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x3338BDF8))
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF0F2B48).copy(alpha = glassOpacity)),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF38BDF8).copy(alpha = (glassOpacity * 0.8f + 0.1f).coerceIn(0.15f, 0.45f)))
     ) {
         Column(
             modifier = Modifier
@@ -133,7 +134,7 @@ fun ForecastRowItem(
                 )
                 Spacer(modifier = Modifier.width(3.dp))
                 Text(
-                    text = "%",
+                    text = "${rainPct}%",
                     style = MaterialTheme.typography.labelSmall,
                     color = Color(0xFFBAE6FD),
                     fontSize = 11.sp,
@@ -161,7 +162,7 @@ fun ForecastRowItem(
 
         // Min Temp
         Text(
-            text = "°",
+            text = "${item.tempMin.toInt()}°",
             style = MaterialTheme.typography.bodyMedium,
             color = Color(0xFF94A3B8),
             fontWeight = FontWeight.Medium,
@@ -195,7 +196,7 @@ fun ForecastRowItem(
 
         // Max Temp
         Text(
-            text = "°",
+            text = "${item.tempMax.toInt()}°",
             style = MaterialTheme.typography.bodyMedium,
             color = Color.White,
             fontWeight = FontWeight.Bold,

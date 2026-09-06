@@ -40,6 +40,7 @@ fun SettingsScreen(
     val windUnit by prefs.windUnit.collectAsState(initial = "kmh")
     val timeFormat by prefs.timeFormat.collectAsState(initial = "24h")
     val theme by prefs.theme.collectAsState(initial = "system")
+    val glassOpacity by prefs.glassOpacity.collectAsState(initial = 0.35f)
     val refreshMin by prefs.refreshIntervalMinutes.collectAsState(initial = 30)
     val userPersona by prefs.userPersona.collectAsState(initial = UserPersona.GENERAL_CITIZEN)
     val notifyExtreme by prefs.notifyExtreme.collectAsState(initial = true)
@@ -64,6 +65,50 @@ fun SettingsScreen(
                 .padding(padding),
             contentPadding = PaddingValues(bottom = 32.dp)
         ) {
+            // ---- Appearance & Glass Translucency ----
+            item { SettingsSectionHeader(text = "Appearance & Glass Translucency", icon = Icons.Default.Tune) }
+
+            item {
+                Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Card Glass Translucency",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Surface(
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(
+                                text = "${(glassOpacity * 100).toInt()}% Opacity",
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                    Text(
+                        text = "Adjust the tint and transparency of floating weather cards over the live atmospheric window.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = SeyTextSecondary,
+                        modifier = Modifier.padding(top = 2.dp, bottom = 6.dp)
+                    )
+                    Slider(
+                        value = glassOpacity,
+                        onValueChange = { scope.launch { prefs.setGlassOpacity(it) } },
+                        valueRange = 0.15f..0.85f,
+                        steps = 14
+                    )
+                }
+            }
+
             // ---- Display ----
             item { SettingsSectionHeader(text = "Display & Units", icon = Icons.Default.Palette) }
 
@@ -178,6 +223,9 @@ fun SettingsScreen(
             item { SettingsSectionHeader(text = "About & Research", icon = Icons.Default.Info) }
 
             item {
+                SettingsInfoRow(label = "Application", value = "BrizSey")
+            }
+            item {
                 SettingsInfoRow(label = "Data Provider", value = "Seychelles Met Authority (meteo.sc)")
             }
             item {
@@ -187,7 +235,7 @@ fun SettingsScreen(
                 SettingsInfoRow(label = "Radar / Clouds", value = "EUMETSAT & RainViewer Live")
             }
             item {
-                SettingsInfoRow(label = "Version", value = "1.1.0 (Research Enhanced)")
+                SettingsInfoRow(label = "Version", value = "1.2.0 (BrizSey Atmospheric Glass)")
             }
         }
     }

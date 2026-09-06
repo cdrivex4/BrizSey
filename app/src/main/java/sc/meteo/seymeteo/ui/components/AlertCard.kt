@@ -33,15 +33,18 @@ import sc.meteo.seymeteo.ui.theme.SeyTextSecondary
 @Composable
 fun AlertCard(
     alert: CapAlertInfo,
+    glassOpacity: Float = 0.35f,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFEF2F2)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        shape = RoundedCornerShape(18.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFF450A0A).copy(alpha = (glassOpacity + 0.35f).coerceAtMost(0.85f))
+        ),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFEF4444).copy(alpha = 0.5f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -51,14 +54,14 @@ fun AlertCard(
                 Icon(
                     imageVector = Icons.Default.Warning,
                     contentDescription = null,
-                    tint = SeyAlertRed,
-                    modifier = Modifier.size(24.dp)
+                    tint = Color(0xFFF87171),
+                    modifier = Modifier.size(22.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = alert.event ?: "Seychelles Weather Warning",
                     style = MaterialTheme.typography.titleMedium,
-                    color = SeyAlertRed,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -84,7 +87,7 @@ fun AlertCard(
                     text = headline,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = SeyTextPrimary
+                    color = Color(0xFFFEE2E2)
                 )
                 Spacer(modifier = Modifier.height(4.dp))
             }
@@ -93,7 +96,7 @@ fun AlertCard(
                 Text(
                     text = desc,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = SeyTextSecondary,
+                    color = Color(0xFFFCA5A5),
                     maxLines = 3
                 )
             }

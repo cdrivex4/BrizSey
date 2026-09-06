@@ -26,6 +26,7 @@ import sc.meteo.seymeteo.data.model.PredictabilityLevel
 import sc.meteo.seymeteo.ui.theme.SeyNavyDark
 import sc.meteo.seymeteo.ui.theme.SeyNavyPrimary
 import sc.meteo.seymeteo.ui.theme.SeyOceanCyan
+import sc.meteo.seymeteo.ui.theme.SeySkyBlue
 import sc.meteo.seymeteo.ui.theme.SeySurfaceCard
 import sc.meteo.seymeteo.ui.theme.SeyTextPrimary
 import sc.meteo.seymeteo.ui.theme.SeyTextSecondary
@@ -33,6 +34,7 @@ import sc.meteo.seymeteo.ui.theme.SeyTextSecondary
 @Composable
 fun PredictabilityCard(
     assessment: PredictabilityAssessment,
+    glassOpacity: Float = 0.35f,
     modifier: Modifier = Modifier
 ) {
     val progressAnimation by animateFloatAsState(
@@ -45,9 +47,9 @@ fun PredictabilityCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = SeySurfaceCard),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF0F2B48).copy(alpha = glassOpacity)),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF38BDF8).copy(alpha = (glassOpacity * 0.8f + 0.1f).coerceIn(0.15f, 0.45f)))
     ) {
         Column(
             modifier = Modifier
@@ -67,9 +69,9 @@ fun PredictabilityCard(
                             .clip(CircleShape)
                             .background(
                                 when (assessment.level) {
-                                    PredictabilityLevel.HIGH -> Color(0xFFDCFCE7)
-                                    PredictabilityLevel.MODERATE -> Color(0xFFFEF3C7)
-                                    PredictabilityLevel.UNSTABLE -> Color(0xFFFEE2E2)
+                                    PredictabilityLevel.HIGH -> Color(0x3310B981)
+                                    PredictabilityLevel.MODERATE -> Color(0x33FBBF24)
+                                    PredictabilityLevel.UNSTABLE -> Color(0x33EF4444)
                                 }
                             ),
                         contentAlignment = Alignment.Center
@@ -91,7 +93,7 @@ fun PredictabilityCard(
                             text = "Atmospheric Stability",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = SeyTextPrimary
+                            color = Color.White
                         )
                         Text(
                             text = assessment.level.label,
@@ -104,14 +106,15 @@ fun PredictabilityCard(
 
                 // Numerical Badge
                 Surface(
-                    color = assessment.level.color.copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(12.dp)
+                    color = assessment.level.color.copy(alpha = 0.25f),
+                    shape = RoundedCornerShape(12.dp),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, assessment.level.color.copy(alpha = 0.4f))
                 ) {
                     Text(
                         text = "${assessment.score}% Consensus",
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelMedium,
-                        color = assessment.level.color,
+                        color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -127,7 +130,7 @@ fun PredictabilityCard(
                     .height(6.dp)
                     .clip(RoundedCornerShape(3.dp)),
                 color = assessment.level.color,
-                trackColor = Color(0xFFE2E8F0)
+                trackColor = Color(0x3394A3B8)
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -137,13 +140,13 @@ fun PredictabilityCard(
                 text = assessment.headline,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
-                color = SeyTextPrimary
+                color = Color.White
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = assessment.reassuranceText,
                 style = MaterialTheme.typography.bodySmall,
-                color = SeyTextSecondary,
+                color = Color(0xFFCBD5E1),
                 lineHeight = 18.sp
             )
 
@@ -154,7 +157,7 @@ fun PredictabilityCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color(0xFFF1F5F9))
+                    .background(Color(0x2238BDF8))
                     .padding(horizontal = 10.dp, vertical = 6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -162,12 +165,12 @@ fun PredictabilityCard(
                     text = "Key Driver: ",
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
-                    color = SeyNavyDark
+                    color = SeySkyBlue
                 )
                 Text(
                     text = assessment.volatilityFactor,
                     style = MaterialTheme.typography.labelSmall,
-                    color = SeyTextSecondary
+                    color = Color(0xFFE2E8F0)
                 )
             }
         }

@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import sc.meteo.seymeteo.data.model.SunMoonInfo
 import sc.meteo.seymeteo.ui.theme.SeyAlertOrange
 import sc.meteo.seymeteo.ui.theme.SeyNavyPrimary
+import sc.meteo.seymeteo.ui.theme.SeySkyBlue
 import sc.meteo.seymeteo.ui.theme.SeySunGold
 import sc.meteo.seymeteo.ui.theme.SeySurfaceCard
 import sc.meteo.seymeteo.ui.theme.SeyTextMuted
@@ -39,15 +40,16 @@ import sc.meteo.seymeteo.ui.theme.SeyTextSecondary
 @Composable
 fun SunMoonCard(
     sunMoonInfo: SunMoonInfo,
+    glassOpacity: Float = 0.35f,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = SeySurfaceCard),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            .padding(horizontal = 16.dp, vertical = 6.dp),
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF0F2B48).copy(alpha = glassOpacity)),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF38BDF8).copy(alpha = (glassOpacity * 0.8f + 0.1f).coerceIn(0.15f, 0.45f)))
     ) {
         Column(
             modifier = Modifier
@@ -64,27 +66,30 @@ fun SunMoonCard(
                         imageVector = Icons.Default.Brightness5,
                         contentDescription = null,
                         tint = SeySunGold,
-                        modifier = Modifier.size(22.dp)
+                        modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Sun & Moon Tracker",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = SeyTextPrimary,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp
                     )
                 }
 
                 Surface(
-                    color = Color(0xFFFEF2F2),
-                    shape = RoundedCornerShape(8.dp)
+                    color = Color(0x33EF4444),
+                    shape = RoundedCornerShape(8.dp),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x55EF4444))
                 ) {
                     Text(
-                        text = "UV Index: ${sunMoonInfo.uvIndexMax} (Extreme)",
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        text = "UV ${sunMoonInfo.uvIndexMax} (Extreme)",
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = SeyAlertOrange,
-                        fontWeight = FontWeight.Bold
+                        color = Color(0xFFFCA5A5),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 10.sp
                     )
                 }
             }
@@ -99,7 +104,8 @@ fun SunMoonCard(
                 Surface(
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(14.dp),
-                    color = Color(0xFFFFFBEB)
+                    color = Color(0x22F59E0B),
+                    border = androidx.compose.foundation.BorderStroke(0.8.dp, Color(0x33FBBF24))
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -107,13 +113,13 @@ fun SunMoonCard(
                                 imageVector = Icons.Default.WbSunny,
                                 contentDescription = null,
                                 tint = SeySunGold,
-                                modifier = Modifier.size(18.dp)
+                                modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 text = "Sun",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = SeyNavyPrimary,
+                                style = MaterialTheme.typography.titleSmall,
+                                color = SeySunGold,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -128,21 +134,22 @@ fun SunMoonCard(
                 Surface(
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(14.dp),
-                    color = Color(0xFFF1F5F9)
+                    color = Color(0x2238BDF8),
+                    border = androidx.compose.foundation.BorderStroke(0.8.dp, Color(0x3338BDF8))
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 imageVector = Icons.Default.DarkMode,
                                 contentDescription = null,
-                                tint = SeyNavyPrimary,
-                                modifier = Modifier.size(18.dp)
+                                tint = SeySkyBlue,
+                                modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 text = "Moon",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = SeyNavyPrimary,
+                                style = MaterialTheme.typography.titleSmall,
+                                color = SeySkyBlue,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -171,13 +178,15 @@ fun SunMoonRow(
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = SeyTextMuted
+            color = Color(0xFF94A3B8),
+            fontSize = 11.sp
         )
         Text(
             text = value,
             style = MaterialTheme.typography.labelSmall,
-            color = SeyTextPrimary,
-            fontWeight = FontWeight.SemiBold
+            color = Color.White,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 11.sp
         )
     }
 }

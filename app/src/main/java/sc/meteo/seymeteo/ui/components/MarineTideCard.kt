@@ -45,15 +45,16 @@ import sc.meteo.seymeteo.ui.theme.SeyTextSecondary
 @Composable
 fun MarineTideCard(
     marineData: MarineTideData,
+    glassOpacity: Float = 0.35f,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = SeySurfaceCard),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            .padding(horizontal = 16.dp, vertical = 6.dp),
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF0F2B48).copy(alpha = glassOpacity)),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF38BDF8).copy(alpha = (glassOpacity * 0.8f + 0.1f).coerceIn(0.15f, 0.45f)))
     ) {
         Column(
             modifier = Modifier
@@ -70,27 +71,29 @@ fun MarineTideCard(
                         imageVector = Icons.Default.DirectionsBoat,
                         contentDescription = null,
                         tint = SeyOceanCyan,
-                        modifier = Modifier.size(22.dp)
+                        modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Marine & Tides",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = SeyTextPrimary,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp
                     )
                 }
                 Surface(
-                    color = SeyTealLight,
-                    shape = RoundedCornerShape(10.dp)
+                    color = Color(0x3338BDF8),
+                    shape = RoundedCornerShape(8.dp),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x4438BDF8))
                 ) {
                     Text(
                         text = marineData.monsoonSeason,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = SeyNavyPrimary,
+                        color = SeySkyBlue,
                         fontSize = 10.sp,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }
@@ -123,10 +126,10 @@ fun MarineTideCard(
 
             Text(
                 text = "Today's Tide Schedule (Victoria Port & Inner Islands)",
-                style = MaterialTheme.typography.titleMedium,
-                color = SeyTextPrimary,
+                style = MaterialTheme.typography.titleSmall,
+                color = Color(0xFFCBD5E1),
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 13.sp
+                fontSize = 12.sp
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -152,8 +155,9 @@ fun MarineInfoBox(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
-        color = Color(0xFFF1F5F9)
+        shape = RoundedCornerShape(14.dp),
+        color = Color(0x28FFFFFF),
+        border = androidx.compose.foundation.BorderStroke(0.8.dp, Color(0x2238BDF8))
     ) {
         Column(
             modifier = Modifier.padding(10.dp),
@@ -162,14 +166,14 @@ fun MarineInfoBox(
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall,
-                color = SeyTextMuted,
+                color = Color(0xFF94A3B8),
                 fontSize = 10.sp
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = value,
                 style = MaterialTheme.typography.bodyMedium,
-                color = SeyTextPrimary,
+                color = Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 12.sp
             )
@@ -184,8 +188,9 @@ fun TideItemPill(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
-        color = if (tide.isHighTide) Color(0xFFE0F2FE) else Color(0xFFF1F5F9)
+        shape = RoundedCornerShape(14.dp),
+        color = if (tide.isHighTide) Color(0x3538BDF8) else Color(0x20FFFFFF),
+        border = androidx.compose.foundation.BorderStroke(0.8.dp, if (tide.isHighTide) Color(0x4438BDF8) else Color(0x18FFFFFF))
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 8.dp),
@@ -194,7 +199,7 @@ fun TideItemPill(
             Icon(
                 imageVector = if (tide.isHighTide) Icons.Default.ArrowUpward else Icons.Default.ArrowDownward,
                 contentDescription = null,
-                tint = if (tide.isHighTide) SeyOceanCyan else SeyTextMuted,
+                tint = if (tide.isHighTide) Color(0xFF38BDF8) else Color(0xFF94A3B8),
                 modifier = Modifier.size(16.dp)
             )
             Spacer(modifier = Modifier.height(2.dp))
@@ -202,19 +207,19 @@ fun TideItemPill(
                 text = tide.time,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
-                color = SeyTextPrimary
+                color = Color.White
             )
             Text(
                 text = "${tide.heightMeters} m",
                 style = MaterialTheme.typography.labelSmall,
-                color = if (tide.isHighTide) SeyOceanCyan else SeyTextMuted,
+                color = if (tide.isHighTide) Color(0xFFBAE6FD) else Color(0xFF94A3B8),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 10.sp
             )
             Text(
                 text = if (tide.isHighTide) "High" else "Low",
                 style = MaterialTheme.typography.labelSmall,
-                color = SeyTextSecondary,
+                color = Color(0xFFCBD5E1),
                 fontSize = 9.sp
             )
         }

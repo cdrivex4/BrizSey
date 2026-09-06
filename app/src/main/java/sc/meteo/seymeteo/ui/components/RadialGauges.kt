@@ -33,6 +33,7 @@ import kotlin.math.*
 fun RadialWeatherInstrumentsGrid(
     forecast: DailyForecastItem?,
     marineData: MarineTideData?,
+    glassOpacity: Float = 0.35f,
     modifier: Modifier = Modifier
 ) {
     val windStr = forecast?.wind ?: "SE 21 km/h"
@@ -55,6 +56,7 @@ fun RadialWeatherInstrumentsGrid(
             WindCompassCard(
                 windSpeedKmh = windSpeed,
                 directionLabel = if (windStr.contains("NW", ignoreCase = true)) "NW" else "SE",
+                glassOpacity = glassOpacity,
                 modifier = Modifier.weight(1f)
             )
 
@@ -62,6 +64,7 @@ fun RadialWeatherInstrumentsGrid(
             PressureGaugeCard(
                 pressureHpa = 1013.8f,
                 trend = "Currently stable",
+                glassOpacity = glassOpacity,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -75,12 +78,14 @@ fun RadialWeatherInstrumentsGrid(
         ) {
             UvIndexCard(
                 uvIndex = 9,
+                glassOpacity = glassOpacity,
                 modifier = Modifier.weight(1f)
             )
 
             HumidityCard(
                 humidityPct = 82,
                 dewPoint = "24°C",
+                glassOpacity = glassOpacity,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -91,6 +96,7 @@ fun RadialWeatherInstrumentsGrid(
 fun WindCompassCard(
     windSpeedKmh: Float,
     directionLabel: String,
+    glassOpacity: Float = 0.35f,
     modifier: Modifier = Modifier
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "WindNeedle")
@@ -107,8 +113,8 @@ fun WindCompassCard(
     Card(
         modifier = modifier.height(160.dp),
         shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xCC0F2B48)),
-        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x3338BDF8))
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF0F2B48).copy(alpha = glassOpacity)),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF38BDF8).copy(alpha = (glassOpacity + 0.15f).coerceAtMost(0.5f)))
     ) {
         Column(
             modifier = Modifier
@@ -192,7 +198,7 @@ fun WindCompassCard(
                 }
 
                 Text(
-                    text = "",
+                    text = "${windSpeedKmh.toInt()}",
                     style = MaterialTheme.typography.titleMedium,
                     color = Color.White,
                     fontWeight = FontWeight.ExtraBold,
@@ -214,13 +220,14 @@ fun WindCompassCard(
 fun PressureGaugeCard(
     pressureHpa: Float,
     trend: String,
+    glassOpacity: Float = 0.35f,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier.height(160.dp),
         shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xCC0F2B48)),
-        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x3338BDF8))
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF0F2B48).copy(alpha = glassOpacity)),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF38BDF8).copy(alpha = (glassOpacity + 0.15f).coerceAtMost(0.5f)))
     ) {
         Column(
             modifier = Modifier
@@ -288,7 +295,7 @@ fun PressureGaugeCard(
                     modifier = Modifier.padding(top = 10.dp)
                 ) {
                     Text(
-                        text = "",
+                        text = "$pressureHpa",
                         style = MaterialTheme.typography.titleMedium,
                         color = Color.White,
                         fontWeight = FontWeight.ExtraBold,
@@ -316,13 +323,14 @@ fun PressureGaugeCard(
 @Composable
 fun UvIndexCard(
     uvIndex: Int,
+    glassOpacity: Float = 0.35f,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier.height(140.dp),
         shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xCC0F2B48)),
-        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x3338BDF8))
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF0F2B48).copy(alpha = glassOpacity)),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF38BDF8).copy(alpha = (glassOpacity + 0.15f).coerceAtMost(0.5f)))
     ) {
         Column(
             modifier = Modifier
@@ -348,7 +356,7 @@ fun UvIndexCard(
 
             Column {
                 Text(
-                    text = " · Very High",
+                    text = "$uvIndex · Very High",
                     style = MaterialTheme.typography.titleMedium,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -380,13 +388,14 @@ fun UvIndexCard(
 fun HumidityCard(
     humidityPct: Int,
     dewPoint: String,
+    glassOpacity: Float = 0.35f,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier.height(140.dp),
         shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xCC0F2B48)),
-        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x3338BDF8))
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF0F2B48).copy(alpha = glassOpacity)),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF38BDF8).copy(alpha = (glassOpacity + 0.15f).coerceAtMost(0.5f)))
     ) {
         Column(
             modifier = Modifier
@@ -412,7 +421,7 @@ fun HumidityCard(
 
             Column {
                 Text(
-                    text = "%",
+                    text = "$humidityPct%",
                     style = MaterialTheme.typography.titleMedium,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -431,7 +440,7 @@ fun HumidityCard(
             }
 
             Text(
-                text = "Dew point is ",
+                text = "Dew point is $dewPoint",
                 style = MaterialTheme.typography.labelSmall,
                 color = Color(0xFF94A3B8),
                 fontSize = 10.sp
