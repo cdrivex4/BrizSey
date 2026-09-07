@@ -20,7 +20,7 @@
 | 🌊 Marine Swells & Tides | ⚙️ Cost-Loss & Build Info |
 | :---: | :---: |
 | <img src="doc/screenshots/04_marine_tides_forecast.png" width="240" alt="Marine & Tide Schedule"/> | <img src="doc/screenshots/05_settings_profile.png" width="240" alt="Settings & Persona Profiles"/> |
-| **Swell Heights, Tides & Ephemeris** | **World Bank 11407 C/L & Build #9** |
+| **Swell Heights, Tides & Ephemeris** | **World Bank 11407 C/L & Build #10** |
 
 ---
 
@@ -39,7 +39,7 @@
 | Cost-Loss Persona Alert Engine (World Bank 11407) | ✅ Live |
 | 12-Frame Interactive Doppler Radar Timeline Player | ✅ Live |
 | Home screen Glance widget | ✅ Live |
-| Background auto-refresh (WorkManager) | ✅ Live |
+| Background auto-refresh (15m, 30m, 1h, 3h, 6h, 12h) | ✅ Live |
 | GPS auto-detect closest island & kinematic speed/heading | ✅ Live |
 | Favourite locations system | ✅ Live |
 | CAP severe weather alerts & local notifications | ✅ Live |
@@ -67,7 +67,7 @@ The interactive satellite and radar subsystem (`SatelliteMapScreen.kt`) provides
 - **12-Frame Doppler Timeline Player**: Scrub through recent radar frames with automated play/pause, rewind, and fast-forward controls.
 - **EUMETSAT Live Clouds & Infrared Storm Monitor**: Ingests real-time Indian Ocean cloud cover and storm convective tops.
 - **Dynamic Advection Isochrones**: Renders 15-minute, 30-minute, and 45-minute projected rain front positions over the sea.
-- **Granitic Mountain Spine Shield**: Displays the central ridge axis of Morne Seychellois ($905\,\text{m}$) color-coded by windward uplift and leeward rain shadow zones.
+- **Granitic Mountain Spine Shield**: Displays the central ridge axis of Morne Seychellois (905 m) color-coded by windward uplift and leeward rain shadow zones.
 - **Live User Kinematics & Evasion Vector**: Displays the user's real-time hardware GPS location with dynamic heading arrows toward optimal leeward shelters.
 - **Layer & Opacity Controls**: Seamless slider adjusting transparency between OpenStreetMap street tiles, satellite imagery, and radar precipitation echoes.
 
@@ -79,9 +79,9 @@ The interactive satellite and radar subsystem (`SatelliteMapScreen.kt`) provides
   <img src="doc/screenshots/02_topographic_microclimates.png" width="380" alt="Topographic Microclimate Engine"/>
 </p>
 
-- **Sub-Kilometer DEM Ingestion**: Bilinear interpolation over an embedded $64 \times 64$ elevation matrix (ASTER 30m / SRTM) spanning Mahé from sea level to 905m summit.
-- **Lifting Condensation Level (LCL)**: Evaluates parcel condensation height $z_{\text{LCL}} \approx 125(T - T_d)\,\text{m}$ against the 905m Morne Seychellois ridge.
-- **Orographic Lift Multiplier**: Calculates forced vertical velocity $\omega = \vec{v}_{\text{wind}} \cdot \nabla z$ producing $+35\%$ to $+85\%$ windward rainfall enhancement and $-50\%$ to $-80\%$ leeward Föhn rain shadows.
+- **Sub-Kilometer DEM Ingestion**: Bilinear interpolation over an embedded 64 × 64 elevation matrix (ASTER 30m / SRTM) spanning Mahé from sea level to the 905m summit.
+- **Lifting Condensation Level (LCL)**: Evaluates parcel condensation height `z_LCL ≈ 125 · (T - T_d) meters` against the 905m Morne Seychellois ridge.
+- **Orographic Lift Multiplier**: Calculates forced vertical velocity `ω = v_wind · ∇z` producing +35% to +85% windward rainfall enhancement and -50% to -80% leeward Föhn rain shadows.
 - **Hyper-Local Beach Guide**: Calculates Sverdrup-Munk-Bretschneider wave growth and fetch sheltering for 14 individual bays (Beau Vallon, Port Launay, Anse Royale, Takamaka, Grand Anse).
 
 ---
@@ -94,8 +94,8 @@ The interactive satellite and radar subsystem (`SatelliteMapScreen.kt`) provides
 
 - **100% Sensor-Driven**: Velocity vector, speed, heading, and accuracy are derived directly from the phone's Android `FusedLocationProviderClient`.
 - **Automatic Scenario Switching**:
-  - **Scenario A (Stationary Observer, $<2.0\,\text{km/h}$)**: Ray-casting boundary intersection calculates exact rain onset ETA and duration.
-  - **Scenario B (Dynamic Observer, $\ge 2.0\,\text{km/h}$)**: Solves relative kinematic vector geometry $\vec{v}_{\text{rel}} = \vec{v}_{\text{front}} - \vec{v}_{\text{user}}$ to identify closing rates and safe-haven evasion routes.
+  - **Scenario A (Stationary Observer, < 2.0 km/h)**: Ray-casting boundary intersection calculates exact rain onset ETA and duration.
+  - **Scenario B (Dynamic Observer, ≥ 2.0 km/h)**: Solves relative kinematic vector geometry `v_rel = v_front - v_user` to identify closing rates and safe-haven evasion routes.
 
 ---
 
@@ -117,9 +117,10 @@ The interactive satellite and radar subsystem (`SatelliteMapScreen.kt`) provides
   <img src="doc/screenshots/05_settings_profile.png" width="380" alt="Settings Screen"/>
 </p>
 
-- **World Bank 11407 Cost-Loss Personas**: Tailors warning thresholds to user activity (Fisherman/Mariner $C/L=15\%$, Tourism/Excursion $C/L=50\%$, General Citizen $C/L=30\%$) to eliminate false-alarm fatigue.
+- **World Bank 11407 Cost-Loss Personas**: Tailors warning thresholds to user activity (Fisherman/Mariner C/L = 15%, Tourism/Excursion C/L = 50%, General Citizen C/L = 30%) to eliminate false-alarm fatigue.
+- **Configurable Auto-Refresh**: Multi-choice intervals (15 min, 30 min, 1 hour, 3 hours, 6 hours, 12 hours) with live manual synchronization button.
 - **Glass Translucency Controls**: Live slider adjusting atmospheric card opacity.
-- **Incremental Build Tracking & Copyright Notice**: Displays `Build #9` and clickable copyright notice linking to `https://cdrivex4.github.io/`.
+- **Incremental Build Tracking & Copyright Notice**: Displays `Build #10` and clickable copyright notice linking to `https://cdrivex4.github.io/`.
 
 ---
 
@@ -130,11 +131,11 @@ BrizSey is built on a publication-grade scientific and meteorological framework 
 👉 **[BRIZSEY_SCIENTIFIC_DISSERTATION.md](doc/BRIZSEY_SCIENTIFIC_DISSERTATION.md)** — *Topographically-Resolved Microclimate Nowcasting, Dynamic Precipitation Interception, and Coastal Marine Dynamics for Granitic Tropical Archipelagos*.
 
 This dissertation details:
-- **Boundary Layer Thermodynamics**: Magnus-Tetens dew point formulation ($T_d$) and Lifting Condensation Level ($z_{\text{LCL}} \approx 125(T - T_d)\,\text{m}$) comparing cloud base against Mahé's 905m Morne Seychellois spine.
-- **Forced Orographic Lift & Föhn Rain Shadows**: Kinematic surface velocity ($\omega = \vec{v}_{\text{wind}} \cdot \nabla z$) and adiabatic descent warming ($\Delta T \approx +3.89^\circ\text{C}$).
-- **Froude Number Flow Regimes**: Atmospheric flow splitting around granitic obstacles ($Fr = U / (N \cdot h_m)$).
+- **Boundary Layer Thermodynamics**: Magnus-Tetens dew point formulation (`T_d`) and Lifting Condensation Level (`z_LCL ≈ 125 · (T - T_d) m`) comparing cloud base against Mahé's 905m Morne Seychellois spine.
+- **Forced Orographic Lift & Föhn Rain Shadows**: Kinematic surface velocity (`ω = v_wind · ∇z`) and adiabatic descent warming (`ΔT ≈ +3.89°C`).
+- **Froude Number Flow Regimes**: Atmospheric flow splitting around granitic obstacles (`Fr = U / (N · h_m)`).
 - **Coastal Marine Wave Generation**: Sverdrup-Munk-Bretschneider (SMB) shallow-water wave growth and topographic fetch sheltering.
-- **Kinematic Nowcasting & Relative Evasion Vector Geometry**: $\vec{v}_{\text{rel}} = \vec{v}_{\text{front}} - \vec{v}_{\text{user}}$ solving for dynamic interception times and safe-haven corridors.
+- **Kinematic Nowcasting & Relative Evasion Vector Geometry**: Relative velocity vector (`v_rel = v_front - v_user`) solving for dynamic interception times and safe-haven corridors.
 - **AI Foundation Models & Machine Learning Nowcasting**: Google DeepMind GraphCast, GenCast, MetNet-3, and DGMR neural radar ensembles.
 - **Full Academic Bibliography**: 43 comprehensive, peer-reviewed scientific citations.
 
@@ -146,8 +147,8 @@ This dissertation details:
 
 Explore our comprehensive research and engineering roadmap in 👉 **[TODO.md](TODO.md)**:
 - **Google DeepMind GraphCast / GenCast & MetNet-3**: On-premise GNN deployment at SMA downscaled to Mahé's 30m DEM for sub-kilometer microclimate resolution.
-- **Deep Generative Radar Nowcasting (DGMR)**: High-resolution spatiotemporal precipitation probability grids $P(x,y,t)$ up to 6 hours ahead.
-- **Commute & "Dry Corridor" Departure Optimizer**: Algorithmic solution to the optimal departure time problem $\min_\tau \mathcal{J}(\tau)$ advising commuters when to set out to avoid getting rained on.
+- **Deep Generative Radar Nowcasting (DGMR)**: High-resolution spatiotemporal precipitation probability grids `P(x, y, t)` up to 6 hours ahead.
+- **Commute & "Dry Corridor" Departure Optimizer**: Algorithmic solution to the optimal departure time problem (`min J(τ)`) advising commuters when to set out to avoid getting rained on.
 - **Automated Broadcast Generative Video Reports**: Headless 3D topographic fly-overs with WMO meteorological symbols and neural multilingual voice synthesis (Creole, English, French).
 - **Climate Change & SIDS Resilience**: Coral bleaching Degree Heating Weeks (DHW), tropical cyclone track genesis, and coastal inundation modeling under IPCC SSP scenarios.
 

@@ -1,7 +1,7 @@
 # Graph Report - SeyMeteo  (2026-09-07)
 
 ## Corpus Check
-- Large corpus: 87 files · ~596,491 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder.
+- Large corpus: 87 files · ~596,537 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder.
 
 ## Summary
 - 347 nodes · 658 edges · 21 communities (16 shown, 1 thin omitted)
