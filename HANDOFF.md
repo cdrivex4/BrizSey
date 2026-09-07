@@ -122,9 +122,13 @@ SeyMeteo/
 4. **Incremental Build Numbering & Copyright System**:
    - Centralized `version.properties` tracking `BUILD_NUMBER`, `VERSION_NAME`, and `COPYRIGHT_NOTICE` (`Copyright of https://cdrivex4.github.io/ 2026.`).
    - Exposed via Android `BuildConfig` and displayed both in the "About & Research" list and in the interactive footer of `SettingsScreen.kt`.
-5. **Build & Sideload Verified**:
-   - Unit tests passing ($100\%$).
-   - Debug APK compiled and installed on connected physical device (Samsung Galaxy S22 Ultra).
+5. **Configurable Multi-Interval Auto-Refresh & Manual Sync Engine**:
+   - Expanded background synchronization frequency choices: **`15 min`**, **`30 min`**, **`60 min` (1 hour)**, **`3 hours`**, **`6 hours`**, and **`12 hours`**.
+   - Dynamic WorkManager rescheduling via `SeyMeteoApplication.instance.scheduleForecastSync(minutes)` using `ExistingPeriodicWorkPolicy.UPDATE`.
+   - Live Manual Sync action button (**`🔄 Synchronize Live Weather Now`**) with live feedback and timestamp tracking in `SettingsScreen.kt`.
+6. **Build & Test Verified**:
+   - Unit tests passing ($100\%$, Build #10).
+   - Debug APK compiled (`app-debug.apk`).
 
 ---
 

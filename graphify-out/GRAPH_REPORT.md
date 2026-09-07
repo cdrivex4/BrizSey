@@ -1,10 +1,10 @@
 # Graph Report - SeyMeteo  (2026-09-07)
 
 ## Corpus Check
-- Large corpus: 87 files · ~595,956 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder.
+- Large corpus: 87 files · ~596,491 words. Semantic extraction will be expensive (many Claude tokens). Consider running on a subfolder.
 
 ## Summary
-- 345 nodes · 652 edges · 20 communities
+- 347 nodes · 658 edges · 21 communities (16 shown, 1 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 26 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
@@ -25,9 +25,10 @@
 - Module 13
 - Module 14
 - Module 15
+- Module 16
 
 ## God Nodes (most connected - your core abstractions)
-1. `UserPreferences` - 31 edges
+1. `UserPreferences` - 33 edges
 2. `GpsLocation` - 23 edges
 3. `DailyForecastItem` - 22 edges
 4. `HomeScreen()` - 20 edges
@@ -53,15 +54,15 @@
 ## Import Cycles
 - None detected.
 
-## Communities (20 total, 0 thin omitted)
+## Communities (21 total, 1 thin omitted)
 
 ### Community 0 - "Module 0"
-Cohesion: 0.12
-Nodes (13): GpsLocation, haversineDistanceKm(), Flow, LocationService, InterceptionSolution, TopographicSpine, UserKinematics, VelocityVector (+5 more)
+Cohesion: 0.06
+Nodes (19): UserPersona, FARMER_AGRICULTURE, GENERAL_CITIZEN, MARITIME_FISHER, TOURISM_OUTDOOR, Flow, UserPreferences, SeyMeteoApplication (+11 more)
 
 ### Community 1 - "Module 1"
-Cohesion: 0.07
-Nodes (14): UserPersona, FARMER_AGRICULTURE, GENERAL_CITIZEN, MARITIME_FISHER, TOURISM_OUTDOOR, Flow, UserPreferences, ImageVector (+6 more)
+Cohesion: 0.12
+Nodes (13): GpsLocation, haversineDistanceKm(), Flow, LocationService, InterceptionSolution, TopographicSpine, UserKinematics, VelocityVector (+5 more)
 
 ### Community 2 - "Module 2"
 Cohesion: 0.10
@@ -88,50 +89,51 @@ Cohesion: 0.16
 Nodes (11): CoastalZone, FLANK_TRANSITION, HIGH_MOUNTAIN_SPINE, LEEWARD_SHELTERED, WINDWARD_EXPOSED, DistrictMicroclimate, IslandMicroclimatePrediction, DistrictProfile (+3 more)
 
 ### Community 8 - "Module 8"
-Cohesion: 0.15
-Nodes (12): InterceptionScenario, SCENARIO_A_STATIONARY, SCENARIO_B_DYNAMIC_EVASION, getBearingLabel(), Modifier, RainInterceptionCard(), HomeScreen(), Modifier (+4 more)
-
-### Community 9 - "Module 9"
 Cohesion: 0.18
 Nodes (12): MainActivity, Screen, HOME, SATELLITE_MAP, SETTINGS, SatelliteMapScreen(), WebViewClient, SeyMeteoTheme() (+4 more)
 
-### Community 10 - "Module 10"
-Cohesion: 0.26
+### Community 9 - "Module 9"
+Cohesion: 0.28
 Nodes (12): MarineTideData, TidePoint, Modifier, MarineInfoBox(), MarineTideCard(), TideItemPill(), HumidityCard(), Modifier (+4 more)
 
-### Community 11 - "Module 11"
-Cohesion: 0.18
-Nodes (10): CapAlertFeature, CapAlertInfo, CapAlertProperties, toCapAlertInfo(), AlertNotificationBuilder, AlertCard(), Modifier, AlertPollerWorker (+2 more)
-
-### Community 12 - "Module 12"
+### Community 10 - "Module 10"
 Cohesion: 0.20
 Nodes (3): FavouriteDao, Flow, FavouriteLocationEntity
+
+### Community 11 - "Module 11"
+Cohesion: 0.26
+Nodes (6): HomeScreen(), Modifier, WeatherUiState, WeatherViewModel, StateFlow, ViewModel
+
+### Community 12 - "Module 12"
+Cohesion: 0.25
+Nodes (7): CapAlertFeature, CapAlertInfo, CapAlertProperties, toCapAlertInfo(), AlertNotificationBuilder, AlertCard(), Modifier
 
 ### Community 13 - "Module 13"
 Cohesion: 0.29
 Nodes (7): GlanceAppWidget, SeyMeteoGlanceReceiver, Context, GlanceAppWidget, SeyMeteoGlanceWidget, GlanceAppWidgetReceiver, GlanceId
 
 ### Community 14 - "Module 14"
-Cohesion: 0.31
-Nodes (4): Context, SeyMeteoNotificationChannels, SeyMeteoApplication, Application
-
-### Community 15 - "Module 15"
 Cohesion: 0.33
 Nodes (4): OpenMeteoApiService, OpenMeteoCurrent, OpenMeteoDaily, OpenMeteoResponse
 
+### Community 15 - "Module 15"
+Cohesion: 0.38
+Nodes (6): InterceptionScenario, SCENARIO_A_STATIONARY, SCENARIO_B_DYNAMIC_EVASION, getBearingLabel(), Modifier, RainInterceptionCard()
+
 ## Knowledge Gaps
 - **32 isolated node(s):** `HOME`, `SETTINGS`, `SATELLITE_MAP`, `OpenMeteoCurrent`, `OpenMeteoDaily` (+27 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 80 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 81 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **1 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `HomeScreen()` connect `Module 8` to `Module 1`, `Module 2`, `Module 4`, `Module 5`, `Module 6`, `Module 7`, `Module 9`, `Module 10`, `Module 11`?**
-  _High betweenness centrality (0.262) - this node is a cross-community bridge._
-- **Why does `UserPreferences` connect `Module 1` to `Module 8`, `Module 9`, `Module 2`, `Module 11`?**
-  _High betweenness centrality (0.217) - this node is a cross-community bridge._
-- **Why does `DailyForecastItem` connect `Module 5` to `Module 0`, `Module 2`, `Module 4`, `Module 7`, `Module 10`?**
-  _High betweenness centrality (0.134) - this node is a cross-community bridge._
+- **Why does `HomeScreen()` connect `Module 11` to `Module 0`, `Module 2`, `Module 4`, `Module 5`, `Module 6`, `Module 7`, `Module 8`, `Module 9`, `Module 12`, `Module 15`?**
+  _High betweenness centrality (0.255) - this node is a cross-community bridge._
+- **Why does `UserPreferences` connect `Module 0` to `Module 8`, `Module 2`, `Module 11`?**
+  _High betweenness centrality (0.242) - this node is a cross-community bridge._
+- **Why does `DailyForecastItem` connect `Module 5` to `Module 1`, `Module 2`, `Module 4`, `Module 7`, `Module 9`?**
+  _High betweenness centrality (0.127) - this node is a cross-community bridge._
 - **Are the 14 inferred relationships involving `HomeScreen()` (e.g. with `AlertCard()` and `AtmosphericWindowBackground()`) actually correct?**
   _`HomeScreen()` has 14 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 4 inferred relationships involving `VelocityVector` (e.g. with `.testMahéGraniticSpine_OrographicEffect()` and `.testScenarioA_StationaryUser_FrontApproaching()`) actually correct?**
@@ -139,4 +141,4 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `HOME`, `SETTINGS`, `SATELLITE_MAP` to the rest of the system?**
   _32 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Module 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.12439024390243902 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06037414965986394 - nodes in this community are weakly interconnected._

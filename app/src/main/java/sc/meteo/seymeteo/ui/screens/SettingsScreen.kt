@@ -1,6 +1,11 @@
 package sc.meteo.seymeteo.ui.screens
 
 import sc.meteo.seymeteo.BuildConfig
+import sc.meteo.seymeteo.SeyMeteoApplication
+import kotlinx.coroutines.delay
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
@@ -44,7 +49,11 @@ fun SettingsScreen(
     val theme by prefs.theme.collectAsState(initial = "system")
     val glassOpacity by prefs.glassOpacity.collectAsState(initial = 0.35f)
     val refreshMin by prefs.refreshIntervalMinutes.collectAsState(initial = 30)
+    val lastSyncMs by prefs.lastSyncMs.collectAsState(initial = 0L)
     val userPersona by prefs.userPersona.collectAsState(initial = UserPersona.GENERAL_CITIZEN)
+    var isManualSyncing by remember { mutableStateOf(false) }
+    var syncFeedbackMessage by remember { mutableStateOf<String?>(null) }
+    val syncTimeFormatter = remember { SimpleDateFormat("HH:mm:ss", Locale.ENGLISH) }
     val notifyExtreme by prefs.notifyExtreme.collectAsState(initial = true)
     val notifySevere by prefs.notifySevere.collectAsState(initial = true)
     val notifyModerate by prefs.notifyModerate.collectAsState(initial = false)
@@ -183,12 +192,139 @@ fun SettingsScreen(
             item { SettingsSectionHeader(text = "Data & Sync", icon = Icons.Default.Sync) }
 
             item {
-                SettingsSegmentedRow(
-                    label = "Auto-refresh",
-                    options = listOf("15 min" to "15", "30 min" to "30", "1 hour" to "60"),
-                    selected = refreshMin.toString(),
-                    onSelect = { scope.launch { prefs.setRefreshIntervalMinutes(it.toInt()) } }
-                )
+                Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+                    Text(
+                        text = "Auto-refresh Interval",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = "Background synchronization frequency for live forecasts, CAP alerts, and radar grids.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = SeyTextSecondary,
+                        modifier = Modifier.padding(top = 2.dp, bottom = 8.dp)
+                    )
+
+                    // Row 1: High frequency (15m, 30m, 60m)
+                    SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+                        val row1Options = listOf("15 min" to 15, "30 min" to 30, "60 min" to 60)
+                        row1Options.forEachIndexed { idx, (display, minutes) ->
+                            SegmentedButton(
+                                selected = refreshMin == minutes,
+                                onClick = {
+                                    scope.launch {
+                                        prefs.setRefreshIntervalMinutes(minutes)
+                                        SeyMeteoApplication.instance.scheduleForecastSync(minutes)
+                                    }
+                                },
+                                shape = SegmentedButtonDefaults.itemShape(index = idx, count = row1Options.size),
+                                label = { Text(display, style = MaterialTheme.typography.labelSmall, fontWeight = if (refreshMin == minutes) FontWeight.Bold else FontWeight.Normal) }
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Row 2: Standard/Extended frequency (3h, 6h, 12h)
+                    SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+                        val row2Options = listOf("3 hours" to 180, "6 hours" to 360, "12 hours" to 720)
+                        row2Options.forEachIndexed { idx, (display, minutes) ->
+                            SegmentedButton(
+                                selected = refreshMin == minutes,
+                                onClick = {
+                                    scope.launch {
+                                        prefs.setRefreshIntervalMinutes(minutes)
+                                        SeyMeteoApplication.instance.scheduleForecastSync(minutes)
+                                    }
+                                },
+                                shape = SegmentedButtonDefaults.itemShape(index = idx, count = row2Options.size),
+                                label = { Text(display, style = MaterialTheme.typography.labelSmall, fontWeight = if (refreshMin == minutes) FontWeight.Bold else FontWeight.Normal) }
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    // Manual Synchronize Card & Button
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(14.dp),
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.25f))
+                    ) {
+                        Column(modifier = Modifier.padding(14.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column {
+                                    Text(
+                                        text = "Manual Synchronization",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Text(
+                                        text = if (lastSyncMs > 0) "Last synced: ${syncTimeFormatter.format(Date(lastSyncMs))}" else "Last synced: Auto on start",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = SeyOceanCyan,
+                                        fontSize = 11.sp
+                                    )
+                                }
+
+                                Button(
+                                    onClick = {
+                                        if (!isManualSyncing) {
+                                            scope.launch {
+                                                isManualSyncing = true
+                                                syncFeedbackMessage = null
+                                                SeyMeteoApplication.instance.triggerImmediateSync()
+                                                delay(1000)
+                                                prefs.setLastSyncMs(System.currentTimeMillis())
+                                                isManualSyncing = false
+                                                syncFeedbackMessage = "Weather data updated successfully!"
+                                            }
+                                        }
+                                    },
+                                    enabled = !isManualSyncing,
+                                    shape = RoundedCornerShape(10.dp),
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp)
+                                ) {
+                                    if (isManualSyncing) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.size(16.dp),
+                                            color = Color.White,
+                                            strokeWidth = 2.dp
+                                        )
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Text("Syncing...", fontSize = 12.sp)
+                                    } else {
+                                        Icon(
+                                            imageVector = Icons.Default.Refresh,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(16.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Text("Sync Now", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                    }
+                                }
+                            }
+
+                            syncFeedbackMessage?.let { msg ->
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "✓ $msg",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = Color(0xFF10B981),
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            }
+                        }
+                    }
+                }
             }
 
             // ---- Notifications ----
